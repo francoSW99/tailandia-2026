@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0B1413" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#17120C" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A0806" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Tailandia">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
@@ -36,67 +36,82 @@ img { max-width: 100%; }
 <title>Tailandia 2026</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
-@font-face{font-family:'Bricolage Grotesque';font-style:normal;font-weight:600;font-display:swap;src:url(./fuentes/bricolage-grotesque-normal-600.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
-@font-face{font-family:'Bricolage Grotesque';font-style:normal;font-weight:800;font-display:swap;src:url(./fuentes/bricolage-grotesque-normal-600.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
-@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url(./fuentes/ibm-plex-mono-normal-500.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
-@font-face{font-family:'Lexend';font-style:normal;font-weight:400;font-display:swap;src:url(./fuentes/lexend-normal-400.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
-@font-face{font-family:'Lexend';font-style:normal;font-weight:600;font-display:swap;src:url(./fuentes/lexend-normal-400.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
-@font-face{font-family:'Lexend';font-style:normal;font-weight:700;font-display:swap;src:url(./fuentes/lexend-normal-400.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url(./fuentes/ibm-plex-mono-latin-500.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Kanit';font-style:normal;font-weight:500;font-display:swap;src:url(./fuentes/kanit-thai-500.woff2) format('woff2');unicode-range:U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;}
+@font-face{font-family:'Kanit';font-style:normal;font-weight:500;font-display:swap;src:url(./fuentes/kanit-latin-500.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Kanit';font-style:normal;font-weight:600;font-display:swap;src:url(./fuentes/kanit-thai-600.woff2) format('woff2');unicode-range:U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;}
+@font-face{font-family:'Kanit';font-style:normal;font-weight:600;font-display:swap;src:url(./fuentes/kanit-latin-600.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Kanit';font-style:normal;font-weight:700;font-display:swap;src:url(./fuentes/kanit-thai-700.woff2) format('woff2');unicode-range:U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;}
+@font-face{font-family:'Kanit';font-style:normal;font-weight:700;font-display:swap;src:url(./fuentes/kanit-latin-700.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Lexend';font-style:normal;font-weight:400;font-display:swap;src:url(./fuentes/lexend-latin-400.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Lexend';font-style:normal;font-weight:600;font-display:swap;src:url(./fuentes/lexend-latin-400.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Lexend';font-style:normal;font-weight:700;font-display:swap;src:url(./fuentes/lexend-latin-400.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
 </style>
 <style>
 /* Layout: app de bolsillo. Una pantalla por pestaña, barra de pestañas abajo (al alcance del pulgar),
    listas agrupadas al estilo iOS que se abren al tocar, y una línea de tiempo por día. */
 :root {
-  --bg: #EEF3F2;
+  /* Lai rod nam: laca negra con pan de oro, como las puertas de los templos, para encabezados y pestañas.
+     El contenido va sobre papel de arroz. Ciudades: mar de Andamán, esmeralda de Krabi, seda, teca y azul real. */
+  --bg: #F3F1EA;
   --surface: #FFFFFF;
-  --surface-2: #E4ECEA;
-  --ink: #10201E;
-  --muted: #526B65;
-  --line: #DCE5E3;
-  --sea: #0A6A64;
-  --sea-soft: #D3EAE7;
-  --sun: #8F5700;
-  --sun-soft: #FBEACB;
-  --sun-line: #DB9A2E;
-  --ok: #1B7542;
-  --ok-soft: #DCF1E3;
+  --surface-2: #ECE7DA;
+  --ink: #1B1610;
+  --muted: #5F5747;
+  --line: #E4DDCC;
+  --lacquer: #17120C;
+  --gold: #D4AC4C;
+  --gold-text: #EBD7A2;
+  --gold-ink: #845A00;
+  --gold-soft: #F6EAC9;
+  --sea: #0D5E47;
+  --sea-soft: #DAEDE4;
+  --sun: #9A5600;
+  --sun-soft: #FCE6C2;
+  --sun-line: #E58A00;
+  --ok: #1F7A44;
+  --ok-soft: #DDF1E2;
   --warn: #8F5100;
   --warn-soft: #FCEBCF;
-  --bad: #AE3227;
-  --bad-soft: #F8DEDA;
-  --c-viaje: #5A6878;
-  --c-phuket: #0B7189;
-  --c-krabi: #28784A;
-  --c-pattaya: #B23C72;
-  --c-cnx: #8A5526;
-  --c-bkk: #6347AE;
-  --f-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
-  --f-body: "Lexend", -apple-system, "Segoe UI", system-ui, sans-serif;
+  --bad: #B3261E;
+  --bad-soft: #F9DEDA;
+  --c-viaje: #5E6470;
+  --c-phuket: #0B6A96;
+  --c-krabi: #0D7A6E;
+  --c-pattaya: #AD1F68;
+  --c-cnx: #8A4E1C;
+  --c-bkk: #4A3E9E;
+  --f-display: "Kanit", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Lexend", "Kanit", -apple-system, "Segoe UI", system-ui, sans-serif;
   --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --r: 16px;
   --nav-h: 60px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --patron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg fill='none' stroke='%23D4AC4C' stroke-opacity='.22' stroke-width='1'%3E%3Cpath d='M17 8c2.6 3.4 2.6 6 0 9-2.6-3-2.6-5.6 0-9zM17 26c-2.6-3.4-2.6-6 0-9 2.6 3 2.6 5.6 0 9zM8 17c3.4-2.6 6-2.6 9 0-3 2.6-5.6 2.6-9 0zM26 17c-3.4 2.6-6 2.6-9 0 3-2.6 5.6-2.6 9 0z'/%3E%3Cpath d='M0 0l5 5M34 0l-5 5M0 34l5-5M34 34l-5-5'/%3E%3C/g%3E%3Ccircle cx='17' cy='17' r='1.3' fill='%23D4AC4C' fill-opacity='.4'/%3E%3C/svg%3E");
+  --fleco: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' viewBox='0 0 14 8'%3E%3Cpath d='M0 0h14C11 0 9 2 7 8 5 2 3 0 0 0z' fill='%23D4AC4C'/%3E%3C/svg%3E");
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0B1413; --surface: #15211F; --surface-2: #1D2C2A; --ink: #E4EEEC; --muted: #97AEA9; --line: #263835;
-    --sea: #5CC6BB; --sea-soft: #133A37; --sun: #F0B444; --sun-soft: #3A2C10; --sun-line: #C8902A;
+    --bg: #0F0C09; --surface: #1B1712; --surface-2: #261F17; --ink: #F2EBDC; --muted: #B6AA94; --line: #312921;
+    --lacquer: #0A0806; --gold: #D9B04A; --gold-text: #EBD7A2; --gold-ink: #E3BA57; --gold-soft: #3A2D12;
+    --sea: #5CC8A2; --sea-soft: #123329; --sun: #F2B24A; --sun-soft: #3A2A10; --sun-line: #D89A2C;
     --ok: #6CD49A; --ok-soft: #12301F; --warn: #F2B357; --warn-soft: #3A2A10; --bad: #F08A7C; --bad-soft: #3A1A16;
-    --c-viaje: #9AA8B8; --c-phuket: #4FB8D0; --c-krabi: #62C48A; --c-pattaya: #EE7FB0; --c-cnx: #D9A06A; --c-bkk: #A892F0;
+    --c-viaje: #A3AAB6; --c-phuket: #5BB8E0; --c-krabi: #4FC7B6; --c-pattaya: #F07EB5; --c-cnx: #DDA06A; --c-bkk: #A99BF2;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0B1413; --surface: #15211F; --surface-2: #1D2C2A; --ink: #E4EEEC; --muted: #97AEA9; --line: #263835;
-  --sea: #5CC6BB; --sea-soft: #133A37; --sun: #F0B444; --sun-soft: #3A2C10; --sun-line: #C8902A;
-  --ok: #6CD49A; --ok-soft: #12301F; --warn: #F2B357; --warn-soft: #3A2A10; --bad: #F08A7C; --bad-soft: #3A1A16;
-  --c-viaje: #9AA8B8; --c-phuket: #4FB8D0; --c-krabi: #62C48A; --c-pattaya: #EE7FB0; --c-cnx: #D9A06A; --c-bkk: #A892F0;
-  color-scheme: dark;
+  --bg: #0F0C09; --surface: #1B1712; --surface-2: #261F17; --ink: #F2EBDC; --muted: #B6AA94; --line: #312921;
+    --lacquer: #0A0806; --gold: #D9B04A; --gold-text: #EBD7A2; --gold-ink: #E3BA57; --gold-soft: #3A2D12;
+    --sea: #5CC8A2; --sea-soft: #123329; --sun: #F2B24A; --sun-soft: #3A2A10; --sun-line: #D89A2C;
+    --ok: #6CD49A; --ok-soft: #12301F; --warn: #F2B357; --warn-soft: #3A2A10; --bad: #F08A7C; --bad-soft: #3A1A16;
+    --c-viaje: #A3AAB6; --c-phuket: #5BB8E0; --c-krabi: #4FC7B6; --c-pattaya: #F07EB5; --c-cnx: #DDA06A; --c-bkk: #A99BF2;
+    color-scheme: dark;
 }
 
 /* Base y comportamiento de teléfono */
 * { box-sizing: border-box; }
-html { -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; overscroll-behavior-x: none; }
+html { background: var(--bg); -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; overscroll-behavior-x: none; }
 body {
   background: var(--bg); color: var(--ink);
   font-family: var(--f-body); font-size: 17px; line-height: 1.45;
@@ -125,11 +140,22 @@ button, summary, .nav a { user-select: none; -webkit-user-select: none; -webkit-
 }
 .panel { display: none; padding-block: 18px 8px; flex-direction: column; gap: 26px; }
 .panel.on { display: flex; }
-.ph { display: grid; gap: 4px; }
-.ph h1 { font-size: 2.1rem; font-weight: 800; letter-spacing: -0.02em; }
-.ph p { color: var(--muted); }
+.ph {
+  position: relative; display: grid; gap: 4px;
+  margin: -18px calc(-1 * max(16px, env(safe-area-inset-right, 0px))) 4px calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  padding: 26px max(22px, env(safe-area-inset-right, 0px)) 24px max(22px, env(safe-area-inset-left, 0px));
+  background: var(--lacquer) var(--patron); background-size: 34px 34px;
+  border-radius: 0 0 24px 24px; color: var(--gold-text);
+}
+.ph::after { content: ""; position: absolute; left: 28px; right: 28px; bottom: -7px; height: 8px; background: var(--fleco) repeat-x; background-size: 14px 8px; }
+.ph h1 { font-size: 2.25rem; font-weight: 700; letter-spacing: -0.01em; color: #FBF3DE; }
+.ph p { color: #D9C48F; }
+.ph .offline-ok { color: #A6DDB9; }
+.th { font-family: var(--f-display); font-weight: 500; }
+.ph .th { color: var(--gold); }
+@media (min-width: 700px) { .ph { margin-top: 0; border-radius: 24px; } }
 .sec { display: grid; gap: 10px; }
-.sec > h2 { font-size: 1.2rem; font-weight: 800; padding-left: 4px; }
+.sec > h2 { font-size: 1.2rem; font-weight: 700; padding-left: 4px; }
 
 /* Listas agrupadas */
 .group { background: var(--surface); border-radius: var(--r); overflow: hidden; }
@@ -155,7 +181,7 @@ details[open] > summary .chev { transform: rotate(180deg); }
 
 /* Hoy */
 .count { display: flex; align-items: center; gap: 16px; background: var(--surface); border-radius: var(--r); padding: 18px; }
-.count .big { font-family: var(--f-display); font-weight: 800; font-size: 4.6rem; line-height: 0.9; color: var(--sea); letter-spacing: -0.04em; }
+.count .big { font-family: var(--f-display); font-weight: 700; font-size: 4.6rem; line-height: 0.9; color: var(--gold-ink); letter-spacing: -0.02em; }
 .count .t { font-weight: 700; font-size: 1.15rem; }
 .hero { position: relative; border-radius: var(--r); overflow: hidden; background: var(--surface); }
 .hero img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; max-width: 100%; }
@@ -164,14 +190,14 @@ details[open] > summary .chev { transform: rotate(180deg); }
   background: linear-gradient(to top, rgb(0 0 0 / 0.72), rgb(0 0 0 / 0));
 }
 .hero .cap p { font-weight: 700; font-size: 0.95rem; opacity: 0.92; }
-.hero .cap h2 { font-size: 2rem; font-weight: 800; }
+.hero .cap h2 { font-size: 2rem; font-weight: 700; }
 .hero.noimg .cap { position: static; color: var(--ink); background: none; padding: 18px; }
 .sleep { display: flex; gap: 12px; align-items: center; background: var(--surface); border-radius: var(--r); padding: 14px; }
 .sleep .grow { flex: 1; min-width: 0; }
 .sos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .sos a { background: var(--surface); border-radius: var(--r); padding: 12px 8px; display: grid; justify-items: center; gap: 2px; text-decoration: none; color: var(--ink); }
 .sos a:active { background: var(--surface-2); }
-.sos b { font-family: var(--f-display); font-size: 1.55rem; font-weight: 800; color: var(--bad); line-height: 1.1; }
+.sos b { font-family: var(--f-display); font-size: 1.55rem; font-weight: 700; color: var(--bad); line-height: 1.1; }
 .sos span { font-size: 0.8rem; color: var(--muted); text-align: center; }
 .foot { font-size: 0.8rem; color: var(--muted); padding-inline: 4px; }
 
@@ -181,7 +207,7 @@ details[open] > summary .chev { transform: rotate(180deg); }
 .cal-dow { text-align: center; font-size: 0.72rem; font-weight: 700; color: var(--muted); }
 .cal-cell {
   height: 40px; border-radius: 10px; display: grid; place-items: center;
-  font-family: var(--f-display); font-weight: 800; font-size: 1rem;
+  font-family: var(--f-display); font-weight: 700; font-size: 1rem;
   background: var(--c); color: var(--bg); transition: transform 100ms var(--ease);
 }
 .cal-cell:active { transform: scale(0.92); }
@@ -196,7 +222,8 @@ details[open] > summary .chev { transform: rotate(180deg); }
 .stay-hd { position: relative; border-radius: var(--r) var(--r) 0 0; overflow: hidden; }
 .stay-hd img { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; display: block; max-width: 100%; }
 .stay-hd .cap { position: absolute; inset: auto 0 0 0; padding: 36px 14px 12px; color: #fff; background: linear-gradient(to top, rgb(0 0 0 / 0.7), rgb(0 0 0 / 0)); }
-.stay-hd h2 { font-size: 1.55rem; font-weight: 800; }
+.stay-hd h2 { font-size: 1.55rem; font-weight: 700; }
+.stay-hd .th, .hero .th { font-size: 0.72em; font-weight: 500; margin-left: 4px; opacity: 0.92; }
 .stay-hd p { font-size: 0.9rem; font-weight: 700; opacity: 0.92; }
 .stay-hd.plain { background: var(--surface); padding: 14px 14px 4px; }
 .stay-hd.plain .cap { position: static; padding: 0; background: none; color: var(--ink); }
@@ -205,7 +232,7 @@ details[open] > summary .chev { transform: rotate(180deg); }
 .stay > .group { border-radius: 0 0 var(--r) var(--r); }
 .day { scroll-margin-top: 12px; }
 .dnum { width: 40px; flex: none; display: grid; justify-items: center; line-height: 1; color: var(--c); }
-.dnum b { font-family: var(--f-display); font-weight: 800; font-size: 1.55rem; }
+.dnum b { font-family: var(--f-display); font-weight: 700; font-size: 1.55rem; }
 .dnum small { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
 .day.today > summary { background: var(--sun-soft); }
 .tags { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 0.86rem; color: var(--muted); align-items: center; }
@@ -270,7 +297,7 @@ details[open] > summary .chev { transform: rotate(180deg); }
 .switch button[aria-pressed="true"] i { background: var(--bg); }
 .city { display: none; gap: 14px; }
 .city.on { display: grid; }
-.pick .n { width: 30px; flex: none; text-align: center; font-family: var(--f-display); font-weight: 800; font-size: 1.25rem; color: var(--c); }
+.pick .n { width: 30px; flex: none; text-align: center; font-family: var(--f-display); font-weight: 700; font-size: 1.25rem; color: var(--c); }
 .strip { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; }
 .strip::-webkit-scrollbar { display: none; }
 .strip figure { flex: 0 0 78%; scroll-snap-align: start; display: grid; gap: 4px; }
@@ -284,7 +311,7 @@ details[open] > summary .chev { transform: rotate(180deg); }
 .conv-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 10px; align-items: end; }
 .conv label { display: grid; gap: 4px; font-size: 0.85rem; font-weight: 700; color: var(--muted); }
 .conv input {
-  font: inherit; font-family: var(--f-display); font-weight: 800; font-size: 1.6rem; width: 100%; min-width: 0;
+  font: inherit; font-family: var(--f-display); font-weight: 700; font-size: 1.6rem; width: 100%; min-width: 0;
   padding: 8px 12px; border-radius: 12px; border: 0; background: var(--surface-2); color: var(--ink);
 }
 .conv .eq { padding-bottom: 14px; color: var(--muted); }
@@ -294,20 +321,20 @@ details[open] > summary .chev { transform: rotate(180deg); }
 .quick b { font-family: var(--f-display); font-size: 1.05rem; }
 .fund { background: var(--surface); border-radius: var(--r); padding: 16px; display: grid; gap: 14px; }
 .fund-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
-.fund-top b { font-family: var(--f-display); font-size: 1.8rem; font-weight: 800; }
+.fund-top b { font-family: var(--f-display); font-size: 1.8rem; font-weight: 700; }
 .stack { display: flex; height: 16px; border-radius: 999px; overflow: hidden; gap: 2px; }
 .stack span { display: block; height: 100%; background: var(--c); }
 .fund ul { display: grid; gap: 10px; }
 .fund li { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; gap: 10px; align-items: baseline; }
 .fund li i { width: 12px; height: 12px; border-radius: 4px; background: var(--c); align-self: center; }
 .fund li .s { font-size: 0.85rem; color: var(--muted); }
-.fund li .v { font-family: var(--f-display); font-weight: 800; font-variant-numeric: tabular-nums; text-align: right; }
+.fund li .v { font-family: var(--f-display); font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
 .fund li .v small { display: block; font-family: var(--f-body); font-weight: 400; font-size: 0.8rem; color: var(--muted); }
 
 /* Documentos */
 [hidden] { display: none !important; }
 .lock { background: var(--surface); border-radius: var(--r); padding: 18px; display: grid; gap: 8px; justify-items: start; }
-.lock .t { font-family: var(--f-display); font-weight: 800; font-size: 1.25rem; }
+.lock .t { font-family: var(--f-display); font-weight: 700; font-size: 1.25rem; }
 .lock-row { display: flex; gap: 8px; width: 100%; margin-top: 6px; }
 .lock input {
   flex: 1; min-width: 0; font: inherit; font-size: 1.25rem; letter-spacing: 0.12em;
@@ -328,7 +355,7 @@ details[open] > summary .chev { transform: rotate(180deg); }
   display: flex; align-items: center; gap: 10px; background: var(--surface); border-bottom: 1px solid var(--line);
   padding: calc(8px + env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) 8px max(12px, env(safe-area-inset-left, 0px));
 }
-.viewer h2 { flex: 1; min-width: 0; font-size: 1.05rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.viewer h2 { flex: 1; min-width: 0; font-size: 1.05rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .vbtn { width: 44px; height: 44px; flex: none; display: grid; place-items: center; border-radius: 12px; color: var(--sea); background: var(--sea-soft); }
 .vbtn:active { transform: scale(0.94); }
 .vw-body {
@@ -360,7 +387,7 @@ button.badge { min-height: 32px; }
 /* Barra de pestañas */
 .nav {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
-  background: var(--surface); border-top: 1px solid var(--line);
+  background: var(--lacquer); border-top: 1px solid rgb(212 172 76 / 0.35);
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 .nav-in {
@@ -369,16 +396,16 @@ button.badge { min-height: 32px; }
 }
 .nav button {
   height: var(--nav-h); display: grid; justify-items: center; align-content: center; gap: 3px;
-  font-size: 0.72rem; font-weight: 700; color: var(--muted);
+  font-size: 0.72rem; font-weight: 700; color: #B9AE96;
 }
 .nav button .ic { width: 24px; height: 24px; transition: transform 120ms var(--ease); }
 .nav button:active .ic { transform: scale(0.88); }
-.nav button[aria-current="page"] { color: var(--sea); }
+.nav button[aria-current="page"] { color: var(--gold); }
 .nav button[aria-current="page"] .ic { stroke-width: 2.2; }
 
 @media (hover: hover) and (pointer: fine) {
   summary.row:hover, .sos a:hover { background: var(--surface-2); }
-  .nav button:hover { color: var(--ink); }
+  .nav button:hover { color: #F4EBD3; }
 }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
@@ -393,6 +420,10 @@ button.badge { min-height: 32px; }
   .panel, .city { display: flex !important; }
   .city { display: grid !important; }
   .panel { break-before: page; padding-top: 0; }
+  .ph { background: none; margin: 0; padding: 0 0 8px; border-radius: 0; }
+  .ph::after { display: none; }
+  .ph h1 { color: var(--ink); }
+  .ph p { color: var(--muted); }
   .row, .tl li, .note, .count, .sleep, .fund li, .stay-hd, .strip figure { break-inside: avoid; }
   .strip { flex-wrap: wrap; overflow: visible; }
   .strip figure { flex-basis: 100%; }
@@ -455,7 +486,7 @@ button.badge { min-height: 32px; }
   </section>
 
   <section class="panel" id="v-hoy" aria-labelledby="h-hoy">
-    <header class="ph"><h1 id="h-hoy">Inicio</h1><p id="hoy-sub">Fran y Romina · 1 → 27 dic</p></header>
+    <header class="ph"><h1 id="h-hoy">Inicio</h1><p id="hoy-sub"><span class="th" lang="th">สวัสดี</span> · Fran y Romina · 1 → 27 dic</p></header>
     <div id="slot-install"></div>
     <div class="sec" id="hoy-main"></div>
     <div class="sec" id="hoy-todo"></div>
@@ -566,11 +597,11 @@ const TC = 23.3;
 
 const CITY = {
   viaje:   { n: "En viaje",   c: "--c-viaje" },
-  phuket:  { n: "Phuket",     c: "--c-phuket",  dias: "phangnga",  lugar: "phuket",    hotel: "Pearl Hotel Phuket" },
-  krabi:   { n: "Ao Nang",    c: "--c-krabi",   dias: "railay",    lugar: "aonang",    hotel: "Aonang Sea Mountain" },
-  pattaya: { n: "Pattaya",    c: "--c-pattaya", dias: "kohlarn",   lugar: "sanctuary", hotel: "Palette La route" },
-  cnx:     { n: "Chiang Mai", c: "--c-cnx",     dias: "inthanon",  lugar: "doisuthep", hotel: "Lanna Thaphae Hotel" },
-  bkk:     { n: "Bangkok",    c: "--c-bkk",     dias: "palace",    lugar: "watarun",   hotel: "Zenniq" },
+  phuket:  { n: "Phuket",     c: "--c-phuket", th: "ภูเก็ต",  dias: "phangnga",  lugar: "phuket",    hotel: "Pearl Hotel Phuket" },
+  krabi:   { n: "Ao Nang",    c: "--c-krabi", th: "อ่าวนาง",   dias: "railay",    lugar: "aonang",    hotel: "Aonang Sea Mountain" },
+  pattaya: { n: "Pattaya",    c: "--c-pattaya", th: "พัทยา", dias: "kohlarn",   lugar: "sanctuary", hotel: "Palette La route" },
+  cnx:     { n: "Chiang Mai", c: "--c-cnx", th: "เชียงใหม่",     dias: "inthanon",  lugar: "doisuthep", hotel: "Lanna Thaphae Hotel" },
+  bkk:     { n: "Bangkok",    c: "--c-bkk", th: "กรุงเทพฯ",     dias: "palace",    lugar: "watarun",   hotel: "Zenniq" },
 };
 
 // Cada día: ítems [hora, ícono, qué, detalle, reserva relacionada]. Los precios viven en Lugares y los códigos en Reservas.
@@ -911,7 +942,7 @@ function renderDias() {
     const title = s.c === "viaje" ? (s.l === "Perth" ? "Ida · Perth" : "Vuelta a casa") : city.n;
     const sub = s.c === "viaje" ? (first === lastD ? `${first} dic` : `${first} → ${lastD} dic`) : `${first} → ${lastD + 1} dic · ${s.days.length} noches · ${city.hotel}`;
     const head = city.dias && FOTOS[city.dias]
-      ? `<div class="stay-hd">${img(city.dias, title)}<div class="cap"><h2>${title}</h2><p>${sub}</p></div></div>`
+      ? `<div class="stay-hd">${img(city.dias, title)}<div class="cap"><h2>${title} <span class="th" lang="th">${city.th}</span></h2><p>${sub}</p></div></div>`
       : `<div class="stay-hd plain"><div class="cap"><h2>${title}</h2><p>${sub}</p></div></div>`;
     const rows = s.days.map(d => {
       const dt = parse(d.f);
@@ -1022,7 +1053,7 @@ function renderLugares() {
     const more = [["spa", "Masajes", c.masaje], ["food", "Comer", c.comer], ["alert", "Evitar", c.evitar]].map(([i, t, txt]) =>
       `<details><summary class="row"><span class="icon-dot">${ic(i)}</span><span class="grow"><span class="t">${t}</span></span>${ic("down", "ic chev")}</summary><div class="more">${txt}</div></details>`).join("");
     return `<div class="city${c.k === start ? " on" : ""}" data-city="${c.k}" style="--c:${cv(c.k)}">
-      <div class="hero">${img(city.lugar, city.n)}<div class="cap"><p>${stage.d} · ${nights} noches</p><h2>${city.n}</h2></div></div>
+      <div class="hero">${img(city.lugar, city.n)}<div class="cap"><p>${stage.d} · ${nights} noches</p><h2>${city.n} <span class="th" lang="th">${city.th}</span></h2></div></div>
       <div class="group">${c.picks.map(([t, price, f], i) => `<div class="row pick"><span class="n">${i + 1}</span><span class="grow"><span class="t">${t}</span><span class="s num">${price}</span></span>${f ? `<button type="button" class="badge sea daychip" data-goday="${f}" aria-label="Ver el ${dayLabel(f)} en Días">${dayLabel(f)}${ic("right", "ic sm")}</button>` : `<span class="badge">Libre</span>`}</div>`).join("")}</div>
       ${c.g.length ? `<div class="strip">${c.g.map(([k, cap]) => FOTOS[k] ? `<figure>${img(k, cap)}<figcaption>${cap}</figcaption></figure>` : "").join("")}</div>` : ""}
       <div class="group">${more}</div>
@@ -1251,7 +1282,7 @@ $("#version").textContent = `Versión del ${GEN}.`;
 // Actualización sola: al volver a la app (o al abrirla) se compara la versión publicada con la que está en pantalla.
 // Si cambió, se recarga. Si en ese momento hay un documento abierto o se está escribiendo, solo se avisa.
 (() => {
-  const ESTA = "20261123-060413";
+  const ESTA = "20261123-071138";
   const aviso = document.getElementById("upd");
   document.getElementById("upd-go").addEventListener("click", () => location.reload());
   async function revisar() {
