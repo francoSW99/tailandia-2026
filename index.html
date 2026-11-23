@@ -297,6 +297,39 @@ details[open] > summary .chev { transform: rotate(180deg); }
 .fund li .v { font-family: var(--f-display); font-weight: 800; font-variant-numeric: tabular-nums; text-align: right; }
 .fund li .v small { display: block; font-family: var(--f-body); font-weight: 400; font-size: 0.8rem; color: var(--muted); }
 
+/* Documentos */
+[hidden] { display: none !important; }
+.lock { background: var(--surface); border-radius: var(--r); padding: 18px; display: grid; gap: 8px; justify-items: start; }
+.lock .t { font-family: var(--f-display); font-weight: 800; font-size: 1.25rem; }
+.lock-row { display: flex; gap: 8px; width: 100%; margin-top: 6px; }
+.lock input {
+  flex: 1; min-width: 0; font: inherit; font-size: 1.25rem; letter-spacing: 0.12em;
+  padding: 10px 14px; border-radius: 12px; border: 0; background: var(--surface-2); color: var(--ink);
+}
+.lock .err { color: var(--bad); font-weight: 700; }
+.go:disabled { opacity: 0.6; }
+.doc-slot { display: flex; flex-wrap: wrap; gap: 8px; }
+.doc-slot:empty { display: none; }
+.docbtn {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 12px; border-radius: 12px;
+  background: var(--sea-soft); color: var(--sea); font-weight: 700; font-size: 0.92rem; text-align: left;
+}
+.docbtn:active { transform: scale(0.97); }
+.linkish { justify-self: start; min-height: 44px; font-size: 0.88rem; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+.viewer { position: fixed; inset: 0; z-index: 30; display: flex; flex-direction: column; background: var(--surface-2); }
+.viewer header {
+  display: flex; align-items: center; gap: 10px; background: var(--surface); border-bottom: 1px solid var(--line);
+  padding: calc(8px + env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) 8px max(12px, env(safe-area-inset-left, 0px));
+}
+.viewer h2 { flex: 1; min-width: 0; font-size: 1.05rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vbtn { width: 44px; height: 44px; flex: none; display: grid; place-items: center; border-radius: 12px; color: var(--sea); background: var(--sea-soft); }
+.vbtn:active { transform: scale(0.94); }
+.vw-body {
+  flex: 1; overflow-y: auto; overscroll-behavior: contain; display: grid; gap: 12px; align-content: start;
+  padding: 12px max(12px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
+}
+.vw-body img { width: 100%; max-width: 100%; display: block; border-radius: 8px; background: #fff; box-shadow: 0 1px 4px rgb(0 0 0 / 0.14); }
+
 /* Barra de pestañas */
 .nav {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
@@ -304,7 +337,7 @@ details[open] > summary .chev { transform: rotate(180deg); }
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 .nav-in {
-  max-width: 640px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+  max-width: 640px; margin: 0 auto; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
   padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px);
 }
 .nav button {
@@ -329,7 +362,7 @@ details[open] > summary .chev { transform: rotate(180deg); }
 @media print {
   :root { --bg: #FFFFFF; --surface: #F3F6F5; }
   body { font-size: 13px; padding-bottom: 0; }
-  .nav, .switch, .conv, .copy, .no-print, .chev { display: none !important; }
+  .nav, .switch, .conv, .copy, .no-print, .chev, .viewer, .lock, .doc-slot, .linkish { display: none !important; }
   .panel, .city { display: flex !important; }
   .city { display: grid !important; }
   .panel { break-before: page; padding-top: 0; }
@@ -376,6 +409,10 @@ details[open] > summary .chev { transform: rotate(180deg); }
   <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
   <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
   <symbol id="i-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2.5H6.5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V8z"/><path d="M14 2.5V8h5.5M8.5 13h7M8.5 17h7"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V3M7.5 7.5 12 3l4.5 4.5M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
 </svg>
 
 <main class="wrap">
@@ -385,6 +422,7 @@ details[open] > summary .chev { transform: rotate(180deg); }
       <a class="row" href="#v-hoy"><span class="grow"><span class="t">Hoy y pendientes</span></span></a>
       <a class="row" href="#v-dias"><span class="grow"><span class="t">Día a día</span></span></a>
       <a class="row" href="#v-reservas"><span class="grow"><span class="t">Reservas</span></span></a>
+      <a class="row" href="#v-docs"><span class="grow"><span class="t">Códigos y documentos</span></span></a>
       <a class="row" href="#v-lugares"><span class="grow"><span class="t">Lugares</span></span></a>
       <a class="row" href="#v-plata"><span class="grow"><span class="t">Plata</span></span></a>
     </div>
@@ -420,6 +458,11 @@ details[open] > summary .chev { transform: rotate(180deg); }
     <header class="ph"><h1 id="h-res">Reservas</h1><p>En orden. Toca una para ver el código.</p></header>
     <div class="sec" id="res-summary"></div>
     <div class="group" id="bookings"></div>
+  </section>
+
+  <section class="panel" id="v-docs" aria-labelledby="h-docs">
+    <header class="ph"><h1 id="h-docs">Documentos</h1><p>Vuelos, hoteles y entradas. Se abren sin internet.</p></header>
+    <div id="docs-main" class="sec"></div>
   </section>
 
   <section class="panel" id="v-lugares" aria-labelledby="h-lug">
@@ -471,10 +514,20 @@ details[open] > summary .chev { transform: rotate(180deg); }
     <button type="button" data-view="hoy"><svg class="ic"><use href="#i-sun"/></svg>Hoy</button>
     <button type="button" data-view="dias"><svg class="ic"><use href="#i-cal"/></svg>Días</button>
     <button type="button" data-view="reservas"><svg class="ic"><use href="#i-ticket"/></svg>Reservas</button>
+    <button type="button" data-view="docs"><svg class="ic"><use href="#i-file"/></svg>Docs</button>
     <button type="button" data-view="lugares"><svg class="ic"><use href="#i-pin"/></svg>Lugares</button>
     <button type="button" data-view="plata"><svg class="ic"><use href="#i-cash"/></svg>Plata</button>
   </div>
 </nav>
+
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-labelledby="vw-title" hidden>
+  <header>
+    <button type="button" class="vbtn" id="vw-close" aria-label="Cerrar"><svg class="ic"><use href="#i-close"/></svg></button>
+    <h2 id="vw-title"></h2>
+    <button type="button" class="vbtn" id="vw-share" aria-label="Compartir o guardar el archivo"><svg class="ic"><use href="#i-share"/></svg></button>
+  </header>
+  <div class="vw-body" id="vw-body"></div>
+</div>
 
 <script>
 window.__GEN__ = "23 de noviembre de 2026";
@@ -894,7 +947,7 @@ function renderReservas() {
     const kv = b.kv.map(([k, v, copy, fallback]) => `<div><dt>${k}</dt><dd>${v ? `<span class="${/^[A-Z0-9.+ ]{6,}$/.test(v) ? "mono" : ""}">${v}</span>${copy ? copyBtn(v, k.toLowerCase()) : ""}` : `<span class="muted">${fallback || "En el email de Jetstar"}</span>`}</dd></div>`).join("");
     return `<details style="--c:${cv(b.c)}"><summary class="row"><span class="icon-dot">${ic(b.i)}</span>
       <span class="grow"><span class="t">${b.t}</span><span class="s">${b.w}</span></span>${right}</summary>
-      <div class="det"><dl class="kv">${kv}</dl>${b.note ? `<div class="note">${b.note}</div>` : ""}${b.url ? `<a class="go" href="${b.url}" target="_blank" rel="noopener" data-url="${b.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}">${b.st === "compra" ? "Comprar" : "Reservar"}${ic("out", "ic sm")}</a>` : ""}</div></details>`;
+      <div class="det"><dl class="kv">${kv}</dl><div class="doc-slot" data-b="${esc(b.t)}"></div>${b.note ? `<div class="note">${b.note}</div>` : ""}${b.url ? `<a class="go" href="${b.url}" target="_blank" rel="noopener" data-url="${b.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}">${b.st === "compra" ? "Comprar" : "Reservar"}${ic("out", "ic sm")}</a>` : ""}</div></details>`;
   }).join("");
 }
 
@@ -944,8 +997,120 @@ function renderPlata() {
   $("#quick").addEventListener("click", e => { const b = e.target.closest("[data-thb]"); if (!b) return; thb.value = b.dataset.thb; toAud(); });
 }
 
+/* ---------- Documentos ---------- */
+const DOCS_MODE = "app"; // "app" en la web pública; "link" en Claude y en el PDF
+const SECRETOS_LOCAL = /*SECRETOS*/null;
+const APP_URL = "https://francosw99.github.io/tailandia-2026/";
+const subtle = window.crypto && window.crypto.subtle;
+let DOCS = null, KEY = null, viewerUrls = [];
+const fromB64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const toB64 = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
+async function bin(name) { const r = await fetch("docs/" + name); if (!r.ok) throw new Error(name); return new Uint8Array(await r.arrayBuffer()); }
+async function decrypt(u) { return subtle.decrypt({ name: "AES-GCM", iv: u.slice(0, 12) }, KEY, u.slice(12)); }
+async function tryKey(key) {
+  const prev = KEY; KEY = key;
+  try { return JSON.parse(new TextDecoder().decode(await decrypt(await bin(DOCS.check)))); }
+  catch (e) { KEY = prev; return null; }
+}
+function codesGroup(list) {
+  return `<div class="sec"><h2>Códigos</h2><div class="group">${list.map(([k, v]) =>
+    `<div class="row"><span class="grow"><span class="s">${k}</span><span class="t mono">${v}</span></span>${copyBtn(v, k)}</div>`).join("")}</div></div>`;
+}
+async function renderDocs() {
+  const box = $("#docs-main");
+  if (DOCS_MODE !== "app") {
+    box.innerHTML = (SECRETOS_LOCAL ? codesGroup(SECRETOS_LOCAL.codigos) : "") +
+      `<div class="note">${ic("file")}<span>Los PDF de vuelos, hoteles y la entrada están en la app del viaje: <a href="${APP_URL}" target="_blank" rel="noopener">${APP_URL.replace("https://", "")}</a></span></div>`;
+    return;
+  }
+  if (!subtle) { box.innerHTML = `<div class="note warn">${ic("alert")}<span>Abre la app desde Safari o desde el ícono de inicio para ver los documentos.</span></div>`; return; }
+  try { DOCS = await (await fetch("docs/index.json")).json(); }
+  catch (e) { box.innerHTML = `<div class="note warn">${ic("alert")}<span>Los documentos se guardan la primera vez que abres la app con internet.</span></div>`; return; }
+  fillDocSlots();
+  let saved = null; try { saved = localStorage.getItem("tl26-key"); } catch (e) {}
+  if (saved) {
+    try {
+      const sec = await tryKey(await subtle.importKey("raw", fromB64(saved), "AES-GCM", true, ["decrypt"]));
+      if (sec) return showDocs(sec);
+    } catch (e) {}
+  }
+  showLock();
+}
+function showLock(err) {
+  $("#docs-main").innerHTML = `<form class="lock" id="lock" autocomplete="off">
+    <span class="icon-dot">${ic("lock")}</span>
+    <p class="t">Escribe la clave del viaje</p>
+    <p class="muted">Solo la primera vez en este teléfono. Después se abren solos, también sin internet.</p>
+    <div class="lock-row"><input id="clave" type="password" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="go" aria-label="Clave del viaje"><button class="go" type="submit">Abrir</button></div>
+    ${err ? `<p class="err" role="alert">${err}</p>` : ""}
+  </form>`;
+  $("#lock").addEventListener("submit", async e => {
+    e.preventDefault();
+    const pass = $("#clave").value.trim(); if (!pass) return;
+    const btn = $("#lock .go"); btn.disabled = true; btn.textContent = "Abriendo…";
+    const base = await subtle.importKey("raw", new TextEncoder().encode(pass), "PBKDF2", false, ["deriveKey"]);
+    const key = await subtle.deriveKey({ name: "PBKDF2", salt: fromB64(DOCS.salt), iterations: DOCS.iter, hash: "SHA-256" },
+      base, { name: "AES-GCM", length: 256 }, true, ["decrypt"]);
+    const sec = await tryKey(key);
+    if (!sec) return showLock("Esa no es la clave. Prueba de nuevo.");
+    try { localStorage.setItem("tl26-key", toB64(await subtle.exportKey("raw", key))); } catch (err) {}
+    showDocs(sec);
+  });
+}
+function showDocs(sec) {
+  const groups = [...new Set(DOCS.docs.map(d => d.g))];
+  $("#docs-main").innerHTML = groups.map(g => `<div class="sec"><h2>${g}</h2><div class="group">${DOCS.docs.filter(d => d.g === g).map(d =>
+      `<button type="button" class="row" data-open="${d.id}" style="width:100%;text-align:left"><span class="icon-dot">${ic(d.i)}</span><span class="grow"><span class="t">${d.t}</span><span class="s">${d.sub}</span></span>${ic("right", "ic chev")}</button>`).join("")}</div></div>`).join("")
+    + codesGroup(sec.codigos)
+    + `<button type="button" class="linkish" id="forget">Olvidar la clave en este teléfono</button>`;
+  $("#forget").addEventListener("click", () => { try { localStorage.removeItem("tl26-key"); } catch (e) {} KEY = null; showLock(); });
+}
+function fillDocSlots() {
+  document.querySelectorAll(".doc-slot").forEach(slot => {
+    slot.innerHTML = DOCS.docs.filter(d => d.b === slot.dataset.b)
+      .map(d => `<button type="button" class="docbtn" data-open="${d.id}">${ic("file", "ic sm")}${d.t}</button>`).join("");
+  });
+}
+async function openDoc(id) {
+  const d = DOCS && DOCS.docs.find(x => x.id === id);
+  if (!d) return;
+  if (!KEY) { show("docs"); return; }
+  const v = $("#viewer"), body = $("#vw-body");
+  $("#vw-title").textContent = d.t;
+  v.dataset.id = id;
+  body.innerHTML = `<p class="muted">Abriendo…</p>`;
+  v.hidden = false;
+  document.body.style.overflow = "hidden";
+  const urls = [];
+  for (const p of d.pages) urls.push(URL.createObjectURL(new Blob([await decrypt(await bin(p))], { type: d.pm })));
+  viewerUrls = urls;
+  body.innerHTML = urls.map((u, i) => `<img src="${u}" alt="${d.t}, página ${i + 1}">`).join("");
+}
+function closeDoc() {
+  $("#viewer").hidden = true;
+  document.body.style.overflow = "";
+  viewerUrls.forEach(u => URL.revokeObjectURL(u));
+  viewerUrls = [];
+}
+async function shareDoc() {
+  const d = DOCS.docs.find(x => x.id === $("#viewer").dataset.id); if (!d) return;
+  const file = new File([await decrypt(await bin(d.orig))], d.name, { type: d.mime });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try { await navigator.share({ files: [file], title: d.t }); } catch (e) {}
+    return;
+  }
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(file); a.download = d.name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+document.addEventListener("click", e => { const o = e.target.closest("[data-open]"); if (o) openDoc(o.dataset.open); });
+$("#vw-close").addEventListener("click", closeDoc);
+$("#vw-share").addEventListener("click", shareDoc);
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#viewer").hidden) closeDoc(); });
+
 /* ---------- navegación sin saltos ---------- */
-const VIEWS = ["hoy", "dias", "reservas", "lugares", "plata"];
+const VIEWS = ["hoy", "dias", "reservas", "docs", "lugares", "plata"];
 const scrollPos = {};
 let current = null;
 function show(view) {
@@ -985,6 +1150,7 @@ renderDias();
 renderReservas();
 renderLugares();
 renderPlata();
+renderDocs();
 const GEN = window.__GEN__ || new Date().toLocaleDateString("es-CL", { day: "numeric", month: "long", year: "numeric" });
 $("#gen").textContent = GEN;
 $("#version").textContent = `Versión del ${GEN}.`;

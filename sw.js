@@ -1,8 +1,8 @@
 // Guarda la app en el teléfono para que abra sin internet.
 // Con internet trae la última versión (espera hasta 4 s); sin internet usa la copia guardada.
-const VERSION = "20261123-041352";
+const VERSION = "20261123-044525";
 const CACHE = "tailandia-" + VERSION;
-const ARCHIVOS = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./fuentes/atkinson-hyperlegible-italic-400.woff2", "./fuentes/atkinson-hyperlegible-normal-400.woff2", "./fuentes/atkinson-hyperlegible-normal-700.woff2", "./fuentes/bricolage-grotesque-normal-600.woff2", "./fuentes/ibm-plex-mono-normal-500.woff2"];
+const ARCHIVOS = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./fuentes/atkinson-hyperlegible-italic-400.woff2", "./fuentes/atkinson-hyperlegible-normal-400.woff2", "./fuentes/atkinson-hyperlegible-normal-700.woff2", "./fuentes/bricolage-grotesque-normal-600.woff2", "./fuentes/ibm-plex-mono-normal-500.woff2", "./docs/d01.bin", "./docs/d02-p1.bin", "./docs/d02.bin", "./docs/d03.bin", "./docs/d04-p1.bin", "./docs/d04-p2.bin", "./docs/d04.bin", "./docs/d05.bin", "./docs/d06-p1.bin", "./docs/d06-p2.bin", "./docs/d06.bin", "./docs/d07-p1.bin", "./docs/d07-p2.bin", "./docs/d07.bin", "./docs/d08-p1.bin", "./docs/d08-p2.bin", "./docs/d08.bin", "./docs/d09-p1.bin", "./docs/d09-p2.bin", "./docs/d09.bin", "./docs/d10.bin", "./docs/d11.bin", "./docs/d12-p1.bin", "./docs/d12-p2.bin", "./docs/d12.bin", "./docs/d13-p1.bin", "./docs/d13.bin", "./docs/index.json", "./docs/s.bin"];
 
 self.addEventListener("install", event => {
   event.waitUntil(
