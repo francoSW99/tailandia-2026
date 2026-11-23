@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#F1F5F4" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0C1514" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B1413" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -18,14 +19,9 @@
 body { margin: 0; }
 img { max-width: 100%; }
 [hidden] { display: none !important; }
-.install {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
-  background: var(--ink); color: var(--bg);
-  padding: 14px max(16px, env(safe-area-inset-right, 0px)) calc(14px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
-  display: grid; gap: 10px; font-size: 0.95rem; box-shadow: 0 -6px 24px rgb(0 0 0 / 0.18);
-}
-.install button { justify-self: start; font: inherit; font-weight: 700; border: 0; border-radius: 999px; padding: 7px 14px; background: var(--bg); color: var(--ink); cursor: pointer; }
-.offline-ok { justify-self: start; font-size: 0.85rem; font-weight: 700; color: var(--ok); }
+.install { background: var(--sea); color: var(--bg); border-radius: 16px; padding: 16px; display: grid; gap: 10px; font-size: 0.95rem; }
+.install button { justify-self: start; font: inherit; font-weight: 700; border: 0; border-radius: 12px; min-height: 44px; padding: 8px 16px; background: var(--bg); color: var(--ink); cursor: pointer; }
+.offline-ok { display: inline-flex; align-items: center; gap: 6px; font-size: 0.88rem; font-weight: 700; color: var(--ok); }
 @media print { .install, .offline-ok { display: none !important; } }
 </style>
 </head>
@@ -41,18 +37,18 @@ img { max-width: 100%; }
 @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url(./fuentes/ibm-plex-mono-normal-500.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
 </style>
 <style>
-/* Layout: app de consulta para el celular — cabecera con la cuenta regresiva, pestañas fijas arriba,
-   un calendario de 27 días como mapa del viaje y tarjetas por día, reserva y ciudad. */
+/* Layout: app de bolsillo. Una pantalla por pestaña, barra de pestañas abajo (al alcance del pulgar),
+   listas agrupadas al estilo iOS que se abren al tocar, y una línea de tiempo por día. */
 :root {
-  --bg: #F1F5F4;
+  --bg: #EEF3F2;
   --surface: #FFFFFF;
-  --surface-2: #E6EEEC;
-  --ink: #11211F;
-  --muted: #546D67;
-  --line: #D2DDDA;
+  --surface-2: #E4ECEA;
+  --ink: #10201E;
+  --muted: #526B65;
+  --line: #DCE5E3;
   --sea: #0A6A64;
-  --sea-soft: #D5EBE8;
-  --sun: #925800;
+  --sea-soft: #D3EAE7;
+  --sun: #8F5700;
   --sun-soft: #FBEACB;
   --sun-line: #DB9A2E;
   --ok: #1B7542;
@@ -70,376 +66,415 @@ img { max-width: 100%; }
   --f-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --f-body: "Atkinson Hyperlegible", -apple-system, "Segoe UI", system-ui, sans-serif;
   --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  --r: 14px;
+  --r: 16px;
+  --nav-h: 60px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0C1514; --surface: #13201E; --surface-2: #1B2B29; --ink: #E3EDEB; --muted: #94ACA7; --line: #283B38;
-    --sea: #5CC6BB; --sea-soft: #12383A; --sun: #F0B444; --sun-soft: #3A2C10; --sun-line: #C8902A;
+    --bg: #0B1413; --surface: #15211F; --surface-2: #1D2C2A; --ink: #E4EEEC; --muted: #97AEA9; --line: #263835;
+    --sea: #5CC6BB; --sea-soft: #133A37; --sun: #F0B444; --sun-soft: #3A2C10; --sun-line: #C8902A;
     --ok: #6CD49A; --ok-soft: #12301F; --warn: #F2B357; --warn-soft: #3A2A10; --bad: #F08A7C; --bad-soft: #3A1A16;
     --c-viaje: #9AA8B8; --c-phuket: #4FB8D0; --c-krabi: #62C48A; --c-pattaya: #EE7FB0; --c-cnx: #D9A06A; --c-bkk: #A892F0;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0C1514; --surface: #13201E; --surface-2: #1B2B29; --ink: #E3EDEB; --muted: #94ACA7; --line: #283B38;
-  --sea: #5CC6BB; --sea-soft: #12383A; --sun: #F0B444; --sun-soft: #3A2C10; --sun-line: #C8902A;
+  --bg: #0B1413; --surface: #15211F; --surface-2: #1D2C2A; --ink: #E4EEEC; --muted: #97AEA9; --line: #263835;
+  --sea: #5CC6BB; --sea-soft: #133A37; --sun: #F0B444; --sun-soft: #3A2C10; --sun-line: #C8902A;
   --ok: #6CD49A; --ok-soft: #12301F; --warn: #F2B357; --warn-soft: #3A2A10; --bad: #F08A7C; --bad-soft: #3A1A16;
   --c-viaje: #9AA8B8; --c-phuket: #4FB8D0; --c-krabi: #62C48A; --c-pattaya: #EE7FB0; --c-cnx: #D9A06A; --c-bkk: #A892F0;
   color-scheme: dark;
 }
 
+/* Base y comportamiento de teléfono */
 * { box-sizing: border-box; }
+html { -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; overscroll-behavior-x: none; }
 body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: var(--f-body);
-  font-size: 16px;
-  line-height: 1.5;
-  -webkit-text-size-adjust: 100%;
+  background: var(--bg); color: var(--ink);
+  font-family: var(--f-body); font-size: 17px; line-height: 1.45;
+  padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 28px);
 }
-body::before {
-  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg);
-}
+::selection { background: var(--sea-soft); color: var(--ink); }
+h1, h2, h3, p, ol, ul, figure { margin: 0; }
+ol, ul { padding: 0; list-style: none; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; line-height: 1.1; }
+a { color: var(--sea); text-underline-offset: 3px; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+button, a, summary { touch-action: manipulation; }
+button, summary, .nav a { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+:focus-visible { outline: 3px solid var(--sun-line); outline-offset: 2px; border-radius: 6px; }
+.mono { font-family: var(--f-mono); font-weight: 500; }
+.num { font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.ic { width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.ic.sm { width: 17px; height: 17px; }
+@media screen { .print-only { display: none !important; } }
+
 .wrap {
-  max-width: 760px;
-  margin: 0 auto;
+  max-width: 640px; margin: 0 auto;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
-h1, h2, h3, h4 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.15; }
-h2 { font-size: 1.45rem; font-weight: 800; letter-spacing: -0.01em; }
-h3 { font-size: 1.12rem; font-weight: 600; }
-p { margin: 0; }
-a { color: var(--sea); text-underline-offset: 2px; }
-a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--sun-line); outline-offset: 2px; }
-.mono { font-family: var(--f-mono); font-weight: 500; letter-spacing: 0.01em; }
-.muted { color: var(--muted); }
-.num { font-variant-numeric: tabular-nums; }
-@media screen { .print-only { display: none !important; } }
+.panel { display: none; padding-block: 18px 8px; flex-direction: column; gap: 26px; }
+.panel.on { display: flex; }
+.ph { display: grid; gap: 4px; }
+.ph h1 { font-size: 2.1rem; font-weight: 800; letter-spacing: -0.02em; }
+.ph p { color: var(--muted); }
+.sec { display: grid; gap: 10px; }
+.sec > h2 { font-size: 1.2rem; font-weight: 800; padding-left: 4px; }
 
-/* Cabecera */
-.top { padding-block: 20px 14px; display: grid; gap: 10px; }
-.top h1 { font-size: clamp(2.1rem, 9vw, 3.1rem); font-weight: 800; letter-spacing: -0.02em; }
-.top h1 span { color: var(--sea); }
-.top .sub { color: var(--muted); font-size: 0.98rem; }
-.status {
-  justify-self: start; display: inline-flex; align-items: center; gap: 8px;
-  background: var(--sun-soft); color: var(--sun); border: 1px solid var(--sun-line);
-  padding: 6px 12px; border-radius: 999px; font-weight: 700; font-size: 0.95rem;
-}
-.status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--sun-line); }
+/* Listas agrupadas */
+.group { background: var(--surface); border-radius: var(--r); overflow: hidden; }
+.group > * + * { border-top: 1px solid var(--line); }
+.row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; min-height: 56px; }
+.row .grow { flex: 1; min-width: 0; display: grid; gap: 1px; }
+.row .t { font-weight: 700; }
+.row .s { font-size: 0.9rem; color: var(--muted); }
+summary { list-style: none; cursor: pointer; }
+summary::-webkit-details-marker { display: none; }
+summary.row { transition: background 120ms var(--ease); }
+summary.row:active { background: var(--surface-2); }
+.chev { color: var(--muted); transition: transform 200ms var(--ease); }
+details[open] > summary .chev { transform: rotate(180deg); }
+.badge { display: inline-flex; align-items: center; gap: 4px; font-size: 0.8rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+.badge.bad { background: var(--bad-soft); color: var(--bad); }
+.badge.warn { background: var(--warn-soft); color: var(--warn); }
+.badge.ok { background: var(--ok-soft); color: var(--ok); }
+.badge.sea { background: var(--sea-soft); color: var(--sea); }
+.badge.sun { background: var(--sun-soft); color: var(--sun); }
+.icon-dot { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; flex: none; background: color-mix(in srgb, var(--c, var(--sea)) 15%, var(--surface)); color: var(--c, var(--sea)); }
+.okmark { color: var(--ok); }
 
-/* Lo urgente / hoy */
-.now { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; display: grid; gap: 12px; margin-bottom: 14px; }
-.now h2 { font-size: 1.15rem; }
-.now ol { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; }
-.now li { padding-left: 2px; }
-.now li b { font-weight: 700; }
-
-/* Pestañas */
-.tabs {
-  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
-  background: var(--bg); border-bottom: 1px solid var(--line);
-  margin-bottom: 18px;
+/* Hoy */
+.count { display: flex; align-items: center; gap: 16px; background: var(--surface); border-radius: var(--r); padding: 18px; }
+.count .big { font-family: var(--f-display); font-weight: 800; font-size: 4.6rem; line-height: 0.9; color: var(--sea); letter-spacing: -0.04em; }
+.count .t { font-weight: 700; font-size: 1.15rem; }
+.hero { position: relative; border-radius: var(--r); overflow: hidden; background: var(--surface); }
+.hero img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; max-width: 100%; }
+.hero .cap {
+  position: absolute; inset: auto 0 0 0; padding: 48px 16px 16px; color: #fff;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.72), rgb(0 0 0 / 0));
 }
-.tabs .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: none; }
-.tabs .wrap::-webkit-scrollbar { display: none; }
-.tab {
-  flex: 0 0 auto; font: inherit; font-weight: 700; font-size: 0.95rem;
-  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
-  padding: 8px 14px; border-radius: 999px; cursor: pointer;
-}
-.tab[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.panel:not(.active) { display: none; }
-.panel { display: grid; gap: 16px; padding-bottom: 48px; }
-.panel > header { display: grid; gap: 4px; }
-.panel > header p { color: var(--muted); }
-.sec-title { margin-top: 10px; display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.hero .cap p { font-weight: 700; font-size: 0.95rem; opacity: 0.92; }
+.hero .cap h2 { font-size: 2rem; font-weight: 800; }
+.hero.noimg .cap { position: static; color: var(--ink); background: none; padding: 18px; }
+.sleep { display: flex; gap: 12px; align-items: center; background: var(--surface); border-radius: var(--r); padding: 14px; }
+.sleep .grow { flex: 1; min-width: 0; }
+.sos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.sos a { background: var(--surface); border-radius: var(--r); padding: 12px 8px; display: grid; justify-items: center; gap: 2px; text-decoration: none; color: var(--ink); }
+.sos a:active { background: var(--surface-2); }
+.sos b { font-family: var(--f-display); font-size: 1.55rem; font-weight: 800; color: var(--bad); line-height: 1.1; }
+.sos span { font-size: 0.8rem; color: var(--muted); text-align: center; }
+.foot { font-size: 0.8rem; color: var(--muted); padding-inline: 4px; }
 
 /* Calendario */
-.cal { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px; display: grid; gap: 10px; }
+.cal { background: var(--surface); border-radius: var(--r); padding: 12px; display: grid; gap: 10px; }
 .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 5px; }
-.cal-dow { text-align: center; font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.cal-dow { text-align: center; font-size: 0.72rem; font-weight: 700; color: var(--muted); }
 .cal-cell {
-  aspect-ratio: 1 / 1; max-width: 100%; border-radius: 9px; display: grid; place-items: center; position: relative;
-  font-family: var(--f-display); font-weight: 800; font-size: 1.02rem; text-decoration: none;
-  background: var(--c); color: var(--bg);
+  height: 40px; border-radius: 10px; display: grid; place-items: center;
+  font-family: var(--f-display); font-weight: 800; font-size: 1rem;
+  background: var(--c); color: var(--bg); transition: transform 100ms var(--ease);
 }
-.cal-cell.empty { background: transparent; border: 0; }
-.cal-cell.today { outline: 3px solid var(--sun-line); outline-offset: 1px; }
-.cal-cell .mark { position: absolute; bottom: 2px; font-size: 0.58rem; font-family: var(--f-body); font-weight: 700; letter-spacing: 0.04em; }
-.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 0.85rem; color: var(--muted); }
-.legend span { display: inline-flex; align-items: center; gap: 6px; }
-.legend i { width: 10px; height: 10px; border-radius: 3px; background: var(--c); display: inline-block; }
+.cal-cell:active { transform: scale(0.92); }
+.cal-cell.today { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--sun-line); }
+.cal-cell.empty { visibility: hidden; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 0.82rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 5px; }
+.legend i { width: 9px; height: 9px; border-radius: 3px; background: var(--c); }
 
-/* Días */
-.days { display: grid; gap: 12px; }
-.day { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; scroll-margin-top: 70px; }
-.day.today { border: 2px solid var(--sun-line); }
-.day.past { opacity: 0.72; }
-.day-photo { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; display: block; max-width: 100%; }
-.day-in { display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 12px; padding: 14px; }
-.day-date { display: grid; justify-items: center; align-content: start; color: var(--c); line-height: 1; gap: 3px; padding-top: 2px; }
-.day-date .dow { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
-.day-date .n { font-family: var(--f-display); font-weight: 800; font-size: 2rem; }
-.day-date .m { font-size: 0.75rem; color: var(--muted); }
-.day-body { display: grid; gap: 10px; min-width: 0; }
-.day-head { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--surface-2); color: var(--ink); }
-.chip.city { background: color-mix(in srgb, var(--c) 16%, var(--surface)); color: var(--c); }
-.chip.city::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--c); }
-.chip.feriado { background: var(--warn-soft); color: var(--warn); }
-.chip.wanphra { background: var(--sea-soft); color: var(--sea); }
-.moves { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.move { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 10px; padding: 10px; border-radius: 10px; background: var(--surface-2); }
-.move .t { font-family: var(--f-mono); font-weight: 500; font-size: 0.88rem; white-space: nowrap; padding-top: 1px; }
-.move .x { min-width: 0; }
-.move .pill { grid-column: 2; justify-self: start; }
-.pill { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
-.pill.ok { background: var(--ok-soft); color: var(--ok); }
-.pill.compra, .pill.reserva { background: var(--bad-soft); color: var(--bad); }
-.pill.elegir { background: var(--warn-soft); color: var(--warn); }
-.pill.dia { background: var(--sea-soft); color: var(--sea); }
-.plan { margin: 0; padding-left: 1.15em; display: grid; gap: 5px; }
-.plan li::marker { color: var(--c); }
-.sleep { font-size: 0.93rem; }
-.sleep b { font-weight: 700; }
-.ojo { font-size: 0.92rem; background: var(--warn-soft); color: var(--ink); border-radius: 10px; padding: 8px 10px; }
-.ojo b { color: var(--warn); }
-.draft { font-size: 0.88rem; color: var(--muted); font-style: italic; }
+/* Estadías y días */
+.stay { display: grid; gap: 0; scroll-margin-top: 12px; }
+.stay-hd { position: relative; border-radius: var(--r) var(--r) 0 0; overflow: hidden; }
+.stay-hd img { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; display: block; max-width: 100%; }
+.stay-hd .cap { position: absolute; inset: auto 0 0 0; padding: 36px 14px 12px; color: #fff; background: linear-gradient(to top, rgb(0 0 0 / 0.7), rgb(0 0 0 / 0)); }
+.stay-hd h2 { font-size: 1.55rem; font-weight: 800; }
+.stay-hd p { font-size: 0.9rem; font-weight: 700; opacity: 0.92; }
+.stay-hd.plain { background: var(--surface); padding: 14px 14px 4px; }
+.stay-hd.plain .cap { position: static; padding: 0; background: none; color: var(--ink); }
+.stay-hd.plain h2 { color: var(--c); }
+.stay-hd.plain p { color: var(--muted); font-weight: 400; opacity: 1; }
+.stay > .group { border-radius: 0 0 var(--r) var(--r); }
+.day { scroll-margin-top: 12px; }
+.dnum { width: 40px; flex: none; display: grid; justify-items: center; line-height: 1; color: var(--c); }
+.dnum b { font-family: var(--f-display); font-weight: 800; font-size: 1.55rem; }
+.dnum small { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
+.day.today > summary { background: var(--sun-soft); }
+.tags { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 0.86rem; color: var(--muted); align-items: center; }
+.tags span { display: inline-flex; align-items: center; gap: 4px; }
+.tags .alert { color: var(--bad); font-weight: 700; }
+.day-body { padding: 4px 14px 16px; display: grid; gap: 12px; }
 
-/* Tarjetas genéricas */
-.cards { display: grid; gap: 12px; }
-@media (min-width: 640px) { .cards.two { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; display: grid; gap: 10px; align-content: start; min-width: 0; }
-.card .row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
-.route { font-family: var(--f-display); font-weight: 800; font-size: 1.5rem; letter-spacing: -0.01em; }
-.route small { font-family: var(--f-body); font-weight: 400; font-size: 0.85rem; color: var(--muted); letter-spacing: 0; }
-.kv { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; font-size: 0.93rem; margin: 0; }
-.kv dt { color: var(--muted); }
-.kv dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
-.copy {
-  font: inherit; font-size: 0.78rem; font-weight: 700; color: var(--sea); background: var(--sea-soft);
-  border: 0; border-radius: 999px; padding: 2px 9px; margin-left: 6px; cursor: pointer; vertical-align: 1px;
-}
-.note { font-size: 0.9rem; background: var(--surface-2); border-radius: 10px; padding: 8px 10px; }
+/* Línea de tiempo */
+.tl { display: grid; }
+.tl li { display: grid; grid-template-columns: 50px 30px minmax(0, 1fr); gap: 0 8px; position: relative; padding-bottom: 14px; }
+.tl li:last-child { padding-bottom: 0; }
+.tl li::before { content: ""; position: absolute; left: 72px; top: 28px; bottom: 2px; width: 2px; background: var(--line); }
+.tl li:last-child::before { display: none; }
+.tl time { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 0.92rem; padding-top: 4px; color: var(--muted); text-align: right; }
+.tl .dot { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: color-mix(in srgb, var(--c) 14%, var(--surface)); color: var(--c); }
+.tl .dot .ic { width: 17px; height: 17px; }
+.tl .what { display: grid; gap: 2px; padding-top: 3px; min-width: 0; }
+.tl .what b { font-weight: 700; }
+.tl .what p { font-size: 0.92rem; color: var(--muted); overflow-wrap: anywhere; }
+.tl .what .badge { justify-self: start; margin-top: 4px; }
+.note { display: flex; gap: 10px; align-items: flex-start; font-size: 0.93rem; border-radius: 12px; padding: 10px 12px; background: var(--surface-2); }
 .note.warn { background: var(--warn-soft); }
-.btn {
-  display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.9rem; text-decoration: none;
-  color: var(--bg); background: var(--sea); padding: 7px 13px; border-radius: 999px; justify-self: start;
-}
+.note.warn .ic { color: var(--warn); }
+.note .ic { margin-top: 1px; }
 
-/* Panoramas */
-.filters { display: flex; gap: 6px; flex-wrap: wrap; }
-.filter { font: inherit; font-size: 0.88rem; font-weight: 700; border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 6px 12px; border-radius: 999px; cursor: pointer; }
-.filter[aria-pressed="true"] { background: var(--c, var(--ink)); color: var(--bg); border-color: var(--c, var(--ink)); }
-.city { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; display: grid; }
-.city.hide { display: none; }
-.city-hero { width: 100%; aspect-ratio: 16 / 8; object-fit: cover; display: block; max-width: 100%; }
-.city-in { padding: 14px; display: grid; gap: 12px; }
-.city-in > header { display: grid; gap: 4px; }
-.city-in h3 { font-size: 1.35rem; font-weight: 800; color: var(--c); }
-.picks { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; counter-reset: pick; }
-.pick { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 2px 10px; padding: 10px 0; border-top: 1px solid var(--line); counter-increment: pick; }
-.pick::before { content: counter(pick); grid-row: span 2; font-family: var(--f-display); font-weight: 800; color: var(--c); font-size: 1.1rem; line-height: 1.3; }
-.pick .name { font-weight: 700; }
-.pick .meta { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 0.86rem; color: var(--muted); }
-.pick .meta .res { color: var(--bad); font-weight: 700; }
-.gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-.gallery figure { margin: 0; display: grid; gap: 4px; }
-.gallery img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 10px; display: block; max-width: 100%; }
-.gallery figcaption { font-size: 0.8rem; color: var(--muted); }
-.mini { display: grid; gap: 4px; font-size: 0.93rem; }
-.mini h4 { font-family: var(--f-body); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
-.rules { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+/* Reservas */
+.summary-bar { display: flex; height: 10px; border-radius: 999px; overflow: hidden; gap: 2px; }
+.summary-bar span { flex: 1; background: var(--c); }
+.counts { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 0.9rem; }
+.counts span { display: inline-flex; align-items: center; gap: 6px; }
+.counts i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+.det { padding: 2px 14px 16px 64px; display: grid; gap: 10px; }
+.kv { display: grid; gap: 8px; }
+.kv div { display: grid; gap: 1px; }
+.kv dt { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.kv dd { margin: 0; display: flex; align-items: center; gap: 8px; min-width: 0; overflow-wrap: anywhere; }
+.kv dd > span { min-width: 0; }
+.copy { width: 36px; height: 36px; flex: none; border-radius: 10px; display: grid; place-items: center; color: var(--sea); background: var(--sea-soft); }
+.copy:active { transform: scale(0.92); }
+.copy.done { color: var(--ok); background: var(--ok-soft); }
+.go {
+  justify-self: start; display: inline-flex; align-items: center; gap: 6px; min-height: 44px;
+  padding: 10px 16px; border-radius: 12px; font-weight: 700; text-decoration: none;
+  color: var(--bg); background: var(--sea);
+}
+.go:active { transform: scale(0.97); }
+
+/* Lugares */
+.switch {
+  display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+  margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); padding-inline: max(16px, env(safe-area-inset-left, 0px));
+  scrollbar-width: none;
+}
+.switch::-webkit-scrollbar { display: none; }
+.switch button {
+  scroll-snap-align: start; flex: none; display: inline-flex; align-items: center; gap: 7px;
+  min-height: 44px; padding: 8px 16px; border-radius: 999px; font-weight: 700;
+  background: var(--surface); color: var(--ink);
+}
+.switch button i { width: 9px; height: 9px; border-radius: 50%; background: var(--c); }
+.switch button[aria-pressed="true"] { background: var(--c); color: var(--bg); }
+.switch button[aria-pressed="true"] i { background: var(--bg); }
+.city { display: none; gap: 14px; }
+.city.on { display: grid; }
+.pick .n { width: 30px; flex: none; text-align: center; font-family: var(--f-display); font-weight: 800; font-size: 1.25rem; color: var(--c); }
+.strip { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; }
+.strip::-webkit-scrollbar { display: none; }
+.strip figure { flex: 0 0 78%; scroll-snap-align: start; display: grid; gap: 4px; }
+.strip img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; display: block; max-width: 100%; }
+.strip figcaption { font-size: 0.85rem; color: var(--muted); padding-left: 2px; }
+.more { padding: 4px 14px 14px; font-size: 0.95rem; display: grid; gap: 8px; }
+.more ol { list-style: decimal; padding-left: 1.2em; display: grid; gap: 6px; }
 
 /* Plata */
-.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.tile { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px; display: grid; gap: 2px; min-width: 0; }
-.tile .v { font-family: var(--f-display); font-weight: 800; font-size: clamp(1.05rem, 4.4vw, 1.7rem); white-space: nowrap; font-variant-numeric: tabular-nums; }
-.tile .l { font-size: 0.8rem; color: var(--muted); }
-.stack { display: flex; height: 26px; border-radius: 8px; overflow: hidden; background: var(--surface-2); }
-.stack span { display: block; height: 100%; background: var(--c); border-right: 2px solid var(--surface); }
-.stack span:last-child { border-right: 0; }
-.tbl-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 0.93rem; }
-th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
-th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 700; }
-td.r, th.r { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-td .sw { display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: var(--c); margin-right: 8px; vertical-align: 0; }
-tr.total td { font-weight: 700; border-bottom: 0; }
-.conv { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 8px; align-items: end; }
-.conv label { display: grid; gap: 4px; font-size: 0.85rem; color: var(--muted); font-weight: 700; }
+.conv { background: var(--surface); border-radius: var(--r); padding: 16px; display: grid; gap: 12px; }
+.conv-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 10px; align-items: end; }
+.conv label { display: grid; gap: 4px; font-size: 0.85rem; font-weight: 700; color: var(--muted); }
 .conv input {
-  font: inherit; font-family: var(--f-mono); font-size: 1.25rem; width: 100%; min-width: 0;
-  padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink);
+  font: inherit; font-family: var(--f-display); font-weight: 800; font-size: 1.6rem; width: 100%; min-width: 0;
+  padding: 8px 12px; border-radius: 12px; border: 0; background: var(--surface-2); color: var(--ink);
 }
-.conv .eq { padding-bottom: 12px; color: var(--muted); font-weight: 700; }
-.quick { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; font-size: 0.9rem; }
-.quick div { background: var(--surface-2); border-radius: 8px; padding: 6px 8px; display: flex; justify-content: space-between; gap: 6px; font-variant-numeric: tabular-nums; }
+.conv .eq { padding-bottom: 14px; color: var(--muted); }
+.quick { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.quick button { background: var(--surface-2); border-radius: 10px; padding: 8px; display: grid; gap: 0; text-align: left; font-variant-numeric: tabular-nums; font-size: 0.9rem; }
+.quick button:active { transform: scale(0.96); }
+.quick b { font-family: var(--f-display); font-size: 1.05rem; }
+.fund { background: var(--surface); border-radius: var(--r); padding: 16px; display: grid; gap: 14px; }
+.fund-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.fund-top b { font-family: var(--f-display); font-size: 1.8rem; font-weight: 800; }
+.stack { display: flex; height: 16px; border-radius: 999px; overflow: hidden; gap: 2px; }
+.stack span { display: block; height: 100%; background: var(--c); }
+.fund ul { display: grid; gap: 10px; }
+.fund li { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; gap: 10px; align-items: baseline; }
+.fund li i { width: 12px; height: 12px; border-radius: 4px; background: var(--c); align-self: center; }
+.fund li .s { font-size: 0.85rem; color: var(--muted); }
+.fund li .v { font-family: var(--f-display); font-weight: 800; font-variant-numeric: tabular-nums; text-align: right; }
+.fund li .v small { display: block; font-family: var(--f-body); font-weight: 400; font-size: 0.8rem; color: var(--muted); }
 
-/* Pendientes */
-.todo { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.todo li { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 4px 10px; }
-.todo li::before { content: ""; width: 18px; height: 18px; border-radius: 6px; border: 2px solid var(--muted); margin-top: 2px; }
-.todo li.done::before { background: var(--ok); border-color: var(--ok); }
-.todo .what { font-weight: 700; }
-.todo .det { grid-column: 2; font-size: 0.92rem; color: var(--muted); }
-.todo .act { grid-column: 2; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; margin-top: 4px; }
-.due { font-size: 0.78rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--bad-soft); color: var(--bad); }
-.due.soon { background: var(--warn-soft); color: var(--warn); }
-.due.later { background: var(--surface-2); color: var(--muted); }
-.sos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.sos div { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 10px; display: grid; gap: 2px; text-align: center; }
-.sos b { font-family: var(--f-display); font-size: 1.5rem; font-weight: 800; color: var(--bad); }
-.sos span { font-size: 0.8rem; color: var(--muted); }
-.credits { font-size: 0.78rem; color: var(--muted); }
+/* Barra de pestañas */
+.nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+  background: var(--surface); border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.nav-in {
+  max-width: 640px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+  padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px);
+}
+.nav button {
+  height: var(--nav-h); display: grid; justify-items: center; align-content: center; gap: 3px;
+  font-size: 0.72rem; font-weight: 700; color: var(--muted);
+}
+.nav button .ic { width: 24px; height: 24px; transition: transform 120ms var(--ease); }
+.nav button:active .ic { transform: scale(0.88); }
+.nav button[aria-current="page"] { color: var(--sea); }
+.nav button[aria-current="page"] .ic { stroke-width: 2.2; }
 
-@media (prefers-reduced-motion: no-preference) {
-  html { scroll-behavior: smooth; }
+@media (hover: hover) and (pointer: fine) {
+  summary.row:hover, .sos a:hover { background: var(--surface-2); }
+  .nav button:hover { color: var(--ink); }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
 }
 
-/* Copia sin internet (PDF del tamaño de un teléfono) */
+/* Copia sin internet: PDF del tamaño de un teléfono */
 @page { size: 110mm 196mm; margin: 7mm 6mm 8mm; }
 @media print {
-  :root { --bg: #FFFFFF; }
-  body { font-size: 13px; }
-  body::before { display: none; }
-  .tabs, .status, .no-print, .filters, .copy, .conv { display: none !important; }
-  .panel, .panel:not(.active) { display: grid; break-before: page; padding-bottom: 0; }
-  .city.hide { display: grid; }
-  .cards.two { grid-template-columns: minmax(0, 1fr); }
-  .day, .card, .pick, .todo li, .tile, .move, .gallery figure, .cal { break-inside: avoid; }
-  .city-hero, .day-photo { aspect-ratio: 16 / 6; }
-  .top { padding-top: 0; }
-  a { text-decoration: none; }
-  .btn { background: none; color: var(--sea); padding: 0; }
-  .btn::after { content: " · " attr(data-url); font-weight: 400; color: var(--muted); font-size: 0.85em; }
-  .day.past { opacity: 1; }
+  :root { --bg: #FFFFFF; --surface: #F3F6F5; }
+  body { font-size: 13px; padding-bottom: 0; }
+  .nav, .switch, .conv, .copy, .no-print, .chev { display: none !important; }
+  .panel, .city { display: flex !important; }
+  .city { display: grid !important; }
+  .panel { break-before: page; padding-top: 0; }
+  .row, .tl li, .note, .count, .sleep, .fund li, .stay-hd, .strip figure { break-inside: avoid; }
+  .strip { flex-wrap: wrap; overflow: visible; }
+  .strip figure { flex-basis: 100%; }
+  .go { background: none; color: var(--sea); padding: 0; min-height: 0; }
+  .go::after { content: " · " attr(data-url); font-weight: 400; color: var(--muted); font-size: 0.85em; }
+  .det { padding-left: 14px; }
 }
 </style>
 
-<div class="wrap">
-  <header class="top">
-    <h1>Tailandia <span>2026</span></h1>
-    <p class="sub">Fran y Romina · 1 → 27 dic · 24 noches en 5 ciudades</p>
-    <p class="status" id="status">Faltan días</p>
-  </header>
-  <section class="now no-print" id="now" aria-live="polite"></section>
-  <section class="now print-only" id="toc">
-    <h2>Copia sin internet</h2>
-    <p class="muted">Generada el <span id="gen"></span>. Toca un título o un día para saltar. La página online es la que se mantiene al día; esta copia es para cuando no hay señal.</p>
-    <ol>
-      <li><a href="#dias">Día a día</a></li>
-      <li><a href="#reservas">Reservas: vuelos, traslados y hoteles</a></li>
-      <li><a href="#panoramas">Panoramas por ciudad</a></li>
-      <li><a href="#plata">Plata</a></li>
-      <li><a href="#pendientes">Pendientes, papeles y emergencias</a></li>
-    </ol>
-  </section>
-</div>
-
-<nav class="tabs" aria-label="Secciones">
-  <div class="wrap" role="tablist">
-    <button class="tab" role="tab" data-view="dias">Día a día</button>
-    <button class="tab" role="tab" data-view="reservas">Reservas</button>
-    <button class="tab" role="tab" data-view="panoramas">Panoramas</button>
-    <button class="tab" role="tab" data-view="plata">Plata</button>
-    <button class="tab" role="tab" data-view="pendientes">Pendientes</button>
-  </div>
-</nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16.5" rx="2.5"/><path d="M16 2.5v4M8 2.5v4M3 10h18"/></symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3 8.5a2.5 2.5 0 0 0 0 7V18a1.5 1.5 0 0 0 1.5 1.5h15A1.5 1.5 0 0 0 21 18v-2.5a2.5 2.5 0 0 1 0-7V6a1.5 1.5 0 0 0-1.5-1.5h-15A1.5 1.5 0 0 0 3 6z"/><path d="M14 4.5v2M14 11v2M14 17.5v2"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M19.5 10c0 5.5-7.5 11.5-7.5 11.5S4.5 15.5 4.5 10a7.5 7.5 0 0 1 15 0z"/><circle cx="12" cy="10" r="2.8"/></symbol>
+  <symbol id="i-cash" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 9.5v5M18 9.5v5"/></symbol>
+  <symbol id="i-plane" viewBox="0 0 24 24"><path d="M10.5 13.5 4 11l1.5-1.5 7.5.5 4.2-4.2a2 2 0 0 1 2.8 2.8L15.8 12.8l.5 7.5L14.8 21.8l-2.5-6.5-3 3V21l-1.5 1.5-1.5-3.5L3 17.5 4.5 16h2.7z"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24"><path d="M5 17H3.5a1 1 0 0 1-1-1v-3.5a2 2 0 0 1 .4-1.2L5 8.5A2 2 0 0 1 6.6 7.5h8.8a2 2 0 0 1 1.5.7l2.6 3 1.6.5a1.4 1.4 0 0 1 1 1.3V16a1 1 0 0 1-1 1H19"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M9 17h6M3 11.5h17"/></symbol>
+  <symbol id="i-taxi" viewBox="0 0 24 24"><path d="M10 4.5h4M5 17H3.5a1 1 0 0 1-1-1v-3.5a2 2 0 0 1 .4-1.2L5 8.5A2 2 0 0 1 6.6 7.5h10.8a2 2 0 0 1 1.6 1l2 2.9a2 2 0 0 1 .5 1.3V16a1 1 0 0 1-1 1H19"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M9 17h6"/></symbol>
+  <symbol id="i-bus" viewBox="0 0 24 24"><rect x="4.5" y="3" width="15" height="15" rx="2.5"/><path d="M4.5 11h15M8 18v2.5M16 18v2.5M8 14.5h.01M16 14.5h.01"/></symbol>
+  <symbol id="i-train" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 10h14M9 21l-2-3.5M15 21l2-3.5M9 13.5h.01M15 13.5h.01"/></symbol>
+  <symbol id="i-boat" viewBox="0 0 24 24"><path d="M2.5 20c1.8.9 3.5.9 5.3 0s3.5-.9 5.3 0 3.5.9 5.3 0 2-.6 3.1-.2M4 16.5l1.6-5h12.8l1.6 5M12 4v7.5M12 5l5 4.5h-5"/></symbol>
+  <symbol id="i-bed" viewBox="0 0 24 24"><path d="M2.5 5v15M2.5 9h16a3 3 0 0 1 3 3v8M2.5 16.5h19"/><circle cx="7" cy="12.5" r="1.8"/></symbol>
+  <symbol id="i-food" viewBox="0 0 24 24"><path d="M5 3v7a2 2 0 0 0 2 2v9M9 3v7a2 2 0 0 1-2 2M7 3v5M17 21V3c-2 1-3.5 3.5-3.5 7v4H17"/></symbol>
+  <symbol id="i-temple" viewBox="0 0 24 24"><path d="M12 2v3M8 9l4-4 4 4M5.5 13 12 7.5l6.5 5.5M4 21V13.5h16V21M9.5 21v-4.5h5V21M2.5 21h19"/></symbol>
+  <symbol id="i-beach" viewBox="0 0 24 24"><path d="M3 20.5c2-.8 4-.8 6 0s4 .8 6 0 4-.8 6 0M12 18 8 5.5"/><path d="M3.5 8.5A8 8 0 0 1 16 3.8L3.5 8.5z"/></symbol>
+  <symbol id="i-spa" viewBox="0 0 24 24"><path d="M12 20c-4.5 0-8-3-8-7.5 3.5 0 6.5 2 8 5 1.5-3 4.5-5 8-5 0 4.5-3.5 7.5-8 7.5z"/><path d="M12 17.5c-2-2-2.5-5.5 0-9.5 2.5 4 2 7.5 0 9.5z"/></symbol>
+  <symbol id="i-walk" viewBox="0 0 24 24"><circle cx="13" cy="4" r="1.8"/><path d="m9 21 2.5-6 2.5 2.5V21M7 12.5l2-4.5 3.5-1 2.5 3.5 2.5 1M11.5 15 10 9"/></symbol>
+  <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 21.5a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5S12.5 5 12 2.5c-.5 2.5-2 4.9-4 6.5s-3 3.5-3 5.5a7 7 0 0 0 7 7z"/></symbol>
+  <symbol id="i-mount" viewBox="0 0 24 24"><path d="m2.5 20 7-12 4 7 2.5-4 5.5 9z"/><path d="m8 10.5 1.5 1.5 1.5-1.5"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21c0-3 1.9-5.4 5.1-6 2.4-.5 4.9-2 5.9-3"/></symbol>
+  <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6-4.5-4.2 6.1-.7z"/></symbol>
+  <symbol id="i-glass" viewBox="0 0 24 24"><path d="M6 3h12l-1 6a5 5 0 0 1-10 0zM12 14v7M8 21h8"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="13" rx="2"/><path d="M9 7V4.5h6V7M9 11v5M15 11v5"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h12l-2 4 2 4H5"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.9 2.4 17.5A2 2 0 0 0 4.1 20.5h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9.5v4M12 17h.01"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m4.5 12.5 5 5L19.5 7"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V5"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="i-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/></symbol>
+</svg>
 
 <main class="wrap">
-  <section class="panel" id="dias" role="tabpanel">
-    <header>
-      <h2>Día a día</h2>
-      <p>Toca un día del calendario para ir a su tarjeta. Los vuelos y hoteles están confirmados; los panoramas son la propuesta de la investigación y se ajustan contigo.</p>
-    </header>
+  <section class="panel print-only" id="toc" style="display:flex">
+    <header class="ph"><h1>Tailandia 2026</h1><p>Copia sin internet · versión del <span id="gen"></span></p></header>
+    <div class="group">
+      <a class="row" href="#v-hoy"><span class="grow"><span class="t">Hoy y pendientes</span></span></a>
+      <a class="row" href="#v-dias"><span class="grow"><span class="t">Día a día</span></span></a>
+      <a class="row" href="#v-reservas"><span class="grow"><span class="t">Reservas</span></span></a>
+      <a class="row" href="#v-lugares"><span class="grow"><span class="t">Lugares</span></span></a>
+      <a class="row" href="#v-plata"><span class="grow"><span class="t">Plata</span></span></a>
+    </div>
+  </section>
+
+  <section class="panel" id="v-hoy" aria-labelledby="h-hoy">
+    <header class="ph"><h1 id="h-hoy">Hoy</h1><p id="hoy-sub">Fran y Romina · 1 → 27 dic</p></header>
+    <div id="slot-install"></div>
+    <div id="hoy-main" class="sec"></div>
+    <div class="sec" id="hoy-next"></div>
+    <div class="sec" id="hoy-todo"></div>
+    <div class="sec">
+      <h2>Emergencias</h2>
+      <div class="sos">
+        <a href="tel:1155"><b class="num">1155</b><span>Policía turística</span></a>
+        <a href="tel:1669"><b class="num">1669</b><span>Ambulancia</span></a>
+        <a href="tel:191"><b class="num">191</b><span>Policía</span></a>
+      </div>
+    </div>
+    <p class="foot" id="version"></p>
+  </section>
+
+  <section class="panel" id="v-dias" aria-labelledby="h-dias">
+    <header class="ph"><h1 id="h-dias">Días</h1><p>Toca un día para ver el plan.</p></header>
     <div class="cal">
       <div class="cal-grid" id="cal"></div>
       <div class="legend" id="legend"></div>
     </div>
-    <div class="days" id="days"></div>
+    <div class="sec" id="stays"></div>
   </section>
 
-  <section class="panel" id="reservas" role="tabpanel">
-    <header>
-      <h2>Reservas</h2>
-      <p>Códigos listos para copiar y mostrar en el mostrador. Verde: pagado o listo. Rojo: falta comprar o reservar.</p>
-    </header>
-    <h3 class="sec-title">Vuelos largos (Jetstar)</h3>
-    <div class="cards two" id="flights"></div>
-    <h3 class="sec-title">Traslados dentro de Tailandia <span class="pill compra">Nada comprado aún</span></h3>
-    <div class="cards two" id="transfers"></div>
-    <h3 class="sec-title">Hoteles</h3>
-    <div class="cards two" id="hotels"></div>
+  <section class="panel" id="v-reservas" aria-labelledby="h-res">
+    <header class="ph"><h1 id="h-res">Reservas</h1><p>En orden. Toca una para ver el código.</p></header>
+    <div class="sec" id="res-summary"></div>
+    <div class="group" id="bookings"></div>
   </section>
 
-  <section class="panel" id="panoramas" role="tabpanel">
-    <header>
-      <h2>Panoramas</h2>
-      <p>Lo mejor de cada ciudad según la investigación del 8 nov, con precio por persona. Los datos marcados «reservar» se llenan en diciembre.</p>
-    </header>
-    <div class="filters" id="filters"></div>
-    <div class="cards" id="cities"></div>
-    <article class="card">
-      <h3>Reglas en templos</h3>
-      <ol class="rules">
-        <li><b>Cúbrete:</b> hombros y rodillas tapados, nada transparente. Lleva un pañuelo grande.</li>
-        <li><b>Descálzate</b> antes de la sala del Buda y no pises el umbral.</li>
-        <li><b>Pies y cabeza:</b> nunca apuntes con los pies; no te sientes más alto que un monje.</li>
-        <li><b>No toques a los monjes.</b> Romina: no pasarles nada en la mano; dejarlo sobre una mesa o tela.</li>
-        <li><b>El Buda no es decoración:</b> no subirse ni hacer selfies de espaldas a la imagen.</li>
-        <li><b>Dinero:</b> en la caja de donaciones, nunca en la mano de un monje. Desconfía de «monjes» que piden plata en la calle.</li>
-        <li><b>Silencio y fotos:</b> voz baja, sin flash, pide permiso.</li>
-        <li><b>Sin alcohol ni cigarro</b> dentro del recinto.</li>
-      </ol>
-    </article>
+  <section class="panel" id="v-lugares" aria-labelledby="h-lug">
+    <header class="ph"><h1 id="h-lug">Lugares</h1><p>Lo mejor de cada ciudad, con precio por persona.</p></header>
+    <div class="switch no-print" id="switch" role="group" aria-label="Ciudad"></div>
+    <div id="cities"></div>
+    <div class="group">
+      <details>
+        <summary class="row"><span class="icon-dot"><svg class="ic"><use href="#i-temple"/></svg></span><span class="grow"><span class="t">Reglas en templos</span><span class="s">8 reglas de oro</span></span><svg class="ic chev"><use href="#i-down"/></svg></summary>
+        <div class="more">
+          <ol>
+            <li><b>Cúbrete:</b> hombros y rodillas tapados. Lleva un pañuelo.</li>
+            <li><b>Descálzate</b> antes de la sala del Buda.</li>
+            <li><b>Pies y cabeza:</b> no apuntes con los pies.</li>
+            <li><b>No toques a los monjes.</b> Romina: no pasarles nada en la mano.</li>
+            <li><b>El Buda no es decoración:</b> sin selfies de espaldas.</li>
+            <li><b>Dinero:</b> en la caja de donaciones, nunca en la mano.</li>
+            <li><b>Silencio</b> y fotos sin flash.</li>
+            <li><b>Sin alcohol ni cigarro</b> en el templo.</li>
+          </ol>
+        </div>
+      </details>
+    </div>
+    <p class="foot" id="credits"></p>
   </section>
 
-  <section class="panel" id="plata" role="tabpanel">
-    <header>
-      <h2>Plata</h2>
-      <p>Cada uno lleva AUD 2,000 para gastar allá (sin vuelos largos ni hoteles). Tipo de cambio de referencia: 1 AUD ≈ ฿23.3.</p>
-    </header>
-    <div class="tiles" id="tiles"></div>
-    <article class="card">
-      <h3>En qué se va el fondo de cada uno</h3>
-      <div class="stack" id="stack" role="img" aria-label="Reparto de los AUD 2,000 por persona"></div>
-      <div class="tbl-wrap"><table id="fund"></table></div>
-      <p class="note warn">Los tours sugeridos en Panoramas suman más que la bolsa de AUD 360 (solo Krabi usa AUD 207–358). Al cerrar el itinerario elegimos cuáles entran.</p>
-    </article>
-    <article class="card">
-      <h3>Conversor</h3>
-      <div class="conv">
-        <label for="thb">Baht (฿)<input id="thb" type="number" inputmode="decimal" value="1000" min="0"></label>
-        <span class="eq">=</span>
+  <section class="panel" id="v-plata" aria-labelledby="h-plata">
+    <header class="ph"><h1 id="h-plata">Plata</h1><p>1 AUD ≈ ฿23.3 · cada uno lleva AUD 2,000</p></header>
+    <div class="conv">
+      <div class="conv-row">
+        <label for="thb">Baht ฿<input id="thb" type="number" inputmode="decimal" value="1000" min="0"></label>
+        <span class="eq"><svg class="ic"><use href="#i-right"/></svg></span>
         <label for="aud">AUD<input id="aud" type="number" inputmode="decimal" min="0"></label>
       </div>
       <div class="quick" id="quick"></div>
-    </article>
-    <article class="card">
-      <h3>Lo que cuesta el viaje completo (los dos)</h3>
-      <div class="tbl-wrap"><table id="paid"></table></div>
-    </article>
-  </section>
-
-  <section class="panel" id="pendientes" role="tabpanel">
-    <header>
-      <h2>Pendientes</h2>
-      <p>Ordenados por fecha límite. Cuando compres algo, avísame y lo marco aquí y en el repo.</p>
-    </header>
-    <div id="todos"></div>
-    <h3 class="sec-title">Emergencias en Tailandia</h3>
-    <div class="sos">
-      <div><b class="num">1155</b><span>Policía turística (habla inglés)</span></div>
-      <div><b class="num">1669</b><span>Ambulancia</span></div>
-      <div><b class="num">191</b><span>Policía</span></div>
     </div>
-    <p class="credits" id="credits"></p>
+    <div class="fund" id="fund"></div>
+    <div class="group">
+      <details>
+        <summary class="row"><span class="icon-dot"><svg class="ic"><use href="#i-cash"/></svg></span><span class="grow"><span class="t">El viaje completo</span><span class="s">~AUD 8,958 los dos</span></span><svg class="ic chev"><use href="#i-down"/></svg></summary>
+        <div class="more" id="paid"></div>
+      </details>
+    </div>
   </section>
 </main>
+
+<nav class="nav" aria-label="Secciones">
+  <div class="nav-in">
+    <button type="button" data-view="hoy"><svg class="ic"><use href="#i-sun"/></svg>Hoy</button>
+    <button type="button" data-view="dias"><svg class="ic"><use href="#i-cal"/></svg>Días</button>
+    <button type="button" data-view="reservas"><svg class="ic"><use href="#i-ticket"/></svg>Reservas</button>
+    <button type="button" data-view="lugares"><svg class="ic"><use href="#i-pin"/></svg>Lugares</button>
+    <button type="button" data-view="plata"><svg class="ic"><use href="#i-cash"/></svg>Plata</button>
+  </div>
+</nav>
 
 <script>
 window.__GEN__ = "23 de noviembre de 2026";
@@ -449,535 +484,518 @@ const TC = 23.3;
 
 const CITY = {
   viaje:   { n: "En viaje",   c: "--c-viaje" },
-  phuket:  { n: "Phuket",     c: "--c-phuket" },
-  krabi:   { n: "Ao Nang",    c: "--c-krabi" },
-  pattaya: { n: "Pattaya",    c: "--c-pattaya" },
-  cnx:     { n: "Chiang Mai", c: "--c-cnx" },
-  bkk:     { n: "Bangkok",    c: "--c-bkk" },
+  phuket:  { n: "Phuket",     c: "--c-phuket",  foto: "phuket" },
+  krabi:   { n: "Ao Nang",    c: "--c-krabi",   foto: "aonang" },
+  pattaya: { n: "Pattaya",    c: "--c-pattaya", foto: "sanctuary" },
+  cnx:     { n: "Chiang Mai", c: "--c-cnx",     foto: "doisuthep" },
+  bkk:     { n: "Bangkok",    c: "--c-bkk",     foto: "watarun" },
 };
-const ST = { ok: "Listo", compra: "Falta comprar", reserva: "Falta reservar", elegir: "Por elegir", dia: "Se pide ese día" };
+const STATUS = { compra: ["bad", "Falta comprar"], reserva: ["bad", "Falta reservar"], elegir: ["warn", "Por elegir"] };
 
-// Cada día: f fecha, c ciudad donde duermen, l etiqueta de ciudad, t título, tags, foto, mov [hora, texto, estado], plan, duerme, ojo
+// Cada ítem de la línea de tiempo: [hora, ícono, qué, detalle, estado]
 const DAYS = [
-  { f: "2026-12-01", c: "viaje", l: "Perth", t: "Brisbane → Perth",
-    mov: [["19:00 → 22:20", "JQ964 Brisbane → Perth T2 · reserva en el email de Jetstar", "ok"]],
-    plan: ["Al llegar, retirar la maleta de Fran (30 kg): las reservas son separadas y hay que volver a despacharla mañana.",
-           "Al centro: tren desde Airport Central (~18 min, el último tren de esa noche no está confirmado) o Uber/taxi (~AUD 35–50)."],
-    duerme: "Perth · hostal sin reservar (~AUD 50)" },
-  { f: "2026-12-02", c: "phuket", t: "Perth → Phuket",
-    plan: ["Mañana libre en Perth. Dejar la maleta en el hostal o en una consigna."],
-    mov: [["~13:00", "En el T1 Internacional (está al lado del T2). El check-in del JQ69 cierra 1 h antes, a las 15:00.", "dia"],
-          ["16:00 → 21:25", "JQ69 Perth → Phuket · reserva en el email de Jetstar", "ok"],
-          ["~22:30", "Taxi oficial o Grab al Pearl Hotel (30–45 min, ~฿550–950). A esa hora ya no hay bus.", "dia"]],
-    after: ["Cena tardía: Khao Tom Rim Thang (abre hasta la 01:00) o Talad Kaset Night Market (hasta medianoche)."],
-    duerme: "<b>Pearl Hotel Phuket</b> · pagado · mostrar en el check-in la tarjeta física con que se pagó",
-    ojo: "Tarjeta de llegada digital (TDAC) hecha antes de volar. Ver Pendientes." },
-  { f: "2026-12-03", c: "phuket", t: "Bahía de Phang Nga", foto: "phangnga",
-    plan: ["Tour Phang Nga / James Bond + canoa en speedboat, con recogida en el hotel; vuelta ~16:30 (฿1,700–1,990 + parque ฿300 por persona).",
-           "16:30–19:30 masaje antes de cenar: Sansabai Massage 2 o Kim's (Old Town).",
-           "Cena en Old Town: Raya (última orden 21:30), One Chun (hasta 22:00) o Tu Kab Khao (hasta 24:00). Mercados Chillva e Indy abren jueves y viernes."],
-    duerme: "<b>Pearl Hotel Phuket</b>",
-    ojo: "Phi Phi queda para el lun 7 desde Ao Nang: es más cerca y más barato." },
-  { f: "2026-12-04", c: "phuket", t: "Templos, playas y atardecer",
-    plan: ["06:30 desayuno en Kota Khao Mun Kai.",
-           "09:00 Wat Chalong → 10:30 Big Buddha (gratis, 9:00–18:00).",
-           "Tarde de playas: mirador de Karon → Kata Noi y Kata → Nai Harn.",
-           "~18:00 atardecer en Promthep. Cena en Phuket Town y paseo por Indy o Chillva.",
-           "Todo el día en Grab/Bolt: ~฿500–750 por persona."],
-    duerme: "<b>Pearl Hotel Phuket</b>" },
-  { f: "2026-12-05", c: "krabi", t: "Phuket → Ao Nang", tags: ["feriado"], foto: "phuket",
-    plan: ["Mañana: Old Town a pie (Thalang Road, Soi Romanee) y dim sum en Boomrat (hasta 10:30)."],
-    mov: [["12:00", "Auto privado IslandTransfer del Pearl Hotel al Aonang Sea Mountain (2 h 30–3 h 30 por el feriado). ฿2,900 en efectivo al conductor.", "reserva"]],
-    after: ["Atardecer en Ao Nang Beach (~17:50) y masaje de pies de 60 min.",
-            "Cena: Krua Thara (reservar) o Landmark Night Market."],
-    duerme: "<b>Aonang Sea Mountain Hotel</b> · dejan un depósito de ฿500 en efectivo",
-    ojo: "Día del Padre (feriado): más tráfico y botes llenos." },
-  { f: "2026-12-06", c: "krabi", t: "Tiger Cave y Krabi Town", foto: "tigercave",
-    plan: ["07:00 Tiger Cave Temple: 1,260 escalones hasta el Buda dorado. Ir temprano por el calor y no llevar comida a la vista (monos).",
-           "Wat Kaew Korawaram y almuerzo en Krabi Town (mercado Maharaj).",
-           "17:00 Krabi Walking Street (fin de semana): hoi chak teen, calamar, roti y mango sticky rice.",
-           "Grab de vuelta a Ao Nang (~30 min)."],
-    duerme: "<b>Aonang Sea Mountain Hotel</b>" },
-  { f: "2026-12-07", c: "krabi", t: "Islas Phi Phi", tags: ["feriado"], foto: "maya",
-    plan: ["Speedboat 7:30–16:30: Maya Bay, Pileh Lagoon, Viking Cave y Bamboo. ฿1,600–2,200 + parque ฿400 por persona en efectivo.",
-           "Cena: Lae Lay Grill."],
-    duerme: "<b>Aonang Sea Mountain Hotel</b>",
-    ojo: "Feriado compensado: reservar el tour ya." },
-  { f: "2026-12-08", c: "krabi", t: "Emerald Pool y termales",
-    plan: ["Salida ~8:00 a Emerald Pool + Blue Pool + aguas termales (tour ฿1,100–1,700 por persona).",
-           "Opcional: clase de cocina en Ya's, 18:00–21:00 (~฿1,400).",
-           "Masaje largo de 90–120 min con compresa de hierbas, 18:30–21:30."],
-    duerme: "<b>Aonang Sea Mountain Hotel</b>" },
-  { f: "2026-12-09", c: "krabi", t: "Islas Hong", tags: ["wanphra"],
-    plan: ["Hong Islands en longtail compartido por la mañana (la laguna depende de la marea): ฿800–1,500 + parque ฿300.",
-           "Tarde libre en la playa.",
-           "Cena: Seafood Street o The Last Fisherman."],
-    duerme: "<b>Aonang Sea Mountain Hotel</b>" },
-  { f: "2026-12-10", c: "krabi", t: "Railay y 4 Islas al atardecer", tags: ["feriado"], foto: "railay",
-    plan: ["Mañana: Railay en longtail (฿100 por tramo).",
-           "4 Islands «sunset» con Phra Nang: recogida 12:00–13:00, vuelta ~19:00 (฿800–1,600 + parque ฿200–400).",
-           "Cena de despedida de Krabi."],
-    duerme: "<b>Aonang Sea Mountain Hotel</b>",
-    ojo: "Día de la Constitución (feriado): reservar el tour ya." },
-  { f: "2026-12-11", c: "pattaya", t: "Ao Nang → Pattaya",
-    mov: [["11:15", "Taxi al aeropuerto de Krabi (KBV), 30–40 min, ~฿550.", "dia"],
-          ["13:35 → 15:00", "Thai AirAsia Krabi → Don Mueang (DMK) + maleta 30 kg · ฿6,278 los dos", "compra"],
-          ["~15:30", "Auto privado DMK → Naklua (Mike Pattaya Taxi, ~฿1,400), 2–2 h 30.", "reserva"]],
-    after: ["Noche tranquila: cena cerca del hotel en Naklua."],
-    duerme: "<b>Palette La route Residence</b> · check-in ~18:00–18:30",
-    ojo: "Día 1 de Tomorrowland: mucho tráfico y pocos taxis en Pattaya." },
-  { f: "2026-12-12", c: "pattaya", t: "Koh Larn o Santuario de la Verdad", foto: "kohlarn",
-    plan: ["Playa: ferry público desde Bali Hai Pier a Koh Larn (฿40 por tramo, 35–45 min) y quedarse en Tien Beach.",
-           "Cultura: Sanctuary of Truth en Naklua, cerca del hotel (฿500, 08:00–17:00).",
-           "15:00–18:00 masaje.",
-           "Noche: Thepprasit Night Market (vie a dom, 18:00–24:00) o Walking Street (ojo con los carteristas)."],
-    duerme: "<b>Palette La route Residence</b>",
+  { f: "2026-12-01", c: "viaje", l: "Perth", t: "Brisbane → Perth", items: [
+    ["19:00", "plane", "Vuelo a Perth", "JQ964 · llega 22:20 al T2 · reserva en el email de Jetstar"],
+    ["22:30", "bag", "Retirar la maleta de Fran", "Son reservas separadas: mañana se despacha de nuevo"],
+    ["23:00", "taxi", "Al centro", "Tren desde Airport Central o Uber (~AUD 35–50)"]],
+    duerme: ["Hostal en Perth", "Sin reservar · ~AUD 50", "elegir"] },
+  { f: "2026-12-02", c: "phuket", t: "Perth → Phuket", items: [
+    ["Mañana", "walk", "Libre en Perth", "Dejar la maleta en el hostal"],
+    ["13:00", "pin", "En el T1 Internacional", "El check-in cierra a las 15:00"],
+    ["16:00", "plane", "Vuelo a Phuket", "JQ69 · llega 21:25 · reserva en el email de Jetstar"],
+    ["22:30", "taxi", "Taxi o Grab al hotel", "30–45 min · ฿550–950 · a esa hora no hay bus"],
+    ["23:30", "food", "Cena tardía", "Khao Tom Rim Thang, abre hasta la 01:00"]],
+    ojo: "Check-in del Pearl: mostrar la tarjeta física con que se pagó. Y la tarjeta de llegada (TDAC) hecha antes de volar." },
+  { f: "2026-12-03", c: "phuket", t: "Bahía de Phang Nga", foto: "phangnga", items: [
+    ["07:30", "boat", "Tour Phang Nga y James Bond", "Speedboat + canoa · ฿1,700–1,990 + parque ฿300", "reserva"],
+    ["16:30", "spa", "Masaje", "Sansabai 2 o Kim's, en Old Town"],
+    ["20:00", "food", "Cena en Old Town", "Raya, One Chun o Tu Kab Khao · mercados Chillva e Indy"]] },
+  { f: "2026-12-04", c: "phuket", t: "Templos, playas y atardecer", items: [
+    ["09:00", "temple", "Wat Chalong", "Gratis"],
+    ["10:30", "temple", "Big Buddha", "Gratis · 9:00–18:00"],
+    ["13:00", "beach", "Playas del sur", "Mirador de Karon → Kata Noi → Nai Harn · todo en Grab"],
+    ["18:00", "sun", "Atardecer en Promthep", ""],
+    ["20:00", "food", "Cena en Phuket Town", "Y paseo por Indy o Chillva"]] },
+  { f: "2026-12-05", c: "krabi", t: "Phuket → Ao Nang", tags: ["feriado"], items: [
+    ["09:00", "walk", "Old Town a pie", "Thalang Road, Soi Romanee · dim sum en Boomrat"],
+    ["12:00", "car", "Auto a Ao Nang", "IslandTransfer · ฿2,900 en efectivo al conductor · 2 h 30–3 h 30", "reserva"],
+    ["15:00", "bed", "Check-in Aonang Sea Mountain", "Depósito de ฿500 en efectivo"],
+    ["17:50", "sun", "Atardecer en Ao Nang Beach", "Y masaje de pies"],
+    ["20:00", "food", "Cena", "Krua Thara (reservar) o Landmark Night Market"]],
+    ojo: "Feriado: más tráfico y botes llenos." },
+  { f: "2026-12-06", c: "krabi", t: "Tiger Cave y Krabi Town", foto: "tigercave", items: [
+    ["07:00", "temple", "Tiger Cave Temple", "1,260 escalones · nada de comida a la vista (monos)"],
+    ["11:00", "temple", "Wat Kaew Korawaram", "Y almuerzo en el mercado Maharaj"],
+    ["17:00", "food", "Krabi Walking Street", "Solo fin de semana · roti, calamar, mango sticky rice"]] },
+  { f: "2026-12-07", c: "krabi", t: "Islas Phi Phi", tags: ["feriado"], foto: "maya", items: [
+    ["07:30", "boat", "Speedboat a Phi Phi", "Maya Bay, Pileh, Viking y Bamboo · ฿1,600–2,200 + parque ฿400", "reserva"],
+    ["19:30", "food", "Cena", "Lae Lay Grill"]],
+    ojo: "Feriado: reservar el tour ya." },
+  { f: "2026-12-08", c: "krabi", t: "Emerald Pool y termales", items: [
+    ["08:00", "drop", "Emerald Pool, Blue Pool y termales", "Tour ฿1,100–1,700"],
+    ["18:00", "food", "Clase de cocina", "Opcional · Ya's · ~฿1,400"],
+    ["19:30", "spa", "Masaje largo", "90–120 min con compresa de hierbas"]] },
+  { f: "2026-12-09", c: "krabi", t: "Islas Hong", tags: ["wanphra"], items: [
+    ["08:00", "boat", "Islas Hong en longtail", "La laguna depende de la marea · ฿800–1,500 + parque ฿300"],
+    ["14:00", "beach", "Tarde de playa", ""],
+    ["19:30", "food", "Cena", "Seafood Street o The Last Fisherman"]] },
+  { f: "2026-12-10", c: "krabi", t: "Railay y 4 Islas", tags: ["feriado"], foto: "railay", items: [
+    ["09:00", "boat", "Railay en longtail", "฿100 por tramo"],
+    ["12:30", "boat", "4 Islands al atardecer", "Con Phra Nang · vuelta ~19:00 · ฿800–1,600 + parque", "reserva"],
+    ["20:00", "food", "Cena de despedida", ""]],
+    ojo: "Feriado: reservar el tour ya." },
+  { f: "2026-12-11", c: "pattaya", t: "Ao Nang → Pattaya", items: [
+    ["11:15", "taxi", "Taxi al aeropuerto de Krabi", "30–40 min · ~฿550"],
+    ["13:35", "plane", "Vuelo a Don Mueang", "Thai AirAsia · llega 15:00 · ฿6,278 los dos + maleta", "compra"],
+    ["15:30", "car", "Auto a Naklua", "Mike Pattaya Taxi · ~฿1,400 · 2–2 h 30", "reserva"],
+    ["18:30", "bed", "Check-in Palette La route", ""]],
+    ojo: "Día 1 de Tomorrowland: tráfico y pocos taxis." },
+  { f: "2026-12-12", c: "pattaya", t: "Koh Larn o Santuario", foto: "kohlarn", items: [
+    ["09:00", "boat", "Koh Larn en ferry", "Desde Bali Hai Pier · ฿40 por tramo · Tien Beach"],
+    ["", "temple", "O bien: Sanctuary of Truth", "Cerca del hotel · ฿500"],
+    ["15:00", "spa", "Masaje", ""],
+    ["19:00", "food", "Thepprasit Night Market", "Vie a dom, 18:00–24:00"]],
     ojo: "Acostarse temprano: mañana es Tomorrowland." },
-  { f: "2026-12-13", c: "pattaya", t: "Tomorrowland", tags: ["tml"],
-    plan: ["Mañana tranquila y almuerzo fuerte.",
-           "~15:00 Grab/Bolt a Wisdom Valley (~17 km). Bajarse en la West Entrance, zona «Tomorrowland Drop-off».",
-           "Abre 13:00 · <b>última entrada 21:00</b> · cierra 00:00 · si salen, no pueden volver a entrar.",
-           "Llevar: pulsera, o el PDF del e-ticket + pasaporte para retirarla en el Bracelet Pick-Up Desk. Cargador y tapones de oído.",
-           "Adentro se paga solo con la pulsera (cashless, recarga en «Pearls»). Prohibido entrar comida, bebida, vapes y drones.",
-           "Vuelta: zona «Official Taxi» de la West Entrance. Salen ~20,000 personas por un solo camino: compartir auto y llevar efectivo."],
-    duerme: "<b>Palette La route Residence</b>",
-    ojo: "Guardar también el e-ticket de Romina en el teléfono." },
-  { f: "2026-12-14", c: "cnx", t: "Pattaya → Chiang Mai",
-    mov: [["11:30", "Bolt al terminal de buses de North Pattaya (~฿100).", "dia"],
-          ["12:00", "Bus Roong Reuang a Suvarnabhumi (BKK), ~2 h, ฿135 por persona. Alternativa: auto privado ฿1,000.", "compra"],
-          ["16:15 → 17:30", "Thai AirAsia BKK → Chiang Mai + maleta 30 kg · ฿4,902 los dos", "compra"],
-          ["~18:00", "Grab al Lanna Thaphae (15–20 min, ~฿125).", "dia"]],
-    after: ["Cena: khao soi en Anusarn o Chang Phueak y paseo por el Night Bazaar.",
-            "Masaje en Let's Relax Thapae (abre hasta las 24:00)."],
-    duerme: "<b>Lanna Thaphae Hotel</b> · pagado · desayuno incluido" },
-  { f: "2026-12-15", c: "cnx", t: "Doi Suthep y templos", foto: "doisuthep",
-    plan: ["06:15 Grab a Doi Suthep para ver el amanecer (entrada ฿30; evitar 9–11 h por la fila).",
-           "Wat Umong, el templo de túneles en el bosque.",
-           "Tarde a pie por el casco antiguo: Wat Chedi Luang (฿50, monk chat), Wat Phan Tao, Wat Phra Singh y Wat Chiang Man.",
-           "16:30–20:30 clase de cocina (฿800–1,200, cena incluida)."],
-    duerme: "<b>Lanna Thaphae Hotel</b>" },
-  { f: "2026-12-16", c: "cnx", t: "Elefantes", foto: "elephant",
-    plan: ["Elephant Nature Park, media jornada (฿2,500, sin monta ni shows). Recogida 07:30–08:00.",
-           "Tarde: mercado Warorot y Wat Suan Dok al atardecer, con monk chat de 17:00 a 19:00."],
-    duerme: "<b>Lanna Thaphae Hotel</b>",
-    ojo: "Hoy es la cremación real de la reina madre Sirikit en Bangkok (16:30). Puede haber cierres o venta de alcohol restringida." },
-  { f: "2026-12-17", c: "cnx", t: "Doi Inthanon", tags: ["wanphra"], foto: "inthanon",
-    plan: ["Doi Inthanon, la montaña más alta de Tailandia: tour de grupo de día completo, salida 07:30 y vuelta 17:30–19:00 (฿1,200–1,800 por persona).",
-           "Llevar abrigo: en la cumbre hace 8–12 °C.",
-           "Alternativa: Chiang Rai y el Templo Blanco, un día de 12–13 h (฿1,900 por persona).",
-           "Cena en Chang Phueak."],
-    duerme: "<b>Lanna Thaphae Hotel</b>" },
-  { f: "2026-12-18", c: "bkk", t: "Chiang Mai → Bangkok",
-    plan: ["07:30 Wat Phra Singh y Wat Chedi Luang con calma, antes del check-out."],
-    mov: [["~10:45", "Grab al aeropuerto de Chiang Mai (5–15 min).", "dia"],
-          ["13:30 → 14:45", "Thai Lion Air Chiang Mai → Don Mueang (DMK) + maleta 30 kg · ฿4,590 los dos", "compra"],
-          ["~15:15", "Taxi con taxímetro o Grab al Zenniq (~฿475, ~1 h).", "dia"]],
-    after: ["Noche: comida callejera en Yaowarat (Chinatown), ฿300–500 por persona."],
-    duerme: "<b>Zenniq</b>, Thonburi · desayuno incluido · se paga en el hotel",
-    ojo: "Ceremonias reales hasta el sáb 19: evitar la zona del Gran Palacio." },
-  { f: "2026-12-19", c: "bkk", t: "Chatuchak",
-    plan: ["9:00–13:00 Chatuchak (todas las secciones abren solo sábado y domingo) y el mercado Or Tor Kor al lado.",
-           "Noche: Asiatique, con barco gratis desde el muelle de Sathorn."],
-    duerme: "<b>Zenniq</b>",
-    ojo: "Hasta las 17:00 hay ceremonias en el Gran Palacio: no ir a Rattanakosin." },
-  { f: "2026-12-20", c: "bkk", t: "Tren del mercado y Amphawa",
-    plan: ["11:10 tren a Maeklong desde Wongwian Yai, a 6 min del hotel (฿10). El tren pasa por dentro del mercado.",
-           "Tarde: mercado flotante de Amphawa (abre vie a dom). Vuelta en minivan."],
-    duerme: "<b>Zenniq</b>" },
-  { f: "2026-12-21", c: "bkk", t: "Gran Palacio, Wat Pho y Wat Arun", foto: "palace",
-    plan: ["08:30 Gran Palacio + Wat Phra Kaew (฿500). Revisar antes en royalgrandpalace.th: puede cerrar por ritos reales.",
-           "13:30 Wat Pho (฿300): el Buda reclinado y masaje en la escuela del templo.",
-           "16:15 ferry (฿5) a Wat Arun (฿200) para el atardecer (~17:55).",
-           "Hombros y rodillas cubiertos todo el día."],
-    duerme: "<b>Zenniq</b>" },
-  { f: "2026-12-22", c: "bkk", t: "Ayutthaya",
-    plan: ["Tren a Ayutthaya, la antigua capital (1–1 h 30, ฿20–50) y templos en ruinas (฿80 cada uno).",
-           "Noche: pad thai en Thip Samai (martes a domingo)."],
-    duerme: "<b>Zenniq</b>" },
-  { f: "2026-12-23", c: "bkk", t: "Ciudad vieja y Chinatown", foto: "yaowarat",
-    plan: ["Golden Mount temprano → Wat Suthat y el Columpio Gigante → Loha Prasat → Wat Traimit (el Buda de oro).",
-           "Noche: rooftop con vista (Octave o Above Eleven, cócteles ฿350–550).",
-           "Capricho opcional: Raan Jay Fai (mié a sáb), tortilla de cangrejo ฿1,500."],
-    duerme: "<b>Zenniq</b>" },
-  { f: "2026-12-24", c: "bkk", t: "Nochebuena", tags: ["wanphra"],
-    plan: ["Mañana en Thonburi a pie: Wat Kalayanamit, la iglesia Santa Cruz (Kudi Chin) y Wat Prayoon.",
-           "Wan Phra de luna llena: en un templo de barrio se ve a la gente llevando ofrendas.",
-           "Tarde: luces de Navidad en ICONSIAM o CentralWorld.",
-           "Cena de Nochebuena: buffet de hotel o crucero (฿1,500–5,000; reservar)."],
-    duerme: "<b>Zenniq</b>" },
-  { f: "2026-12-25", c: "bkk", t: "Navidad", foto: "watarun",
-    plan: ["10:00 Jim Thompson House (฿200), el BACC y Erawan Shrine.",
-           "Comodín: lo que haya quedado cerrado antes (por ejemplo, el Gran Palacio).",
-           "Noche: Muay Thai en Rajadamnern (฿1,500–2,500; comprar solo en el estadio o ThaiTicketMajor)."],
-    duerme: "<b>Zenniq</b>" },
-  { f: "2026-12-26", c: "viaje", l: "Vuelo", t: "Bangkok → casa",
-    plan: ["Mañana: mercado flotante de Taling Chan (solo sáb y dom), cerca del hotel.",
-           "12:00–13:00 check-out y maletas a la consigna del hotel.",
-           "13:00–15:00 masaje de 2 h en Health Land Sathorn."],
-    mov: [["~16:30", "Taxi o Grab a Suvarnabhumi (BKK, 28 km, tráfico de sábado).", "dia"],
-          ["21:25", "JQ66 Bangkok → Brisbane · reserva en el email de Jetstar · Romina 35 kg y Fran 30 kg en bodega", "ok"]],
-    duerme: "En el avión" },
-  { f: "2026-12-27", c: "viaje", l: "Llegada", t: "Brisbane → Whitsundays",
-    mov: [["09:35", "Llegada a Brisbane, terminal internacional. Cambio a la doméstica (2 h 45 de margen).", "ok"],
-          ["12:20 → 14:05", "JQ836 Brisbane → Whitsunday Coast (PPP) · reserva en el email de Jetstar", "ok"]],
-    duerme: "En casa" },
+  { f: "2026-12-13", c: "pattaya", t: "Tomorrowland", tags: ["tml"], items: [
+    ["15:00", "taxi", "Grab a Wisdom Valley", "~17 km · bajar en la West Entrance"],
+    ["21:00", "music", "Última hora para entrar", "Abre 13:00 · cierra 00:00 · si salen, no vuelven a entrar"],
+    ["", "ticket", "Llevar", "Pulsera, o el PDF del e-ticket + pasaporte · cargador · tapones"],
+    ["00:00", "taxi", "Vuelta", "Zona «Official Taxi» de la West Entrance · compartir auto"]],
+    ojo: "Adentro se paga solo con la pulsera. No se puede entrar comida, bebida, vapes ni drones." },
+  { f: "2026-12-14", c: "cnx", t: "Pattaya → Chiang Mai", items: [
+    ["11:30", "taxi", "Bolt al terminal North Pattaya", "~฿100"],
+    ["12:00", "bus", "Bus a Suvarnabhumi", "Roong Reuang · ~2 h · ฿135 por persona", "compra"],
+    ["16:15", "plane", "Vuelo a Chiang Mai", "Thai AirAsia · llega 17:30 · ฿4,902 los dos + maleta", "compra"],
+    ["18:15", "bed", "Check-in Lanna Thaphae", ""],
+    ["19:30", "food", "Khao soi en Anusarn", "Night Bazaar · masaje en Let's Relax (hasta 24:00)"]] },
+  { f: "2026-12-15", c: "cnx", t: "Doi Suthep y templos", foto: "doisuthep", items: [
+    ["06:15", "sun", "Amanecer en Doi Suthep", "Grab · entrada ฿30"],
+    ["09:30", "temple", "Wat Umong", "Túneles en el bosque"],
+    ["13:00", "temple", "Casco antiguo a pie", "Wat Chedi Luang (monk chat) y Wat Phra Singh"],
+    ["16:30", "food", "Clase de cocina", "฿800–1,200 · cena incluida"]] },
+  { f: "2026-12-16", c: "cnx", t: "Elefantes", foto: "elephant", items: [
+    ["07:30", "leaf", "Elephant Nature Park", "Media jornada · ฿2,500 · sin monta", "reserva"],
+    ["15:00", "walk", "Mercado Warorot", ""],
+    ["17:00", "temple", "Monk chat en Wat Suan Dok", "17:00–19:00"]],
+    ojo: "Cremación real en Bangkok: puede haber cierres o alcohol restringido." },
+  { f: "2026-12-17", c: "cnx", t: "Doi Inthanon", tags: ["wanphra"], foto: "inthanon", items: [
+    ["07:30", "mount", "Doi Inthanon", "Día completo · ฿1,200–1,800 · llevar abrigo (8–12 °C)"],
+    ["", "temple", "O bien: Chiang Rai", "Templo Blanco · 12–13 h · ฿1,900"],
+    ["20:00", "food", "Cena en Chang Phueak", ""]] },
+  { f: "2026-12-18", c: "bkk", t: "Chiang Mai → Bangkok", items: [
+    ["07:30", "temple", "Wat Phra Singh en calma", ""],
+    ["10:45", "taxi", "Grab al aeropuerto", "5–15 min"],
+    ["13:30", "plane", "Vuelo a Don Mueang", "Thai Lion Air · llega 14:45 · ฿4,590 los dos + maleta", "compra"],
+    ["15:15", "taxi", "Taxi al Zenniq", "Con taxímetro · ~฿475 · ~1 h"],
+    ["19:30", "food", "Yaowarat (Chinatown)", "Comida callejera · ฿300–500"]],
+    ojo: "Ceremonias reales hasta el sáb 19: evitar el Gran Palacio." },
+  { f: "2026-12-19", c: "bkk", t: "Chatuchak", items: [
+    ["09:00", "walk", "Mercado Chatuchak", "Solo sáb y dom · y Or Tor Kor al lado"],
+    ["18:00", "boat", "Asiatique", "Barco gratis desde el muelle Sathorn"]],
+    ojo: "Hasta las 17:00 hay ceremonias: no ir a Rattanakosin." },
+  { f: "2026-12-20", c: "bkk", t: "Tren del mercado y Amphawa", items: [
+    ["11:10", "train", "Tren a Maeklong", "Desde Wongwian Yai, a 6 min del hotel · ฿10"],
+    ["14:00", "boat", "Mercado flotante de Amphawa", "Vuelta en minivan"]] },
+  { f: "2026-12-21", c: "bkk", t: "Gran Palacio, Wat Pho y Wat Arun", foto: "palace", items: [
+    ["08:30", "temple", "Gran Palacio", "฿500 · antes revisar cierres en royalgrandpalace.th"],
+    ["13:30", "temple", "Wat Pho", "฿300 · Buda reclinado y masaje"],
+    ["16:15", "boat", "Ferry a Wat Arun", "฿5 + entrada ฿200 · atardecer ~17:55"]],
+    ojo: "Hombros y rodillas cubiertos todo el día." },
+  { f: "2026-12-22", c: "bkk", t: "Ayutthaya", items: [
+    ["08:00", "train", "Tren a Ayutthaya", "1–1 h 30 · ฿20–50 · templos ฿80 cada uno"],
+    ["19:30", "food", "Pad thai en Thip Samai", ""]] },
+  { f: "2026-12-23", c: "bkk", t: "Ciudad vieja y Chinatown", foto: "yaowarat", items: [
+    ["08:00", "temple", "Golden Mount", "→ Wat Suthat → Loha Prasat → Wat Traimit"],
+    ["19:00", "glass", "Rooftop", "Octave o Above Eleven · ฿350–550"],
+    ["", "food", "Capricho: Raan Jay Fai", "Tortilla de cangrejo ฿1,500"]] },
+  { f: "2026-12-24", c: "bkk", t: "Nochebuena", tags: ["wanphra"], items: [
+    ["09:00", "temple", "Thonburi a pie", "Wat Kalayanamit, Santa Cruz y Wat Prayoon"],
+    ["17:00", "star", "Luces de Navidad", "ICONSIAM o CentralWorld"],
+    ["20:00", "food", "Cena de Nochebuena", "Buffet o crucero · ฿1,500–5,000 · reservar"]] },
+  { f: "2026-12-25", c: "bkk", t: "Navidad", foto: "watarun", items: [
+    ["10:00", "pin", "Jim Thompson House", "฿200 · y Erawan Shrine"],
+    ["20:00", "ticket", "Muay Thai en Rajadamnern", "฿1,500–2,500 · comprar solo en el estadio"]] },
+  { f: "2026-12-26", c: "viaje", l: "Vuelta", t: "Bangkok → casa", items: [
+    ["08:00", "boat", "Mercado flotante Taling Chan", "Sáb y dom, cerca del hotel"],
+    ["12:30", "bed", "Check-out", "Maletas a la consigna del hotel"],
+    ["13:00", "spa", "Masaje de 2 h", "Health Land Sathorn"],
+    ["16:30", "taxi", "Taxi a Suvarnabhumi", "28 km · tráfico de sábado"],
+    ["21:25", "plane", "Vuelo a Brisbane", "JQ66 · reserva en el email de Jetstar"]],
+    duerme: ["En el avión", ""] },
+  { f: "2026-12-27", c: "viaje", l: "Vuelta", t: "Brisbane → Whitsundays", items: [
+    ["09:35", "plane", "Llegan a Brisbane", "Pasar a la terminal doméstica"],
+    ["12:20", "plane", "Vuelo a Whitsunday Coast", "JQ836 · llega 14:05 · reserva en el email de Jetstar"]],
+    duerme: ["En casa", ""] },
 ];
 
-const FLIGHTS = [
-  { r: "BNE → PER", d: "Mar 1 dic · 19:00 → 22:20", v: "JQ964", code: "", bag: "Fran 30 kg · Romina solo mano", paid: "AUD 805.15", note: "Llega al T2 doméstico de Perth." },
-  { r: "PER → HKT", d: "Mié 2 dic · 16:00 → 21:25", v: "JQ69", code: "", bag: "Fran 30 kg · Romina solo mano", paid: "AUD 596.74", note: "Sale del T1 internacional. Check-in cierra 1 h antes (15:00)." },
-  { r: "BKK → BNE", d: "Sáb 26 dic · 21:25 → 09:35 (+1)", v: "JQ66", code: "", bag: "Fran 30 kg · Romina 35 kg", paid: "฿42,814 (~AUD 1,967)", note: "Incluye el tramo siguiente." },
-  { r: "BNE → PPP", d: "Dom 27 dic · 12:20 → 14:05", v: "JQ836", code: "", bag: "Mismo equipaje", paid: "Incluido", note: "2 h 45 para pasar de internacional a doméstico." },
-];
+const HOTELS = {
+  phuket:  { n: "Pearl Hotel Phuket", code: "6071.584.935", addr: "42 Montri Road, Talad Yai, Phuket Town 83000", tel: "+66 64 026 9242", io: "Entrada 14:00 · salida 12:00" },
+  krabi:   { n: "Aonang Sea Mountain", code: "6828.286.000", addr: "1419 Moo.2 Ao Nang, Muang, Krabi 81180", tel: "+66 95 569 3917", io: "Entrada 14:00 · salida 12:00" },
+  pattaya: { n: "Palette La route", code: "6017.225.643", addr: "290 Moo 2 Naklua, Banglamung, Pattaya North 20150", tel: "+66 2 430 4464", io: "Entrada 14:00 · salida 12:00" },
+  cnx:     { n: "Lanna Thaphae Hotel", code: "6530606112", addr: "6 Kotchasarn Soi 1, Chang Khlan, Chiang Mai 50200", tel: "+66 53 281 234", io: "Entrada 14:00 · salida 12:00 · desayuno" },
+  bkk:     { n: "Zenniq", code: "6751.843.775", addr: "25/2 สมเด็จพระเจ้าตากสิน ซอย6 บางยี่เรือ ธนบุรี กรุงเทพ", tel: "+66 2 466 4999", io: "Entrada 14:00 · salida 12:00–13:00 · desayuno" },
+};
 
-const TRANSFERS = [
-  { r: "Phuket → Ao Nang", d: "Sáb 5 dic · 12:00 → ~15:00", what: "Auto privado, puerta a puerta", who: "IslandTransfer", cost: "฿2,900 el auto, efectivo al conductor", st: "reserva", url: "https://island-transfer.com/intercity/phuket-to-krabi", note: "Escribirles para confirmar recogida en Phuket Town." },
-  { r: "KBV → DMK", d: "Vie 11 dic · 13:35 → 15:00", what: "Vuelo Thai AirAsia + maleta 30 kg", who: "airasia.com", cost: "฿6,278 los dos + ~฿1,000 maleta", st: "compra", url: "https://www.airasia.com", note: "Agregar la maleta antes de pagar: en el mostrador cuesta ฿300 por kilo." },
-  { r: "DMK → Naklua", d: "Vie 11 dic · ~15:30 → ~18:00", what: "Auto privado con cartel en llegadas", who: "Mike Pattaya Taxi · WhatsApp <span class=mono>+66 98 334 6549</span>", cost: "~฿1,400 el auto", st: "reserva", url: "https://mikepattayataxi.com/rate-of-service/", note: "Pasarles el número de vuelo. Pedir por escrito si incluye peajes." },
-  { r: "Pattaya → BKK", d: "Lun 14 dic · 12:00 → ~14:00", what: "Bus Roong Reuang (o auto ฿1,000)", who: "Terminal North Pattaya", cost: "฿135 por persona", st: "compra", url: "https://www.busonlineticket.co.th/bus/roong-reuang-coach/", note: "La maleta de 30 kg puede pagar ฿20–100 extra." },
-  { r: "BKK → CNX", d: "Lun 14 dic · 16:15 → 17:30", what: "Vuelo Thai AirAsia + maleta 30 kg", who: "airasia.com", cost: "฿4,902 los dos + ~฿1,000 maleta", st: "compra", url: "https://www.airasia.com", note: "" },
-  { r: "CNX → DMK", d: "Vie 18 dic · 13:30 → 14:45", what: "Vuelo Thai Lion Air + maleta 30 kg", who: "lionairthai.com", cost: "฿4,590 los dos + ~฿1,000 maleta", st: "compra", url: "https://www.lionairthai.com", note: "Taxi a Thonburi ~฿475 con taxímetro." },
-];
-
-const HOTELS = [
-  { n: "Pearl Hotel Phuket", c: "phuket", d: "Mié 2 → sáb 5 dic · 3 noches", code: "6071.584.935", in: "desde 14:00", out: "12:00–12:30",
-    addr: "42 Montri Road, Talad Yai, Phuket Town 83000", tel: "+66 64 026 9242", pay: ["ok", "Pagado · ฿4,950"], note: "Mostrar en el check-in la tarjeta física con que se pagó." },
-  { n: "Aonang Sea Mountain Hotel", c: "krabi", d: "Sáb 5 → vie 11 dic · 6 noches", code: "6828.286.000", in: "desde 14:00", out: "12:00–12:30",
-    addr: "1419 Moo.2 Ao Nang, Muang, Krabi 81180", tel: "+66 95 569 3917", pay: ["elegir", "Prepago pendiente · ฿11,491"], note: "Depósito de ฿500 en efectivo al llegar (lo devuelven al salir)." },
-  { n: "Palette La route Residence", c: "pattaya", d: "Vie 11 → lun 14 dic · 3 noches", code: "6017.225.643", in: "desde 14:00", out: "hasta 12:00",
-    addr: "290 Moo 2 Naklua, Banglamung, Pattaya North 20150", tel: "+66 2 430 4464", pay: ["elegir", "Se paga en el hotel · ฿3,964"], note: "Cancelación gratis hasta el mié 9 dic 23:59." },
-  { n: "Lanna Thaphae Hotel", c: "cnx", d: "Lun 14 → vie 18 dic · 4 noches", code: "6530606112", in: "desde 14:00", out: "antes de 12:00",
-    addr: "6 Kotchasarn Soi 1, Chang Khlan, Chiang Mai 50200", tel: "+66 53 281 234", pay: ["ok", "Pagado · AUD 253.72"], note: "Desayuno incluido." },
-  { n: "Zenniq", c: "bkk", d: "Vie 18 → sáb 26 dic · 8 noches", code: "6751.843.775", in: "desde 14:00", out: "12:00–13:00",
-    addr: "25/2 Somdet Phrachao Taksin Soi 6, Bang Yi Ruea, Thonburi, Bangkok 10600", tel: "+66 2 466 4999", pay: ["elegir", "Se paga en el hotel · ฿10,958"], note: "Desayuno incluido. Cancelación gratis hasta el mié 16 dic 23:59. Para el taxista: 25/2 สมเด็จพระเจ้าตากสิน ซอย6 บางยี่เรือ ธนบุรี" },
+// Reservas en orden: ícono, ciudad, título, cuándo, estado [clase, texto], datos, nota, link
+const BOOKINGS = [
+  { i: "plane", c: "viaje", t: "Brisbane → Perth", w: "Mar 1 dic · 19:00 → 22:20", st: "ok",
+    kv: [["Vuelo", "Jetstar JQ964"], ["Reserva", "", true], ["Maletas", "Fran 30 kg · Romina solo mano"]] },
+  { i: "bed", c: "viaje", t: "Hostal en Perth", w: "Mar 1 → mié 2 dic · 1 noche", st: "elegir",
+    kv: [["Presupuesto", "~AUD 50"]], note: "Cerca de la estación o del aeropuerto." },
+  { i: "plane", c: "phuket", t: "Perth → Phuket", w: "Mié 2 dic · 16:00 → 21:25", st: "ok",
+    kv: [["Vuelo", "Jetstar JQ69"], ["Reserva", "", true], ["Maletas", "Fran 30 kg · Romina solo mano"]], note: "Sale del T1 internacional. El check-in cierra a las 15:00." },
+  { i: "bed", c: "phuket", t: "Pearl Hotel Phuket", w: "Mié 2 → sáb 5 dic · 3 noches", st: "ok", stl: "Pagado",
+    kv: [["Reserva", "6071.584.935", true], ["Dirección", "42 Montri Road, Talad Yai, Phuket Town 83000", true], ["Teléfono", "+66 64 026 9242", true], ["Horario", "Entrada 14:00 · salida 12:00–12:30"]],
+    note: "Mostrar en el check-in la tarjeta física con que se pagó." },
+  { i: "car", c: "krabi", t: "Auto Phuket → Ao Nang", w: "Sáb 5 dic · 12:00", st: "reserva",
+    kv: [["Con", "IslandTransfer"], ["Costo", "฿2,900 el auto, en efectivo al conductor"]], note: "Confirmar que recogen en Phuket Town.", url: "https://island-transfer.com/intercity/phuket-to-krabi" },
+  { i: "bed", c: "krabi", t: "Aonang Sea Mountain", w: "Sáb 5 → vie 11 dic · 6 noches", st: "warn", stl: "Por pagar",
+    kv: [["Reserva", "6828.286.000", true], ["Dirección", "1419 Moo.2 Ao Nang, Muang, Krabi 81180", true], ["Teléfono", "+66 95 569 3917", true], ["Costo", "฿11,491 · prepago pendiente"]],
+    note: "Depósito de ฿500 en efectivo al llegar." },
+  { i: "plane", c: "pattaya", t: "Krabi → Don Mueang", w: "Vie 11 dic · 13:35 → 15:00", st: "compra",
+    kv: [["Vuelo", "Thai AirAsia"], ["Costo", "฿6,278 los dos + ~฿1,000 maleta 30 kg"]], note: "Agregar la maleta antes de pagar: en el mostrador cobran ฿300 por kilo.", url: "https://www.airasia.com" },
+  { i: "car", c: "pattaya", t: "Auto Don Mueang → Naklua", w: "Vie 11 dic · ~15:30", st: "reserva",
+    kv: [["Con", "Mike Pattaya Taxi"], ["WhatsApp", "+66 98 334 6549", true], ["Costo", "~฿1,400 el auto"]], note: "Pasarles el número de vuelo.", url: "https://mikepattayataxi.com/rate-of-service/" },
+  { i: "bed", c: "pattaya", t: "Palette La route", w: "Vie 11 → lun 14 dic · 3 noches", st: "warn", stl: "Pagar allá",
+    kv: [["Reserva", "6017.225.643", true], ["Dirección", "290 Moo 2 Naklua, Banglamung, Pattaya North 20150", true], ["Teléfono", "+66 2 430 4464", true], ["Costo", "฿3,964 en el hotel"]],
+    note: "Cancelación gratis hasta el mié 9 dic." },
+  { i: "music", c: "pattaya", t: "Tomorrowland", w: "Dom 13 dic · 13:00 → 00:00", st: "ok",
+    kv: [["Entrada", "", true, "En el PDF de la entrada"]], note: "Guardar también la entrada de Romina en el teléfono." },
+  { i: "bus", c: "cnx", t: "Bus Pattaya → Suvarnabhumi", w: "Lun 14 dic · 12:00", st: "compra",
+    kv: [["Con", "Roong Reuang"], ["Costo", "฿135 por persona"]], note: "La maleta de 30 kg puede pagar ฿20–100 extra.", url: "https://www.busonlineticket.co.th/bus/roong-reuang-coach/" },
+  { i: "plane", c: "cnx", t: "Suvarnabhumi → Chiang Mai", w: "Lun 14 dic · 16:15 → 17:30", st: "compra",
+    kv: [["Vuelo", "Thai AirAsia"], ["Costo", "฿4,902 los dos + ~฿1,000 maleta 30 kg"]], url: "https://www.airasia.com" },
+  { i: "bed", c: "cnx", t: "Lanna Thaphae Hotel", w: "Lun 14 → vie 18 dic · 4 noches", st: "ok", stl: "Pagado",
+    kv: [["Reserva", "6530606112", true], ["Dirección", "6 Kotchasarn Soi 1, Chang Khlan, Chiang Mai 50200", true], ["Teléfono", "+66 53 281 234", true]], note: "Desayuno incluido." },
+  { i: "plane", c: "bkk", t: "Chiang Mai → Don Mueang", w: "Vie 18 dic · 13:30 → 14:45", st: "compra",
+    kv: [["Vuelo", "Thai Lion Air"], ["Costo", "฿4,590 los dos + ~฿1,000 maleta 30 kg"]], url: "https://www.lionairthai.com" },
+  { i: "bed", c: "bkk", t: "Zenniq", w: "Vie 18 → sáb 26 dic · 8 noches", st: "warn", stl: "Pagar allá",
+    kv: [["Reserva", "6751.843.775", true], ["Para el taxi", "25/2 สมเด็จพระเจ้าตากสิน ซอย6 บางยี่เรือ ธนบุรี กรุงเทพ", true], ["Dirección", "25/2 Somdet Phrachao Taksin Soi 6, Thonburi, Bangkok 10600", true], ["Teléfono", "+66 2 466 4999", true], ["Costo", "฿10,958 en el hotel"]],
+    note: "Desayuno incluido. Cancelación gratis hasta el mié 16 dic." },
+  { i: "plane", c: "viaje", t: "Bangkok → Brisbane", w: "Sáb 26 dic · 21:25 → 09:35", st: "ok",
+    kv: [["Vuelo", "Jetstar JQ66"], ["Reserva", "", true], ["Maletas", "Fran 30 kg · Romina 35 kg"]] },
+  { i: "plane", c: "viaje", t: "Brisbane → Whitsundays", w: "Dom 27 dic · 12:20 → 14:05", st: "ok",
+    kv: [["Vuelo", "Jetstar JQ836"], ["Reserva", "", true]], note: "2 h 45 para pasar a la terminal doméstica." },
 ];
 
 const CITIES = [
-  { k: "phuket", n: "Phuket", d: "2 → 5 dic", foto: "phuket", g: [["phangnga", "Bahía de Phang Nga"]],
-    intro: "Base en Phuket Town, la parte con más historia y la mejor comida local. Las islas se hacen en tour con recogida en el hotel.",
-    picks: [["Bahía de Phang Nga y James Bond + canoa", "jue 3", "฿1,700–1,990 + parque ฿300", true],
-            ["Wat Chalong y Big Buddha", "vie 4", "gratis"],
-            ["Playas del sur: Kata Noi, Kata y Nai Harn + mirador de Karon", "vie 4", "Grab ~฿500–750"],
-            ["Atardecer en Promthep", "vie 4", "gratis"],
-            ["Old Town y mercados Chillva e Indy", "jue y vie", "cena ฿200–400"]],
-    masaje: "Sansabai Massage 2 o Kim's en Old Town (฿250–550 la hora).",
-    comer: "Khao Tom Rim Thang (noche de llegada) · Raya · One Chun · Tu Kab Khao · dim sum en Boomrat.",
+  { k: "phuket", d: "2 → 5 dic", g: [["phangnga", "Bahía de Phang Nga"]],
+    picks: [["Bahía de Phang Nga y James Bond", "jue 3", "฿1,700–1,990 + parque ฿300"],
+            ["Wat Chalong y Big Buddha", "vie 4", "Gratis"],
+            ["Playas Kata Noi, Kata y Nai Harn", "vie 4", "Grab ~฿500–750"],
+            ["Atardecer en Promthep", "vie 4", "Gratis"],
+            ["Old Town y mercados Chillva e Indy", "jue y vie", "Cena ฿200–400"]],
+    masaje: "Sansabai Massage 2 o Kim's, en Old Town · ฿250–550 la hora",
+    comer: "Khao Tom Rim Thang (la noche que llegan) · Raya · One Chun · Tu Kab Khao · dim sum en Boomrat",
     evitar: "Phuket FantaSea: usa elefantes en el show." },
-  { k: "krabi", n: "Ao Nang (Krabi)", d: "5 → 11 dic", foto: "aonang", g: [["maya", "Maya Bay, Phi Phi"], ["railay", "Railay"], ["tigercave", "Cima de Tiger Cave"]],
-    intro: "La base de islas del viaje. Las tasas de parque se pagan aparte y en efectivo.",
-    picks: [["Phi Phi en speedboat: Maya, Pileh, Viking y Bamboo", "lun 7", "฿1,600–2,200 + parque ฿400", true],
-            ["4 Islands al atardecer con Phra Nang", "jue 10", "฿800–1,600 + parque ฿200–400", true],
+  { k: "krabi", d: "5 → 11 dic", g: [["maya", "Maya Bay, Phi Phi"], ["railay", "Railay"], ["tigercave", "Cima de Tiger Cave"]],
+    picks: [["Phi Phi en speedboat", "lun 7", "฿1,600–2,200 + parque ฿400"],
+            ["4 Islands al atardecer", "jue 10", "฿800–1,600 + parque"],
             ["Islas Hong en longtail", "mié 9", "฿800–1,500 + parque ฿300"],
-            ["Tiger Cave Temple al amanecer", "dom 6", "gratis, donativo"],
-            ["Emerald Pool, Blue Pool y termales", "mar 8", "฿1,100–1,700"]],
-    masaje: "Massage Corner (calidad) · Dee Dee (precio) · Royal Palm Spa (lujo). Abren hasta las 23:00–24:00.",
-    comer: "Krua Thara · Lae Lay Grill · Seafood Street · The Last Fisherman · Krabi Walking Street (fin de semana).",
-    evitar: "Dar comida a los monos (Tiger Cave, Railay) y cualquier paseo en elefante." },
-  { k: "pattaya", n: "Pattaya", d: "11 → 14 dic", foto: "sanctuary", g: [["kohlarn", "Koh Larn"]],
-    intro: "Base en Naklua, el lado tranquilo, a ~17 km de Tomorrowland.",
-    picks: [["Tomorrowland Thailand", "dom 13", "entradas compradas"],
-            ["Koh Larn y Tien Beach en ferry público", "sáb 12", "฿40 por tramo"],
-            ["Sanctuary of Truth, templo de madera junto al mar", "sáb 12", "฿500"],
-            ["Thepprasit Night Market", "vie a dom", "cena ฿150–300"],
-            ["Buddha Hill al atardecer", "cualquier día", "gratis"]],
-    masaje: "Sook Boon Mee Sub en Naklua, de masajistas ciegos (precio por confirmar), o un spa de hotel.",
-    comer: "Mariscos y comida local en Naklua; mercado Thepprasit.",
-    evitar: "Jet ski (cobran «daños» falsos), cajeros con comisión de ฿220, Elephant Village y la granja de cocodrilos. Baht bus: ฿10 por persona, sin decir antes el destino." },
-  { k: "cnx", n: "Chiang Mai", d: "14 → 18 dic", foto: "doisuthep", g: [["elephant", "Elephant Nature Park"], ["inthanon", "Doi Inthanon"]],
-    intro: "El centro budista del viaje: templos, monk chats y montaña. Mañanas frescas (13–18 °C): llevar algo abrigado.",
-    picks: [["Elephant Nature Park, media jornada", "mié 16", "฿2,500", true],
-            ["Doi Suthep al amanecer", "mar 15", "฿30"],
-            ["Casco antiguo: Wat Chedi Luang (monk chat) y Wat Phra Singh", "mar 15", "฿0–50"],
+            ["Tiger Cave Temple", "dom 6", "Gratis"],
+            ["Emerald Pool y termales", "mar 8", "฿1,100–1,700"]],
+    masaje: "Massage Corner (calidad) · Dee Dee (precio) · Royal Palm Spa (lujo)",
+    comer: "Krua Thara · Lae Lay Grill · Seafood Street · The Last Fisherman · Walking Street (fin de semana)",
+    evitar: "Dar comida a los monos y cualquier paseo en elefante. Las tasas de parque se pagan en efectivo." },
+  { k: "pattaya", d: "11 → 14 dic", g: [["kohlarn", "Koh Larn"]],
+    picks: [["Tomorrowland", "dom 13", "Entradas compradas"],
+            ["Koh Larn en ferry", "sáb 12", "฿40 por tramo"],
+            ["Sanctuary of Truth", "sáb 12", "฿500"],
+            ["Thepprasit Night Market", "vie a dom", "Cena ฿150–300"],
+            ["Buddha Hill al atardecer", "cualquier día", "Gratis"]],
+    masaje: "Sook Boon Mee Sub en Naklua (masajistas ciegos) o un spa de hotel",
+    comer: "Mariscos en Naklua · mercado Thepprasit",
+    evitar: "Jet ski (cobran «daños» falsos) y cajeros con comisión de ฿220. Baht bus: ฿10 por persona, sin decir antes el destino." },
+  { k: "cnx", d: "14 → 18 dic", g: [["elephant", "Elephant Nature Park"], ["inthanon", "Doi Inthanon"]],
+    picks: [["Elephant Nature Park", "mié 16", "฿2,500"],
+            ["Amanecer en Doi Suthep", "mar 15", "฿30"],
+            ["Wat Chedi Luang y monk chat", "mar 15", "฿50"],
             ["Clase de cocina", "mar 15", "฿800–1,200"],
-            ["Doi Inthanon, día completo", "jue 17", "฿1,200–1,800"]],
-    masaje: "Lila, de ex reclusas (฿400) · Let's Relax Thapae (hasta las 24:00) · masaje en templo. Lujo: Fah Lanna u Oasis.",
-    comer: "Khao soi (฿50–150) · Anusarn · Chang Phueak · jok en Somphet al desayuno. Night Bazaar y Ploen Ruedee abren de lunes a sábado.",
-    evitar: "Campos con monta o baños de elefantes. El mercado del domingo no coincide con la estadía." },
-  { k: "bkk", n: "Bangkok", d: "18 → 26 dic", foto: "watarun", g: [["palace", "Wat Phra Kaew"], ["watpho", "Buda reclinado, Wat Pho"], ["yaowarat", "Yaowarat"]],
-    intro: "Ocho noches en Thonburi, a 6 min a pie del BTS Wongwian Yai. Templos por la mañana, mercados y rooftops de noche.",
-    picks: [["Gran Palacio y Wat Phra Kaew", "lun 21", "฿500", true],
-            ["Wat Pho: Buda reclinado y masaje", "lun 21", "฿300"],
+            ["Doi Inthanon", "jue 17", "฿1,200–1,800"]],
+    masaje: "Lila, de ex reclusas (฿400) · Let's Relax Thapae (hasta las 24:00) · lujo: Fah Lanna u Oasis",
+    comer: "Khao soi (฿50–150) · Anusarn · Chang Phueak · jok en Somphet al desayuno",
+    evitar: "Lugares con monta o baños de elefantes. Mañanas frías: llevar polerón." },
+  { k: "bkk", d: "18 → 26 dic", g: [["palace", "Wat Phra Kaew"], ["watpho", "Wat Pho"], ["yaowarat", "Yaowarat"]],
+    picks: [["Gran Palacio", "lun 21", "฿500"],
+            ["Wat Pho y su masaje", "lun 21", "฿300"],
             ["Wat Arun al atardecer", "lun 21", "฿200"],
             ["Comida callejera en Yaowarat", "vie 18", "฿300–500"],
-            ["Chatuchak", "sáb 19", "gratis entrar"]],
-    mas: "También: Ayutthaya (mar 22), tren de Maeklong y Amphawa (dom 20), Golden Mount, Jim Thompson, Muay Thai en Rajadamnern y rooftops.",
-    masaje: "Wat Pho · Health Land Sathorn (2 h ~฿700) · Bhu Mai en ICONSIAM.",
-    comer: "Thip Samai (pad thai) · mariscos de Soi Phadung Dao · Raan Jay Fai (capricho).",
-    evitar: "La estafa «hoy está cerrado» + tuk-tuk a joyerías. Los cierres se revisan solo en royalgrandpalace.th." },
+            ["Mercado Chatuchak", "sáb 19", "Gratis"]],
+    masaje: "Wat Pho · Health Land Sathorn (2 h ~฿700) · Bhu Mai en ICONSIAM",
+    comer: "Thip Samai (pad thai) · mariscos en Soi Phadung Dao · Raan Jay Fai (capricho)",
+    evitar: "La estafa «hoy está cerrado» con tuk-tuk a joyerías. Los cierres se revisan solo en royalgrandpalace.th." },
 ];
 
 const FUND = [
-  ["Traslados internos (plan B)", 530, "--c-phuket", "cotizado, sin comprar"],
-  ["Comida y bebida (~AUD 26.50 al día)", 610, "--c-krabi", "estimación"],
-  ["Tours y 7 masajes", 360, "--c-pattaya", "estimación"],
-  ["Tomorrowland (comida, bebida y taxi)", 200, "--c-bkk", "estimación"],
-  ["Taxis diarios y metro", 160, "--c-cnx", "estimación"],
-  ["Libre: compras, regalos e imprevistos", 140, "--c-viaje", "lo que sobra"],
+  ["Traslados internos", 530, "--c-phuket", "Cotizado, sin comprar"],
+  ["Comida y bebida", 610, "--c-krabi", "~AUD 26.50 al día"],
+  ["Tours y 7 masajes", 360, "--c-pattaya", "Estimación"],
+  ["Tomorrowland", 200, "--c-bkk", "Comida, bebida y taxi"],
+  ["Taxis y metro", 160, "--c-cnx", "Estimación"],
+  ["Libre", 140, "--c-viaje", "Compras, regalos e imprevistos"],
 ];
 
+// Pendientes: [qué, detalle, urgencia (ahora | antes | luego), link, texto del link, fecha]
 const TODOS = [
-  { g: "Comprar ya", items: [
-    ["Vuelo Krabi → Don Mueang, vie 11 dic 13:35 + maleta 30 kg", "Thai AirAsia · ฿6,278 los dos + ~฿1,000 de maleta. Nombres igual que en el pasaporte.", "ahora", "https://www.airasia.com", "airasia.com"],
-    ["Vuelo Suvarnabhumi → Chiang Mai, lun 14 dic 16:15 + maleta 30 kg", "Thai AirAsia · ฿4,902 los dos + ~฿1,000 de maleta.", "ahora", "https://www.airasia.com", "airasia.com"],
-    ["Vuelo Chiang Mai → Don Mueang, vie 18 dic 13:30 + maleta 30 kg", "Thai Lion Air · ฿4,590 los dos + ~฿1,000 de maleta.", "ahora", "https://www.lionairthai.com", "lionairthai.com"],
-    ["Elephant Nature Park, mié 16 dic", "Media jornada ฿2,500 por persona. En diciembre se agota 4–6 semanas antes.", "ahora", "https://www.elephantnaturepark.org", "elephantnaturepark.org"],
-    ["Auto Phuket → Ao Nang, sáb 5 dic 12:00", "IslandTransfer, ฿2,900. Confirmar que recogen en Phuket Town.", "ahora", "https://island-transfer.com/intercity/phuket-to-krabi", "island-transfer.com"],
-  ]},
-  { g: "Antes de salir (hasta el lun 30 nov)", items: [
-    ["Hostal en Perth, noche del 1 al 2 dic", "~AUD 50. Cerca de la estación o del aeropuerto.", "soon"],
-    ["Seguro de viaje para los dos", "", "soon"],
-    ["Tarjeta de llegada digital de Tailandia (TDAC)", "Se llena en línea en los 3 días antes de llegar (29 nov a 2 dic). Confirmar requisitos de entrada según sus pasaportes.", "soon", "https://tdac.immigration.go.th", "tdac.immigration.go.th"],
-    ["Tours de islas en feriado: Phi Phi (lun 7) y 4 Islands (jue 10)", "Reservar online con cancelación gratis.", "soon"],
-    ["Guardar en el iPhone: este PDF, los e-tickets de Tomorrowland (también el de Romina) y las reservas", "En Archivos → En mi iPhone, para tenerlos sin señal.", "soon"],
-  ]},
-  { g: "Antes de cada tramo", items: [
-    ["Auto Don Mueang → Naklua, vie 11 dic", "Mike Pattaya Taxi por WhatsApp +66 98 334 6549. Pasarles el número de vuelo.", "later", "https://mikepattayataxi.com/rate-of-service/", "mikepattayataxi.com", "hasta el 4 dic"],
-    ["Bus Roong Reuang Pattaya → BKK, lun 14 dic 12:00", "Online o en la ventanilla del terminal North Pattaya.", "later", "https://www.busonlineticket.co.th/bus/roong-reuang-coach/", "busonlineticket.co.th", "hasta el 7 dic"],
-    ["Decidir si se quedan con el hotel de Pattaya", "Cancelación gratis hasta el mié 9 dic 23:59.", "later", "", "", "9 dic"],
-    ["Revisar cierres del Gran Palacio por la cremación real", "En royalgrandpalace.th, la semana del 14 dic.", "later", "https://www.royalgrandpalace.th", "royalgrandpalace.th", "14 dic"],
-    ["Decidir si se quedan con el Zenniq", "Cancelación gratis hasta el mié 16 dic 23:59.", "later", "", "", "16 dic"],
-  ]},
-  { g: "Efectivo que hay que tener a mano", items: [
-    ["฿500 para el depósito del hotel de Ao Nang", "Lo devuelven al salir.", "later", "", "", "5 dic"],
-    ["฿2,900 para el auto Phuket → Ao Nang", "Se paga al conductor al llegar.", "later", "", "", "5 dic"],
-    ["Tasas de parque de los tours de islas", "~฿1,000 por persona en Krabi y ฿300 en Phang Nga.", "later", "", "", "3–10 dic"],
-  ]},
+  ["Vuelo Krabi → Don Mueang", "Vie 11 dic 13:35 + maleta 30 kg", "ahora", "https://www.airasia.com", "airasia.com"],
+  ["Vuelo Suvarnabhumi → Chiang Mai", "Lun 14 dic 16:15 + maleta 30 kg", "ahora", "https://www.airasia.com", "airasia.com"],
+  ["Vuelo Chiang Mai → Don Mueang", "Vie 18 dic 13:30 + maleta 30 kg", "ahora", "https://www.lionairthai.com", "lionairthai.com"],
+  ["Elephant Nature Park", "Mié 16 dic · se agota semanas antes", "ahora", "https://www.elephantnaturepark.org", "elephantnaturepark.org"],
+  ["Auto Phuket → Ao Nang", "Sáb 5 dic 12:00 · IslandTransfer", "ahora", "https://island-transfer.com/intercity/phuket-to-krabi", "island-transfer.com"],
+  ["Hostal en Perth", "Noche del 1 al 2 dic · ~AUD 50", "antes"],
+  ["Seguro de viaje", "Para los dos", "antes"],
+  ["Tarjeta de llegada (TDAC)", "Se llena los 3 días antes de llegar (29 nov a 2 dic)", "antes", "https://tdac.immigration.go.th", "tdac.immigration.go.th"],
+  ["Tours de Phi Phi y 4 Islands", "Lun 7 y jue 10 son feriado", "antes"],
+  ["Guardar las entradas en el iPhone", "Tomorrowland de los dos, en Archivos", "antes"],
+  ["Auto Don Mueang → Naklua", "Mike Pattaya Taxi por WhatsApp", "luego", "https://mikepattayataxi.com/rate-of-service/", "mikepattayataxi.com", "Hasta 4 dic"],
+  ["Bus Pattaya → Suvarnabhumi", "Lun 14 dic 12:00 · Roong Reuang", "luego", "https://www.busonlineticket.co.th/bus/roong-reuang-coach/", "busonlineticket.co.th", "Hasta 7 dic"],
+  ["¿Seguimos con el hotel de Pattaya?", "Cancelación gratis", "luego", "", "", "9 dic"],
+  ["Cierres del Gran Palacio", "Revisar royalgrandpalace.th", "luego", "https://www.royalgrandpalace.th", "royalgrandpalace.th", "14 dic"],
+  ["¿Seguimos con el Zenniq?", "Cancelación gratis", "luego", "", "", "16 dic"],
 ];
 
 /* ---------- utilidades ---------- */
 const $ = (s, r = document) => r.querySelector(s);
 const DOW = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
+const DOW_L = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
 const pad = n => String(n).padStart(2, "0");
 const iso = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 const parse = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
 const cv = k => `var(${CITY[k].c})`;
-const img = (k, cls, alt) => FOTOS[k] ? `<img class="${cls}" src="${FOTOS[k]}" alt="${alt}" loading="lazy" decoding="async">` : "";
+const ic = (n, cls = "ic") => `<svg class="${cls}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const img = (k, alt) => FOTOS[k] ? `<img src="${FOTOS[k]}" alt="${alt}" loading="lazy" decoding="async">` : "";
 const fmt = n => n.toLocaleString("en-US", { maximumFractionDigits: 0 });
-const pill = st => `<span class="pill ${st}">${ST[st]}</span>`;
-const copyBtn = text => `<button class="copy" type="button" data-copy="${text.replace(/"/g, "&quot;")}">Copiar</button>`;
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+const copyBtn = (text, label) => `<button class="copy" type="button" data-copy="${esc(text)}" aria-label="Copiar ${esc(label)}">${ic("copy", "ic sm")}</button>`;
+const badge = st => STATUS[st] ? `<span class="badge ${STATUS[st][0]}">${STATUS[st][1]}</span>` : "";
+const nightsIn = k => DAYS.filter(d => d.c === k).length;
 
-/* ---------- Día a día ---------- */
-function tagChip(t) {
-  if (t === "feriado") return `<span class="chip feriado">Feriado</span>`;
-  if (t === "wanphra") return `<span class="chip wanphra">Wan Phra · día santo budista</span>`;
-  if (t === "tml") return `<span class="chip" style="background:color-mix(in srgb,var(--c-pattaya) 18%,var(--surface));color:var(--c-pattaya)">Festival</span>`;
-  return "";
+const todayIso = window.__HOY__ || iso(new Date());
+const inTrip = todayIso >= "2026-12-01" && todayIso <= "2026-12-27";
+
+/* ---------- línea de tiempo de un día ---------- */
+function timeline(d) {
+  const items = d.items.map(([h, i, t, det, st]) =>
+    `<li><time>${h}</time><span class="dot">${ic(i)}</span><span class="what"><b>${t}</b>${det ? `<p>${det}</p>` : ""}${badge(st)}</span></li>`).join("");
+  return `<ol class="tl" style="--c:${cv(d.c)}">${items}</ol>`;
 }
-function renderDays(todayIso) {
+function sleepLine(d) {
+  if (d.duerme) {
+    const [n, s, st] = d.duerme;
+    return `<div class="note">${ic("bed")}<span><b>Duermen:</b> ${n}${s ? ` · ${s}` : ""} ${badge(st)}</span></div>`;
+  }
+  const h = HOTELS[d.c];
+  return h ? `<div class="note">${ic("bed")}<span><b>Duermen:</b> ${h.n}</span></div>` : "";
+}
+function dayDetail(d) {
+  return `${timeline(d)}${sleepLine(d)}${d.ojo ? `<div class="note warn">${ic("alert")}<span>${d.ojo}</span></div>` : ""}`;
+}
+function tagsOf(d) {
+  const out = [];
+  if ((d.tags || []).includes("feriado")) out.push(`<span>${ic("flag", "ic sm")}Feriado</span>`);
+  if ((d.tags || []).includes("wanphra")) out.push(`<span>${ic("moon", "ic sm")}Día santo</span>`);
+  if ((d.tags || []).includes("tml")) out.push(`<span>${ic("music", "ic sm")}Festival</span>`);
+  const move = d.items.find(x => ["plane", "car", "bus"].includes(x[1]));
+  if (move && !(d.tags || []).includes("tml")) out.push(`<span>${ic(move[1], "ic sm")}${move[0]}</span>`);
+  const pend = d.items.map(x => x[4]).filter(s => STATUS[s]);
+  if (pend.length) out.push(`<span class="alert">${pend.includes("compra") ? "Falta comprar" : "Falta reservar"}</span>`);
+  return out.join("");
+}
+
+/* ---------- Hoy ---------- */
+function renderHoy() {
+  const main = $("#hoy-main"), next = $("#hoy-next"), todo = $("#hoy-todo");
+  const start = parse("2026-12-01"), today = parse(todayIso);
+  if (todayIso < "2026-12-01") {
+    const left = Math.round((start - today) / 86400000);
+    $("#hoy-sub").textContent = "Fran y Romina · 1 → 27 dic";
+    main.innerHTML = `<div class="count"><span class="big num">${left}</span><span><span class="t">${left === 1 ? "día para salir" : "días para salir"}</span><br><span class="muted">Mar 1 dic · 19:00 · desde Brisbane</span></span></div>`;
+    next.innerHTML = `<h2>Los primeros días</h2><div class="group">${DAYS.slice(0, 3).map(dayRowLink).join("")}</div>`;
+  } else if (inTrip) {
+    const idx = DAYS.findIndex(d => d.f === todayIso), d = DAYS[idx], dt = parse(d.f);
+    const foto = d.foto || CITY[d.c].foto;
+    $("#hoy-sub").textContent = `Día ${idx + 1} de ${DAYS.length}`;
+    main.innerHTML = `<div class="hero${FOTOS[foto] ? "" : " noimg"}">${img(foto, d.t)}<div class="cap"><p>${DOW_L[dt.getDay()]} ${dt.getDate()} dic · ${d.l || CITY[d.c].n}</p><h2>${d.t}</h2></div></div>
+      <div class="group"><div class="day-body" style="padding-top:16px">${dayDetail(d)}</div></div>
+      ${HOTELS[d.c] && !d.duerme ? hotelCard(HOTELS[d.c], d.c) : ""}`;
+    next.innerHTML = DAYS[idx + 1] ? `<h2>Mañana</h2><div class="group">${dayRowLink(DAYS[idx + 1])}</div>` : "";
+  } else {
+    $("#hoy-sub").textContent = "Viaje terminado";
+    main.innerHTML = `<div class="count"><span class="big">✓</span><span class="t">Bienvenidos a casa</span></div>`;
+    next.innerHTML = "";
+  }
+  if (todayIso <= "2026-12-01") {
+    const groups = [["ahora", "Comprar ya"], ["antes", "Antes de salir"], ["luego", "Antes de cada tramo"]];
+    todo.innerHTML = `<h2>Por hacer</h2>` + groups.map(([k, name], gi) => {
+      const items = TODOS.filter(t => t[2] === k);
+      const rows = items.map(([w, det, u, url, host, dl]) => `<div class="row">
+          <span class="icon-dot" style="--c:var(${u === "ahora" ? "--bad" : u === "antes" ? "--warn" : "--muted"})">${ic(u === "ahora" ? "alert" : "dot")}</span>
+          <span class="grow"><span class="t">${w}</span><span class="s">${det}${dl ? ` · <b>${dl}</b>` : ""}</span></span>
+          ${url ? `<a class="copy" href="${url}" target="_blank" rel="noopener" aria-label="Abrir ${host}">${ic("out", "ic sm")}</a>` : ""}
+        </div>`).join("");
+      return `<details class="group"${gi === 0 ? " open" : ""}><summary class="row"><span class="grow"><span class="t">${name}</span><span class="s">${items.length} ${items.length === 1 ? "cosa" : "cosas"}</span></span>${ic("down", "ic chev")}</summary>${rows}</details>`;
+    }).join("");
+  } else todo.innerHTML = "";
+}
+function hotelCard(h, c) {
+  return `<div class="sleep" style="--c:${cv(c)}"><span class="icon-dot">${ic("bed")}</span><span class="grow"><b>${h.n}</b><br><span class="muted">${h.io}</span></span>${copyBtn(h.addr, "dirección")}</div>`;
+}
+function dayRowLink(d) {
+  const dt = parse(d.f);
+  return `<button type="button" class="row" data-goday="${d.f}" style="--c:${cv(d.c)};width:100%;text-align:left">
+    <span class="dnum"><b>${dt.getDate()}</b><small>${DOW[dt.getDay()]}</small></span>
+    <span class="grow"><span class="t">${d.t}</span><span class="tags">${tagsOf(d)}</span></span>${ic("right", "ic chev")}</button>`;
+}
+
+/* ---------- Días ---------- */
+function renderDias() {
   const cal = $("#cal");
-  cal.innerHTML = ["L", "M", "M", "J", "V", "S", "D"].map(x => `<div class="cal-dow">${x}</div>`).join("");
-  const first = parse(DAYS[0].f).getDay(); // martes = 2
-  const lead = (first + 6) % 7;
-  for (let i = 0; i < lead; i++) cal.insertAdjacentHTML("beforeend", `<span class="cal-cell empty"></span>`);
-  const marks = { "2026-12-02": "llegan", "2026-12-13": "TML", "2026-12-26": "vuelo" };
+  cal.innerHTML = ["L", "M", "M", "J", "V", "S", "D"].map(x => `<div class="cal-dow" aria-hidden="true">${x}</div>`).join("");
+  const lead = (parse(DAYS[0].f).getDay() + 6) % 7;
+  cal.insertAdjacentHTML("beforeend", `<span class="cal-cell empty"></span>`.repeat(lead));
   DAYS.forEach(d => {
     const n = parse(d.f).getDate();
-    cal.insertAdjacentHTML("beforeend",
-      `<a class="cal-cell${d.f === todayIso ? " today" : ""}" href="#d-${pad(n)}" style="--c:${cv(d.c)}" aria-label="${n} de diciembre, ${d.l || CITY[d.c].n}">${n}${marks[d.f] ? `<span class="mark">${marks[d.f]}</span>` : ""}</a>`);
+    cal.insertAdjacentHTML("beforeend", `<button type="button" class="cal-cell${d.f === todayIso ? " today" : ""}" data-goday="${d.f}" style="--c:${cv(d.c)}" aria-label="${n} de diciembre, ${d.l || CITY[d.c].n}: ${d.t}">${n}</button>`);
   });
-  const nights = { viaje: 2, phuket: 3, krabi: 6, pattaya: 3, cnx: 4, bkk: 8 };
-  $("#legend").innerHTML = Object.entries(nights).map(([k, v]) =>
-    `<span style="--c:${cv(k)}"><i></i>${k === "viaje" ? "Perth y avión" : CITY[k].n} · ${v} ${v === 1 ? "noche" : "noches"}</span>`).join("");
+  const legend = ["phuket", "krabi", "pattaya", "cnx", "bkk", "viaje"];
+  $("#legend").innerHTML = legend.map(k => `<span style="--c:${cv(k)}"><i></i>${k === "viaje" ? "Vuelos" : CITY[k].n}</span>`).join("");
 
-  $("#days").innerHTML = DAYS.map(d => {
-    const dt = parse(d.f), n = dt.getDate();
-    const cls = d.f === todayIso ? " today" : (todayIso && d.f < todayIso ? " past" : "");
-    const moves = (d.mov || []).map(([t, x, st]) => `<li class="move"><span class="t">${t}</span><span class="x">${x}</span>${pill(st)}</li>`).join("");
-    const plan = [...(d.plan || [])];
-    const after = d.after || [];
-    return `<article class="day${cls}" id="d-${pad(n)}" style="--c:${cv(d.c)}">
-      ${d.foto ? img(d.foto, "day-photo", d.t) : ""}
-      <div class="day-in">
-        <div class="day-date"><span class="dow">${DOW[dt.getDay()]}</span><span class="n">${n}</span><span class="m">dic</span></div>
-        <div class="day-body">
-          <div class="day-head"><span class="chip city">${d.l || CITY[d.c].n}</span>${(d.tags || []).map(tagChip).join("")}${d.f === todayIso ? `<span class="chip" style="background:var(--sun-soft);color:var(--sun)">Hoy</span>` : ""}</div>
-          <h3>${d.t}</h3>
-          ${plan.length && moves ? `<ul class="plan">${plan.map(p => `<li>${p}</li>`).join("")}</ul>` : ""}
-          ${moves ? `<ul class="moves">${moves}</ul>` : ""}
-          ${!moves && plan.length ? `<ul class="plan">${plan.map(p => `<li>${p}</li>`).join("")}</ul>` : ""}
-          ${after.length ? `<ul class="plan">${after.map(p => `<li>${p}</li>`).join("")}</ul>` : ""}
-          <p class="sleep">Duermen: ${d.duerme}</p>
-          ${d.ojo ? `<p class="ojo"><b>Ojo:</b> ${d.ojo}</p>` : ""}
-        </div>
-      </div>
-    </article>`;
+  const stays = [];
+  DAYS.forEach(d => { const last = stays[stays.length - 1]; if (last && last.c === d.c && d.c !== "viaje") last.days.push(d); else if (last && d.c === "viaje" && last.c === "viaje" && last.l === (d.l || "")) last.days.push(d); else stays.push({ c: d.c, l: d.l || "", days: [d] }); });
+  $("#stays").innerHTML = stays.map(s => {
+    const first = parse(s.days[0].f).getDate(), lastD = parse(s.days[s.days.length - 1].f).getDate();
+    const h = HOTELS[s.c], foto = CITY[s.c].foto;
+    const title = s.c === "viaje" ? (s.l === "Perth" ? "Ida · Perth" : "Vuelta a casa") : CITY[s.c].n;
+    const sub = s.c === "viaje" ? (first === lastD ? `${first} dic` : `${first} → ${lastD} dic`) : `${first} → ${lastD + 1} dic · ${s.days.length} noches · ${h.n}`;
+    const head = foto && FOTOS[foto]
+      ? `<div class="stay-hd">${img(foto, title)}<div class="cap"><h2>${title}</h2><p>${sub}</p></div></div>`
+      : `<div class="stay-hd plain"><div class="cap"><h2>${title}</h2><p>${sub}</p></div></div>`;
+    const rows = s.days.map(d => {
+      const dt = parse(d.f);
+      return `<details class="day${d.f === todayIso ? " today" : ""}" id="d-${pad(dt.getDate())}" style="--c:${cv(d.c)}"${d.f === todayIso ? " open" : ""}>
+        <summary class="row"><span class="dnum"><b>${dt.getDate()}</b><small>${DOW[dt.getDay()]}</small></span>
+          <span class="grow"><span class="t">${d.t}</span><span class="tags">${tagsOf(d)}</span></span>${ic("down", "ic chev")}</summary>
+        <div class="day-body">${dayDetail(d)}</div></details>`;
+    }).join("");
+    return `<section class="stay" style="--c:${cv(s.c)}">${head}<div class="group">${rows}</div></section>`;
   }).join("");
 }
 
 /* ---------- Reservas ---------- */
 function renderReservas() {
-  $("#flights").innerHTML = FLIGHTS.map(f => `<article class="card">
-    <div class="row"><p class="route">${f.r}</p>${pill("ok")}</div>
-    <dl class="kv">
-      <dt>Cuándo</dt><dd>${f.d}</dd>
-      <dt>Vuelo</dt><dd class="mono">${f.v}</dd>
-      <dt>Reserva</dt><dd>${f.code ? `<span class="mono">${f.code}</span>${copyBtn(f.code)}` : "En el email o la app de Jetstar"}</dd>
-      <dt>Maletas</dt><dd>${f.bag}</dd>
-      <dt>Pagado</dt><dd>${f.paid}</dd>
-    </dl>
-    ${f.note ? `<p class="note">${f.note}</p>` : ""}
-  </article>`).join("");
-
-  $("#transfers").innerHTML = TRANSFERS.map(t => `<article class="card">
-    <div class="row"><p class="route">${t.r}</p>${pill(t.st)}</div>
-    <dl class="kv">
-      <dt>Cuándo</dt><dd>${t.d}</dd>
-      <dt>Cómo</dt><dd>${t.what}</dd>
-      <dt>Con</dt><dd>${t.who}</dd>
-      <dt>Costo</dt><dd>${t.cost}</dd>
-    </dl>
-    ${t.note ? `<p class="note">${t.note}</p>` : ""}
-    <a class="btn no-print-link" href="${t.url}" target="_blank" rel="noopener" data-url="${t.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}">${t.st === "compra" ? "Comprar" : "Reservar"} ↗</a>
-  </article>`).join("");
-
-  $("#hotels").innerHTML = HOTELS.map(h => `<article class="card" style="--c:${cv(h.c)}">
-    <div class="row"><span class="chip city">${CITY[h.c].n}</span><span class="pill ${h.pay[0]}">${h.pay[1]}</span></div>
-    <h3>${h.n}</h3>
-    <dl class="kv">
-      <dt>Fechas</dt><dd>${h.d}</dd>
-      <dt>Reserva</dt><dd><span class="mono">${h.code}</span>${copyBtn(h.code)}</dd>
-      <dt>Check-in</dt><dd>${h.in} · salida ${h.out}</dd>
-      <dt>Dirección</dt><dd>${h.addr}${copyBtn(h.addr)}</dd>
-      <dt>Teléfono</dt><dd><span class="mono">${h.tel}</span>${copyBtn(h.tel)}</dd>
-    </dl>
-    ${h.note ? `<p class="note">${h.note}</p>` : ""}
-  </article>`).join("");
+  const cls = b => b.st === "ok" ? "--ok" : b.st === "warn" || b.st === "elegir" ? "--warn" : "--bad";
+  const n = k => BOOKINGS.filter(b => cls(b) === k).length;
+  $("#res-summary").innerHTML = `<div class="summary-bar" aria-hidden="true">${BOOKINGS.map(b => `<span style="--c:var(${cls(b)})"></span>`).join("")}</div>
+    <div class="counts"><span style="--c:var(--ok)"><i></i>${n("--ok")} listas</span><span style="--c:var(--bad)"><i></i>${n("--bad")} por comprar o reservar</span><span style="--c:var(--warn)"><i></i>${n("--warn")} por pagar o elegir</span></div>`;
+  $("#bookings").innerHTML = BOOKINGS.map(b => {
+    const right = b.st === "ok" ? `<span class="okmark" aria-label="${b.stl || "Listo"}">${ic("check")}</span>`
+      : b.st === "warn" ? `<span class="badge warn">${b.stl}</span>`
+      : `<span class="badge ${STATUS[b.st][0]}">${{ compra: "Comprar", reserva: "Reservar", elegir: "Elegir" }[b.st]}</span>`;
+    const kv = b.kv.map(([k, v, copy, fallback]) => `<div><dt>${k}</dt><dd>${v ? `<span class="${/^[A-Z0-9.+ ]{6,}$/.test(v) ? "mono" : ""}">${v}</span>${copy ? copyBtn(v, k.toLowerCase()) : ""}` : `<span class="muted">${fallback || "En el email de Jetstar"}</span>`}</dd></div>`).join("");
+    return `<details style="--c:${cv(b.c)}"><summary class="row"><span class="icon-dot">${ic(b.i)}</span>
+      <span class="grow"><span class="t">${b.t}</span><span class="s">${b.w}</span></span>${right}</summary>
+      <div class="det"><dl class="kv">${kv}</dl>${b.note ? `<div class="note">${b.note}</div>` : ""}${b.url ? `<a class="go" href="${b.url}" target="_blank" rel="noopener" data-url="${b.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}">${b.st === "compra" ? "Comprar" : "Reservar"}${ic("out", "ic sm")}</a>` : ""}</div></details>`;
+  }).join("");
 }
 
-/* ---------- Panoramas ---------- */
-function renderPanoramas() {
-  const fl = $("#filters");
-  fl.innerHTML = `<button class="filter" type="button" data-city="all" aria-pressed="true">Todas</button>` +
-    CITIES.map(c => `<button class="filter" type="button" data-city="${c.k}" aria-pressed="false" style="--c:${cv(c.k)}">${CITY[c.k].n}</button>`).join("");
-  $("#cities").innerHTML = CITIES.map(c => `<article class="city" data-city="${c.k}" style="--c:${cv(c.k)}">
-    ${img(c.foto, "city-hero", c.n)}
-    <div class="city-in">
-      <header><h3>${c.n}</h3><p class="muted">${c.d} · ${c.intro}</p></header>
-      <ol class="picks">${c.picks.map(([name, when, price, res]) => `<li class="pick"><span class="name">${name}</span>
-        <span class="meta"><span>${when}</span><span class="num">${price}</span>${res ? `<span class="res">reservar</span>` : ""}</span></li>`).join("")}</ol>
-      ${c.mas ? `<p class="muted">${c.mas}</p>` : ""}
-      ${c.g.length ? `<div class="gallery">${c.g.map(([k, cap]) => FOTOS[k] ? `<figure>${img(k, "", cap)}<figcaption>${cap}</figcaption></figure>` : "").join("")}</div>` : ""}
-      <div class="mini"><h4>Masajes</h4><p>${c.masaje}</p></div>
-      <div class="mini"><h4>Comer</h4><p>${c.comer}</p></div>
-      <div class="mini"><h4>Evitar</h4><p>${c.evitar}</p></div>
-    </div>
-  </article>`).join("");
-  fl.addEventListener("click", e => {
-    const b = e.target.closest(".filter"); if (!b) return;
-    fl.querySelectorAll(".filter").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-    document.querySelectorAll(".city").forEach(c => c.classList.toggle("hide", b.dataset.city !== "all" && c.dataset.city !== b.dataset.city));
+/* ---------- Lugares ---------- */
+function renderLugares() {
+  const current = inTrip ? (DAYS.find(d => d.f === todayIso) || {}).c : null;
+  const start = CITIES.some(c => c.k === current) ? current : "phuket";
+  $("#switch").innerHTML = CITIES.map(c => `<button type="button" data-city="${c.k}" aria-pressed="${c.k === start}" style="--c:${cv(c.k)}"><i></i>${CITY[c.k].n}</button>`).join("");
+  $("#cities").innerHTML = CITIES.map(c => {
+    const foto = CITY[c.k].foto;
+    const more = [["spa", "Masajes", c.masaje], ["food", "Comer", c.comer], ["alert", "Evitar", c.evitar]].map(([i, t, txt]) =>
+      `<details><summary class="row"><span class="icon-dot">${ic(i)}</span><span class="grow"><span class="t">${t}</span></span>${ic("down", "ic chev")}</summary><div class="more">${txt}</div></details>`).join("");
+    return `<div class="city${c.k === start ? " on" : ""}" data-city="${c.k}" style="--c:${cv(c.k)}">
+      <div class="hero">${img(foto, CITY[c.k].n)}<div class="cap"><p>${c.d} · ${nightsIn(c.k)} noches</p><h2>${CITY[c.k].n}</h2></div></div>
+      <div class="group">${c.picks.map(([t, when, price], i) => `<div class="row pick"><span class="n">${i + 1}</span><span class="grow"><span class="t">${t}</span><span class="s num">${price}</span></span><span class="badge sea">${when}</span></div>`).join("")}</div>
+      ${c.g.length ? `<div class="strip">${c.g.map(([k, cap]) => FOTOS[k] ? `<figure>${img(k, cap)}<figcaption>${cap}</figcaption></figure>` : "").join("")}</div>` : ""}
+      <div class="group">${more}</div>
+    </div>`;
+  }).join("");
+  $("#switch").addEventListener("click", e => {
+    const b = e.target.closest("button[data-city]"); if (!b) return;
+    $("#switch").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    document.querySelectorAll(".city").forEach(c => c.classList.toggle("on", c.dataset.city === b.dataset.city));
   });
+  $("#credits").textContent = "Fotos: Wikimedia Commons — " + CREDITOS.map(c => `${c[1]} (${c[2]})`).join(" · ") + ".";
 }
 
 /* ---------- Plata ---------- */
 function renderPlata() {
   const total = FUND.reduce((s, f) => s + f[1], 0);
-  $("#tiles").innerHTML = [
-    ["AUD 2,000", "fondo de cada uno"],
-    ["~฿46,600", "lo mismo en baht"],
-    ["AUD 140", "libre por persona"],
-  ].map(([v, l]) => `<div class="tile"><span class="v">${v}</span><span class="l">${l}</span></div>`).join("");
-  $("#stack").innerHTML = FUND.map(f => `<span style="width:${(f[1] / total * 100).toFixed(2)}%;--c:var(${f[2]})" title="${f[0]}"></span>`).join("");
-  $("#fund").innerHTML = `<thead><tr><th>Ítem</th><th class="r">AUD c/u</th><th class="r">฿ aprox.</th></tr></thead><tbody>` +
-    FUND.map(f => `<tr><td><span class="sw" style="--c:var(${f[2]})"></span>${f[0]}<br><span class="muted" style="font-size:.82rem">${f[3]}</span></td><td class="r">${fmt(f[1])}</td><td class="r">${fmt(f[1] * TC)}</td></tr>`).join("") +
-    `<tr class="total"><td>Total</td><td class="r">${fmt(total)}</td><td class="r">${fmt(total * TC)}</td></tr></tbody>`;
-  $("#paid").innerHTML = `<thead><tr><th>Qué</th><th>Estado</th><th class="r">AUD</th></tr></thead><tbody>
-    <tr><td>Vuelos largos Jetstar (3 reservas)</td><td>${pill("ok")}</td><td class="r">3,368.92</td></tr>
-    <tr><td>Hoteles Pearl y Lanna Thaphae</td><td>${pill("ok")}</td><td class="r">463.72</td></tr>
-    <tr><td>Hoteles Ao Nang, Pattaya y Zenniq</td><td><span class="pill elegir">Por pagar</span></td><td class="r">~1,125</td></tr>
-    <tr><td>Fondo en destino (2 × AUD 2,000)</td><td><span class="pill dia">Ahorrado</span></td><td class="r">4,000</td></tr>
-    <tr class="total"><td>Viaje completo</td><td></td><td class="r">~8,958</td></tr></tbody>`;
+  $("#fund").innerHTML = `<div class="fund-top"><b class="num">AUD 2,000</b><span class="muted">por persona · ~฿${fmt(2000 * TC)}</span></div>
+    <div class="stack" role="img" aria-label="Reparto del fondo">${FUND.map(f => `<span style="flex:${f[1]};--c:var(${f[2]})"></span>`).join("")}</div>
+    <ul>${FUND.map(f => `<li style="--c:var(${f[2]})"><i></i><span><span class="t">${f[0]}</span><br><span class="s">${f[3]}</span></span><span class="v">${fmt(f[1])}<small>฿${fmt(f[1] * TC)}</small></span></li>`).join("")}</ul>
+    <div class="note warn">${ic("alert")}<span>Los tours sugeridos suman más que AUD 360. Al cerrar el plan elegimos cuáles entran.</span></div>`;
+  $("#paid").innerHTML = `<dl class="kv">
+    <div><dt>Vuelos largos · pagados</dt><dd>AUD 3,368.92</dd></div>
+    <div><dt>Pearl y Lanna · pagados</dt><dd>AUD 463.72</dd></div>
+    <div><dt>Ao Nang, Pattaya y Zenniq · por pagar</dt><dd>~AUD 1,125</dd></div>
+    <div><dt>Fondo en destino · 2 × AUD 2,000</dt><dd>AUD 4,000</dd></div>
+    <div><dt>Total</dt><dd><b>~AUD 8,958</b></dd></div></dl>`;
   const thb = $("#thb"), aud = $("#aud");
   const toAud = () => { const v = parseFloat(thb.value); aud.value = isFinite(v) ? (v / TC).toFixed(2) : ""; };
   const toThb = () => { const v = parseFloat(aud.value); thb.value = isFinite(v) ? Math.round(v * TC) : ""; };
   thb.addEventListener("input", toAud); aud.addEventListener("input", toThb); toAud();
-  $("#quick").innerHTML = [100, 300, 500, 1000, 2000, 5000].map(v => `<div><span>฿${fmt(v)}</span><b>A$${(v / TC).toFixed(v < 1000 ? 2 : 0)}</b></div>`).join("");
+  $("#quick").innerHTML = [100, 300, 500, 1000, 2000, 5000].map(v =>
+    `<button type="button" data-thb="${v}"><span class="muted">฿${fmt(v)}</span><b>A$${(v / TC).toFixed(v < 1000 ? 2 : 0)}</b></button>`).join("");
+  $("#quick").addEventListener("click", e => { const b = e.target.closest("[data-thb]"); if (!b) return; thb.value = b.dataset.thb; toAud(); });
 }
 
-/* ---------- Pendientes ---------- */
-function renderTodos() {
-  const label = { ahora: ["Ahora", ""], soon: ["Antes de salir", " soon"], later: ["", " later"] };
-  $("#todos").innerHTML = TODOS.map(g => `<h3 class="sec-title">${g.g}</h3><ul class="todo">` +
-    g.items.map(([what, det, when, url, host, dl]) => {
-      const [txt, cls] = label[when];
-      const due = dl || txt;
-      return `<li><span class="what">${what}</span>${det ? `<span class="det">${det}</span>` : ""}
-        <span class="act">${due ? `<span class="due${cls}">${due}</span>` : ""}${url ? `<a class="btn" href="${url}" target="_blank" rel="noopener" data-url="${host}">${host} ↗</a>` : ""}</span></li>`;
-    }).join("") + `</ul>`).join("");
-  $("#credits").textContent = "Fotos: Wikimedia Commons — " + CREDITOS.map(c => `${c[1]} (${c[2]})`).join(" · ") + ".";
+/* ---------- navegación sin saltos ---------- */
+const VIEWS = ["hoy", "dias", "reservas", "lugares", "plata"];
+const scrollPos = {};
+let current = null;
+function show(view) {
+  if (current === view) { window.scrollTo(0, 0); return; }
+  if (current) scrollPos[current] = window.scrollY;
+  document.querySelectorAll(".panel").forEach(p => p.classList.toggle("on", p.id === "v-" + view));
+  document.querySelectorAll(".nav button").forEach(b => b.toggleAttribute("aria-current", false));
+  const btn = document.querySelector(`.nav button[data-view="${view}"]`);
+  if (btn) btn.setAttribute("aria-current", "page");
+  current = view;
+  window.scrollTo(0, scrollPos[view] || 0);
+  try { history.replaceState(null, "", "#" + view); localStorage.setItem("tl26-view", view); } catch (e) {}
 }
-
-/* ---------- Ahora / cuenta regresiva ---------- */
-function renderNow(todayIso) {
-  const start = parse("2026-12-01"), end = parse("2026-12-27"), today = parse(todayIso);
-  const dayMs = 86400000;
-  const st = $("#status"), now = $("#now");
-  if (today < start) {
-    const left = Math.round((start - today) / dayMs);
-    st.textContent = left === 1 ? "Salen mañana" : `Faltan ${left} días para salir`;
-    const urgent = TODOS[0].items.slice(0, 5);
-    now.innerHTML = `<h2>Lo urgente antes de salir</h2>
-      <ol>${urgent.map(([what, det, , url, host]) => `<li><b>${what}</b>${url ? ` · <a href="${url}" target="_blank" rel="noopener">${host}</a>` : ""}</li>`).join("")}</ol>
-      <p class="muted">Lista completa en Pendientes.</p>`;
-  } else if (today <= end) {
-    const idx = DAYS.findIndex(d => d.f === todayIso);
-    const d = DAYS[idx], next = DAYS[idx + 1];
-    st.textContent = `Día ${idx + 1} de ${DAYS.length} · hoy en ${d.l || CITY[d.c].n}`;
-    const mv = (d.mov || []).map(([t, x]) => `<li><b class="mono">${t}</b> ${x}</li>`).join("");
-    now.innerHTML = `<h2>Hoy: ${d.t}</h2>
-      ${mv ? `<ol>${mv}</ol>` : ""}
-      <p>Duermen: ${d.duerme}</p>
-      ${next ? `<p class="muted">Mañana: ${next.t}</p>` : ""}
-      <a class="btn" href="#d-${pad(parse(d.f).getDate())}">Ver el día completo</a>`;
-  } else {
-    st.textContent = "Viaje terminado";
-    now.hidden = true;
-  }
+function goDay(isoDate) {
+  if (current !== "dias") show("dias");
+  const el = document.getElementById("d-" + isoDate.slice(-2));
+  if (!el) return;
+  el.open = true;
+  requestAnimationFrame(() => window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - 12));
 }
-
-/* ---------- navegación ---------- */
-const VIEWS = ["dias", "reservas", "panoramas", "plata", "pendientes"];
-function show(view, scrollTo) {
-  document.querySelectorAll(".panel").forEach(p => p.classList.toggle("active", p.id === view));
-  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.view === view)));
-  try { localStorage.setItem("tl26-view", view); } catch (e) {}
-  if (scrollTo) { const el = document.getElementById(scrollTo); if (el) el.scrollIntoView({ block: "start" }); }
-}
-function route() {
-  const h = location.hash.replace("#", "");
-  if (/^d-\d\d$/.test(h)) return show("dias", h);
-  if (VIEWS.includes(h)) return show(h);
-  let saved = null; try { saved = localStorage.getItem("tl26-view"); } catch (e) {}
-  show(VIEWS.includes(saved) ? saved : "dias");
-}
-document.querySelector(".tabs").addEventListener("click", e => {
-  const b = e.target.closest(".tab"); if (!b) return;
-  if (location.hash !== "#" + b.dataset.view) location.hash = b.dataset.view; else show(b.dataset.view);
-  window.scrollTo({ top: 0 });
+document.querySelector(".nav").addEventListener("click", e => {
+  const b = e.target.closest("button[data-view]"); if (b) show(b.dataset.view);
 });
-window.addEventListener("hashchange", route);
 document.addEventListener("click", e => {
-  const b = e.target.closest(".copy"); if (!b) return;
-  const text = b.dataset.copy;
-  const done = () => { b.textContent = "Copiado"; setTimeout(() => (b.textContent = "Copiar"), 1500); };
-  const fallback = () => { const r = document.createRange(); r.selectNodeContents(b.previousElementSibling || b.parentNode); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
-  try { navigator.clipboard.writeText(text).then(done, fallback); } catch (err) { fallback(); }
+  const g = e.target.closest("[data-goday]");
+  if (g) { goDay(g.dataset.goday); return; }
+  const c = e.target.closest("button.copy");
+  if (!c) return;
+  e.preventDefault();
+  const done = () => { c.classList.add("done"); c.innerHTML = ic("check", "ic sm"); setTimeout(() => { c.classList.remove("done"); c.innerHTML = ic("copy", "ic sm"); }, 1400); };
+  const fallback = () => { const t = c.previousElementSibling; if (!t) return; const r = document.createRange(); r.selectNodeContents(t); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+  try { navigator.clipboard.writeText(c.dataset.copy).then(done, fallback); } catch (err) { fallback(); }
 });
 
-const todayIso = window.__HOY__ || iso(new Date());
-renderNow(todayIso);
-renderDays(todayIso >= "2026-12-01" && todayIso <= "2026-12-27" ? todayIso : null);
+renderHoy();
+renderDias();
 renderReservas();
-renderPanoramas();
+renderLugares();
 renderPlata();
-renderTodos();
 const GEN = window.__GEN__ || new Date().toLocaleDateString("es-CL", { day: "numeric", month: "long", year: "numeric" });
 $("#gen").textContent = GEN;
-$("#credits").textContent = `Versión del ${GEN}. ` + $("#credits").textContent;
-route();
-if (todayIso >= "2026-12-01" && todayIso <= "2026-12-27" && !location.hash) {
-  const el = document.getElementById("d-" + todayIso.slice(-2)); if (el && $("#dias").classList.contains("active")) el.scrollIntoView({ block: "start" });
-}
+$("#version").textContent = `Versión del ${GEN}.`;
+
+(() => {
+  const h = location.hash.replace("#", "");
+  if (/^d-\d\d$/.test(h)) { show("dias"); goDay("2026-12-" + h.slice(2)); return; }
+  if (VIEWS.includes(h)) return show(h);
+  let saved = null; try { saved = localStorage.getItem("tl26-view"); } catch (e) {}
+  show(inTrip ? "hoy" : (VIEWS.includes(saved) ? saved : "hoy"));
+})();
 </script>
 
 <div class="install" id="install" hidden>
@@ -989,13 +1007,15 @@ if (todayIso >= "2026-12-01" && todayIso <= "2026-12-27" && !location.hash) {
   const standalone = window.navigator.standalone === true || matchMedia("(display-mode: standalone)").matches;
   let visto = false; try { visto = localStorage.getItem("tl26-install") === "1"; } catch (e) {}
   const box = document.getElementById("install");
+  const slot = document.getElementById("slot-install");
+  if (slot) slot.appendChild(box);
   if (!standalone && !visto) box.hidden = false;
   document.getElementById("install-ok").addEventListener("click", () => { box.hidden = true; try { localStorage.setItem("tl26-install", "1"); } catch (e) {} });
   if (!("serviceWorker" in navigator)) return;
   navigator.serviceWorker.register("./sw.js").then(() => navigator.serviceWorker.ready).then(async () => {
     const keys = await caches.keys();
     if (!keys.some(k => k.startsWith("tailandia-"))) return;
-    const top = document.querySelector(".top");
+    const top = document.querySelector("#v-hoy .ph");
     if (top && !document.getElementById("offline-ok")) top.insertAdjacentHTML("beforeend", '<p class="offline-ok" id="offline-ok">✓ Guardada en este teléfono: funciona sin internet</p>');
   }).catch(() => {});
 })();

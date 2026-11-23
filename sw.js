@@ -1,6 +1,6 @@
 // Guarda la app en el teléfono para que abra sin internet.
 // Con internet trae la última versión (espera hasta 4 s); sin internet usa la copia guardada.
-const VERSION = "20261123-035129";
+const VERSION = "20261123-041352";
 const CACHE = "tailandia-" + VERSION;
 const ARCHIVOS = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./fuentes/atkinson-hyperlegible-italic-400.woff2", "./fuentes/atkinson-hyperlegible-normal-400.woff2", "./fuentes/atkinson-hyperlegible-normal-700.woff2", "./fuentes/bricolage-grotesque-normal-600.woff2", "./fuentes/ibm-plex-mono-normal-500.woff2"];
 
