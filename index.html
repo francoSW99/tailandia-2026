@@ -284,7 +284,7 @@ details[open] > summary .chev { transform: rotate(180deg); }
 }
 .go:active { transform: scale(0.97); }
 
-/* Lugares */
+/* Panoramas */
 .switch {
   display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
   margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); padding-inline: max(16px, env(safe-area-inset-left, 0px));
@@ -301,7 +301,39 @@ details[open] > summary .chev { transform: rotate(180deg); }
 .switch button[aria-pressed="true"] i { background: var(--bg); }
 .city { display: none; gap: 14px; }
 .city.on { display: grid; }
-.pick .n { width: 30px; flex: none; text-align: center; font-family: var(--f-display); font-weight: 700; font-size: 1.25rem; color: var(--c); }
+/* Panoramas: lista para tachar, sin horario */
+.pan-top { display: grid; gap: 8px; padding: 14px; border-radius: var(--r); background: var(--surface); }
+.prog { display: flex; align-items: baseline; gap: 6px; font-weight: 700; }
+.prog b { font-family: var(--f-display); font-size: 1.5rem; line-height: 1; color: var(--c); }
+.bar { height: 8px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+.bar span { display: block; height: 100%; border-radius: inherit; background: var(--c); transition: width 260ms var(--ease); }
+.pan-top .muted { font-size: 0.92rem; }
+.pan-top .note { margin-top: 2px; }
+.pan-h { font-size: 0.95rem; font-weight: 700; color: var(--c); padding: 4px 4px 0; margin-bottom: -6px; }
+.pan-h span { font-weight: 400; color: var(--muted); }
+.pan .row { align-items: flex-start; gap: 8px; padding: 8px 12px 8px 6px; }
+.pan .grow { padding-top: 6px; }
+.tick { width: 44px; height: 44px; flex: none; display: grid; place-items: center; touch-action: manipulation; }
+.tick i { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; border: 2px solid color-mix(in srgb, var(--c) 80%, var(--line)); color: transparent; transition: background 140ms var(--ease), border-color 140ms var(--ease), transform 140ms var(--ease); }
+.tick:active i { transform: scale(0.88); }
+.tick[aria-pressed="true"] i { background: var(--c); border-color: var(--c); color: var(--bg); }
+.pan-item.done .t { text-decoration: line-through; text-decoration-thickness: 2px; color: var(--muted); }
+.pan-item.done .s { opacity: 0.75; }
+.pan .s.ojo { display: flex; gap: 5px; align-items: flex-start; color: var(--warn); font-weight: 700; }
+.pan .s.ojo .ic { margin-top: 3px; flex: none; }
+.pan .reflink { margin-top: 0; }
+.daypick { position: relative; flex: none; align-self: center; display: inline-flex; }
+.daypick span {
+  display: inline-flex; align-items: center; gap: 4px; min-height: 36px; padding: 0 11px; border-radius: 999px;
+  font-size: 0.85rem; font-weight: 700; white-space: nowrap; background: var(--surface-2); color: var(--muted);
+}
+.daypick.set span { background: color-mix(in srgb, var(--c) 12%, var(--surface)); color: color-mix(in srgb, var(--c) 72%, var(--ink)); }
+.daypick select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; font-size: 16px; appearance: none; -webkit-appearance: none; }
+.daypick:has(select:focus-visible) span { outline: 3px solid var(--sun-line); outline-offset: 2px; }
+.pan-item .badge { align-self: center; }
+.pan.mini { border-radius: 12px; background: var(--surface-2); }
+.pan.mini .row + .row { border-top: 1px solid var(--line); }
+.day.free > summary .t { color: var(--muted); font-weight: 600; }
 .strip { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; }
 .strip::-webkit-scrollbar { display: none; }
 .strip figure { flex: 0 0 78%; scroll-snap-align: start; display: grid; gap: 4px; }
@@ -420,7 +452,7 @@ button.badge { min-height: 32px; }
 @media print {
   :root { --bg: #FFFFFF; --surface: #F3F6F5; }
   body { font-size: 13px; padding-bottom: 0; }
-  .nav, .switch, .conv, .copy, .no-print, .chev, .viewer, .lock, .doc-slot, .linkish { display: none !important; }
+  .nav, .switch, .conv, .copy, .no-print, .chev, .viewer, .lock, .doc-slot, .linkish, .daypick, .bar { display: none !important; }
   .panel, .city { display: flex !important; }
   .city { display: grid !important; }
   .panel { break-before: page; padding-top: 0; }
@@ -484,7 +516,7 @@ button.badge { min-height: 32px; }
       <a class="row" href="#v-hoy"><span class="grow"><span class="t">Inicio</span></span></a>
       <a class="row" href="#v-dias"><span class="grow"><span class="t">Días</span></span></a>
       <a class="row" href="#v-reservas"><span class="grow"><span class="t">Reservas y códigos</span></span></a>
-      <a class="row" href="#v-lugares"><span class="grow"><span class="t">Lugares</span></span></a>
+      <a class="row" href="#v-lugares"><span class="grow"><span class="t">Panoramas</span></span></a>
       <a class="row" href="#v-plata"><span class="grow"><span class="t">Plata</span></span></a>
     </div>
   </section>
@@ -506,7 +538,7 @@ button.badge { min-height: 32px; }
   </section>
 
   <section class="panel" id="v-dias" aria-labelledby="h-dias">
-    <header class="ph"><h1 id="h-dias">Días</h1><p>El plan de cada día. Toca uno para abrirlo.</p></header>
+    <header class="ph"><h1 id="h-dias">Días</h1><p>Lo fijo de cada día. El resto está libre para los panoramas.</p></header>
     <div class="cal">
       <div class="cal-grid" id="cal"></div>
       <div class="legend" id="legend"></div>
@@ -530,7 +562,7 @@ button.badge { min-height: 32px; }
   </section>
 
   <section class="panel" id="v-lugares" aria-labelledby="h-lug">
-    <header class="ph"><h1 id="h-lug">Lugares</h1><p>Lo mejor de cada ciudad, con precio por persona.</p></header>
+    <header class="ph"><h1 id="h-lug">Panoramas</h1><p>La lista de ustedes por ciudad. Sin horario: márquenlos al hacerlos.</p></header>
     <div class="switch no-print" id="switch" role="group" aria-label="Ciudad"></div>
     <div id="cities"></div>
     <div class="group">
@@ -579,7 +611,7 @@ button.badge { min-height: 32px; }
     <button type="button" data-view="dias"><svg class="ic"><use href="#i-cal"/></svg>Días</button>
     <button type="button" data-view="reservas"><svg class="ic"><use href="#i-ticket"/></svg>Reservas</button>
     <button type="button" data-view="docs"><svg class="ic"><use href="#i-file"/></svg>Docs</button>
-    <button type="button" data-view="lugares"><svg class="ic"><use href="#i-pin"/></svg>Lugares</button>
+    <button type="button" data-view="lugares"><svg class="ic"><use href="#i-star"/></svg>Panoramas</button>
     <button type="button" data-view="plata"><svg class="ic"><use href="#i-cash"/></svg>Plata</button>
   </div>
 </nav>
@@ -608,7 +640,8 @@ const CITY = {
   bkk:     { n: "Bangkok",    c: "--c-bkk", th: "กรุงเทพฯ",     dias: "palace",    lugar: "watarun",   hotel: "Zenniq" },
 };
 
-// Cada día: ítems [hora, ícono, qué, detalle, reserva relacionada]. Los precios viven en Lugares y los códigos en Reservas.
+// Cada día trae solo lo fijo: vuelos, traslados, hoteles y Tomorrowland. Ítems [hora, ícono, qué, detalle, reserva relacionada].
+// Los panoramas no tienen día: viven en la pestaña Panoramas y cada uno elige cuándo (p = ciudad de la lista, si no es la del día).
 const DAYS = [
   { f: "2026-12-01", c: "viaje", l: "Perth", t: "Brisbane → Perth", duerme: "Hostal en Perth", items: [
     ["19:00", "plane", "Vuelo a Perth", "Llega 22:20 al T2", "Brisbane → Perth"],
@@ -619,119 +652,55 @@ const DAYS = [
     ["13:00", "pin", "En el T1 Internacional", "El check-in cierra a las 15:00"],
     ["16:00", "plane", "Vuelo a Phuket", "Llega 21:25", "Perth → Phuket"],
     ["22:30", "taxi", "Taxi o Grab al hotel", "30–45 min · a esa hora no hay bus"],
-    ["23:30", "food", "Cena tardía", "Khao Tom Rim Thang, abre hasta la 01:00"]] },
-  { f: "2026-12-03", c: "phuket", t: "Bahía de Phang Nga", foto: "phangnga", items: [
-    ["07:30", "boat", "Tour Phang Nga y James Bond", "Recogida en el hotel · vuelta ~16:30", "Tour Phang Nga y James Bond"],
-    ["17:00", "spa", "Masaje en Old Town", ""],
-    ["20:00", "food", "Cena en Old Town", "Y mercados Chillva o Indy"]] },
-  { f: "2026-12-04", c: "phuket", t: "Templos, playas y atardecer", items: [
-    ["09:00", "temple", "Wat Chalong", ""],
-    ["10:30", "temple", "Big Buddha", "Abre 9:00–18:00"],
-    ["13:00", "beach", "Playas del sur", "Mirador de Karon → Kata Noi → Nai Harn"],
-    ["18:00", "sun", "Atardecer en Promthep", ""],
-    ["20:00", "food", "Cena en Phuket Town", ""]] },
+    ["23:30", "bed", "Check-in", "Cena tardía: Khao Tom Rim Thang, abre hasta la 01:00", "Pearl Hotel Phuket"]] },
+  { f: "2026-12-03", c: "phuket", items: [] },
+  { f: "2026-12-04", c: "phuket", items: [] },
   { f: "2026-12-05", c: "krabi", t: "Phuket → Ao Nang", tags: ["feriado"], items: [
-    ["09:00", "walk", "Old Town a pie", "Thalang Road y Soi Romanee"],
-    ["12:00", "car", "Auto a Ao Nang", "2 h 30–3 h 30 por el feriado", "Auto Phuket → Ao Nang"],
-    ["15:00", "bed", "Check-in", "", "Aonang Sea Mountain"],
-    ["17:50", "sun", "Atardecer en Ao Nang Beach", ""],
-    ["20:00", "food", "Cena", "Krua Thara o Landmark Night Market"]],
+    ["12:00", "car", "Auto a Ao Nang", "2 h 30–3 h · más por el feriado", "Auto Phuket → Ao Nang"],
+    ["15:00", "bed", "Check-in", "", "Aonang Sea Mountain"]],
     ojo: "Feriado: más tráfico y botes llenos." },
-  { f: "2026-12-06", c: "krabi", t: "Tiger Cave y Krabi Town", foto: "tigercave", items: [
-    ["07:00", "temple", "Tiger Cave Temple", "1,260 escalones · nada de comida a la vista (monos)"],
-    ["11:00", "temple", "Wat Kaew Korawaram", "Y almuerzo en el mercado Maharaj"],
-    ["17:00", "food", "Krabi Walking Street", "Solo fin de semana"]] },
-  { f: "2026-12-07", c: "krabi", t: "Islas Phi Phi", tags: ["feriado"], foto: "maya", items: [
-    ["07:30", "boat", "Speedboat a Phi Phi", "Maya Bay, Pileh, Viking y Bamboo · vuelta ~16:30", "Tour Phi Phi"],
-    ["19:30", "food", "Cena", "Lae Lay Grill"]] },
-  { f: "2026-12-08", c: "krabi", t: "Emerald Pool y termales", items: [
-    ["08:00", "drop", "Emerald Pool, Blue Pool y termales", "Tour de medio día"],
-    ["18:00", "food", "Clase de cocina", "Opcional · Ya's"],
-    ["19:30", "spa", "Masaje largo", "90–120 min con compresa de hierbas"]] },
-  { f: "2026-12-09", c: "krabi", t: "Islas Hong", tags: ["wanphra"], items: [
-    ["08:00", "boat", "Islas Hong en longtail", "La laguna depende de la marea"],
-    ["14:00", "beach", "Tarde de playa", ""],
-    ["19:30", "food", "Cena", "Seafood Street o The Last Fisherman"]] },
-  { f: "2026-12-10", c: "krabi", t: "Railay y 4 Islas", tags: ["feriado"], foto: "railay", items: [
-    ["09:00", "boat", "Railay en longtail", "Desde Ao Nang Beach"],
-    ["12:30", "boat", "4 Islands al atardecer", "Con Phra Nang · vuelta ~19:00", "Tour 4 Islands"],
-    ["20:00", "food", "Cena de despedida", ""]] },
-  { f: "2026-12-11", c: "pattaya", t: "Ao Nang → Pattaya", items: [
+  { f: "2026-12-06", c: "krabi", items: [] },
+  { f: "2026-12-07", c: "krabi", tags: ["feriado"], items: [], ojo: "Feriado: los tours en bote se llenan. Reservar 1–2 días antes." },
+  { f: "2026-12-08", c: "krabi", items: [] },
+  { f: "2026-12-09", c: "krabi", tags: ["wanphra"], items: [] },
+  { f: "2026-12-10", c: "krabi", tags: ["feriado"], items: [], ojo: "Feriado: los tours en bote se llenan. Reservar 1–2 días antes." },
+  { f: "2026-12-11", c: "pattaya", t: "Ao Nang → Pattaya", p: "krabi", items: [
     ["11:15", "taxi", "Taxi al aeropuerto de Krabi", "30–40 min"],
     ["13:35", "plane", "Vuelo a Don Mueang", "Llega 15:00", "Krabi → Don Mueang"],
     ["15:30", "car", "Auto a Naklua", "2–2 h 30", "Auto Don Mueang → Naklua"],
     ["18:30", "bed", "Check-in", "", "Palette La route"]],
     ojo: "Día 1 de Tomorrowland: tráfico y pocos taxis." },
-  { f: "2026-12-12", c: "pattaya", t: "Koh Larn o Santuario", foto: "kohlarn", items: [
-    ["09:00", "boat", "Koh Larn en ferry", "Desde Bali Hai Pier · Tien Beach"],
-    ["", "temple", "O bien: Sanctuary of Truth", "Cerca del hotel"],
-    ["15:00", "spa", "Masaje", ""],
-    ["19:00", "food", "Thepprasit Night Market", "Vie a dom, 18:00–24:00"]],
-    ojo: "Acostarse temprano: mañana es Tomorrowland." },
+  { f: "2026-12-12", c: "pattaya", items: [], ojo: "Acostarse temprano: mañana es Tomorrowland." },
   { f: "2026-12-13", c: "pattaya", t: "Tomorrowland", tags: ["tml"], items: [
     ["15:00", "taxi", "Grab a Wisdom Valley", "~17 km · bajar en la West Entrance"],
     ["21:00", "music", "Última hora para entrar", "Abre 13:00 · cierra 00:00 · sin reingreso", "Tomorrowland"],
     ["", "bag", "Llevar", "Pulsera o la entrada, pasaporte, cargador y tapones"],
     ["00:00", "taxi", "Vuelta", "Zona «Official Taxi» de la West Entrance · compartir auto"]],
     ojo: "Adentro se paga solo con la pulsera. No se puede entrar comida, bebida, vapes ni drones." },
-  { f: "2026-12-14", c: "cnx", t: "Pattaya → Chiang Mai", items: [
+  { f: "2026-12-14", c: "cnx", t: "Pattaya → Chiang Mai", p: "pattaya", items: [
     ["11:30", "taxi", "Bolt al terminal North Pattaya", ""],
     ["12:00", "bus", "Bus a Suvarnabhumi", "~2 h", "Bus Pattaya → Suvarnabhumi"],
     ["16:15", "plane", "Vuelo a Chiang Mai", "Llega 17:30", "Suvarnabhumi → Chiang Mai"],
-    ["18:15", "bed", "Check-in", "", "Lanna Thaphae Hotel"],
-    ["19:30", "food", "Khao soi en Anusarn", "Y paseo por el Night Bazaar"]] },
-  { f: "2026-12-15", c: "cnx", t: "Doi Suthep y templos", foto: "doisuthep", items: [
-    ["06:15", "sun", "Amanecer en Doi Suthep", "Grab hasta arriba"],
-    ["09:30", "temple", "Wat Umong", "Túneles en el bosque"],
-    ["13:00", "temple", "Casco antiguo a pie", "Wat Chedi Luang (monk chat) y Wat Phra Singh"],
-    ["16:30", "food", "Clase de cocina", "Cena incluida"]] },
-  { f: "2026-12-16", c: "cnx", t: "Elefantes", foto: "elephant", items: [
-    ["07:30", "leaf", "Elephant Nature Park", "Media jornada · recogida en el hotel", "Elephant Nature Park"],
-    ["15:00", "walk", "Mercado Warorot", ""],
-    ["17:00", "temple", "Monk chat en Wat Suan Dok", "17:00–19:00"]],
-    ojo: "Cremación real en Bangkok: puede haber cierres o alcohol restringido." },
-  { f: "2026-12-17", c: "cnx", t: "Doi Inthanon", tags: ["wanphra"], foto: "inthanon", items: [
-    ["07:30", "mount", "Doi Inthanon", "Día completo · llevar abrigo (8–12 °C arriba)"],
-    ["", "temple", "O bien: Chiang Rai", "Templo Blanco · día de 12–13 h"],
-    ["20:00", "food", "Cena en Chang Phueak", ""]] },
-  { f: "2026-12-18", c: "bkk", t: "Chiang Mai → Bangkok", items: [
-    ["07:30", "temple", "Wat Phra Singh en calma", "Antes del check-out"],
+    ["18:15", "bed", "Check-in", "", "Lanna Thaphae Hotel"]] },
+  { f: "2026-12-15", c: "cnx", items: [] },
+  { f: "2026-12-16", c: "cnx", items: [], ojo: "Cremación real en Bangkok: puede haber cierres o alcohol restringido." },
+  { f: "2026-12-17", c: "cnx", tags: ["wanphra"], items: [] },
+  { f: "2026-12-18", c: "bkk", t: "Chiang Mai → Bangkok", p: "cnx", items: [
     ["10:45", "taxi", "Grab al aeropuerto", "5–15 min"],
     ["13:30", "plane", "Vuelo a Don Mueang", "Llega 14:45", "Chiang Mai → Don Mueang"],
     ["15:15", "taxi", "Taxi al hotel", "Con taxímetro · ~1 h"],
-    ["16:30", "bed", "Check-in", "", "Zenniq"],
-    ["19:30", "food", "Yaowarat (Chinatown)", "Comida callejera"]],
+    ["16:30", "bed", "Check-in", "", "Zenniq"]],
     ojo: "Ceremonias reales hasta el sáb 19: evitar el Gran Palacio." },
-  { f: "2026-12-19", c: "bkk", t: "Chatuchak", items: [
-    ["09:00", "walk", "Mercado Chatuchak", "Solo sáb y dom · y Or Tor Kor al lado"],
-    ["18:00", "boat", "Asiatique", "Barco gratis desde el muelle Sathorn"]],
-    ojo: "Hasta las 17:00 hay ceremonias: no ir a Rattanakosin." },
-  { f: "2026-12-20", c: "bkk", t: "Tren del mercado y Amphawa", items: [
-    ["11:10", "train", "Tren a Maeklong", "Desde Wongwian Yai, a 6 min del hotel"],
-    ["14:00", "boat", "Mercado flotante de Amphawa", "Vuelta en minivan"]] },
-  { f: "2026-12-21", c: "bkk", t: "Gran Palacio, Wat Pho y Wat Arun", foto: "palace", items: [
-    ["08:30", "temple", "Gran Palacio", "Revisar antes si abre: royalgrandpalace.th"],
-    ["13:30", "temple", "Wat Pho", "Buda reclinado y masaje"],
-    ["16:15", "boat", "Ferry a Wat Arun", "Atardecer ~17:55"]],
-    ojo: "Hombros y rodillas cubiertos todo el día." },
-  { f: "2026-12-22", c: "bkk", t: "Ayutthaya", items: [
-    ["08:00", "train", "Tren a Ayutthaya", "1–1 h 30 · templos en ruinas"],
-    ["19:30", "food", "Pad thai en Thip Samai", ""]] },
-  { f: "2026-12-23", c: "bkk", t: "Ciudad vieja y Chinatown", foto: "yaowarat", items: [
-    ["08:00", "temple", "Golden Mount", "→ Wat Suthat → Loha Prasat → Wat Traimit"],
-    ["19:00", "glass", "Rooftop", "Octave o Above Eleven"],
-    ["", "food", "Capricho: Raan Jay Fai", "Tortilla de cangrejo"]] },
-  { f: "2026-12-24", c: "bkk", t: "Nochebuena", tags: ["wanphra"], items: [
-    ["09:00", "temple", "Thonburi a pie", "Wat Kalayanamit, Santa Cruz y Wat Prayoon"],
-    ["17:00", "star", "Luces de Navidad", "ICONSIAM o CentralWorld"],
-    ["20:00", "food", "Cena de Nochebuena", "Buffet o crucero · reservar con días de anticipación"]] },
-  { f: "2026-12-25", c: "bkk", t: "Navidad", foto: "watarun", items: [
-    ["10:00", "pin", "Jim Thompson House", "Y Erawan Shrine"],
-    ["20:00", "ticket", "Muay Thai en Rajadamnern", "Entradas solo en el estadio"]] },
-  { f: "2026-12-26", c: "viaje", l: "Vuelta", t: "Bangkok → casa", duerme: "En el avión", items: [
-    ["08:00", "boat", "Mercado flotante Taling Chan", "Sáb y dom, cerca del hotel"],
+  { f: "2026-12-19", c: "bkk", items: [], ojo: "Hasta las 17:00 hay ceremonias: no ir a Rattanakosin." },
+  { f: "2026-12-20", c: "bkk", items: [] },
+  { f: "2026-12-21", c: "bkk", items: [] },
+  { f: "2026-12-22", c: "bkk", items: [] },
+  { f: "2026-12-23", c: "bkk", items: [] },
+  { f: "2026-12-24", c: "bkk", tags: ["nochebuena", "wanphra"], items: [] },
+  { f: "2026-12-25", c: "bkk", tags: ["navidad"], items: [] },
+  { f: "2026-12-26", c: "viaje", l: "Vuelta", t: "Bangkok → casa", p: "bkk", duerme: "En el avión", items: [
+    ["Mañana", "walk", "Libre en Bangkok", "Hasta las 16:30"],
     ["12:30", "bed", "Check-out", "Maletas a la consigna del hotel", "Zenniq"],
-    ["13:00", "spa", "Masaje de 2 h", "Health Land Sathorn"],
     ["16:30", "taxi", "Taxi a Suvarnabhumi", "28 km · tráfico de sábado"],
     ["21:25", "plane", "Vuelo a Brisbane", "Llega 09:35", "Bangkok → Brisbane"]] },
   { f: "2026-12-27", c: "viaje", l: "Vuelta", t: "Brisbane → Whitsundays", duerme: "En casa", items: [
@@ -761,17 +730,11 @@ const BOOKINGS = [
   { s: "phuket", i: "bed", t: "Pearl Hotel Phuket", sec: true, w: "Mié 2 → sáb 5 dic · 3 noches", st: "ok", stl: "Pagado",
     kv: [["Reserva", "6071.584.935", true], ["Dirección", "42 Montri Road, Talad Yai, Phuket Town 83000", true], ["Teléfono", "+66 64 026 9242", true], ["Horario", "Entrada 14:00 · salida 12:00–12:30"]],
     note: "Mostrar en el check-in la tarjeta física con que se pagó." },
-  { s: "phuket", i: "boat", t: "Tour Phang Nga y James Bond", w: "Jue 3 dic · 07:30", st: "reserva",
-    kv: [["Precio", "฿1,700–1,990 + parque ฿300 por persona"]], note: "Online con cancelación gratis (Klook o GetYourGuide) o en una agencia de Old Town." },
   { s: "krabi", i: "car", t: "Auto Phuket → Ao Nang", w: "Sáb 5 dic · 12:00", st: "reserva",
-    kv: [["Con", "IslandTransfer"], ["Costo", "฿2,900 el auto, en efectivo al conductor"]], note: "Confirmar que recogen en Phuket Town.", url: "https://island-transfer.com/intercity/phuket-to-krabi" },
+    kv: [["Con", "IslandTransfer"], ["Costo", "฿3,000 el auto, en efectivo al conductor"], ["Duración", "2 h 30–3 h"]], note: "Llamar para preguntar por la maleta de 30 kg y confirmar que recogen en Phuket Town.", url: "https://island-transfer.com/intercity/phuket-to-krabi" },
   { s: "krabi", i: "bed", t: "Aonang Sea Mountain", sec: true, w: "Sáb 5 → vie 11 dic · 6 noches", st: "pagar", stl: "Por pagar",
     kv: [["Reserva", "6828.286.000", true], ["Dirección", "1419 Moo.2 Ao Nang, Muang, Krabi 81180", true], ["Teléfono", "+66 95 569 3917", true], ["Costo", "฿11,491 · prepago pendiente"]],
     note: "Depósito de ฿500 en efectivo al llegar." },
-  { s: "krabi", i: "boat", t: "Tour Phi Phi", w: "Lun 7 dic · 07:30 · feriado", st: "reserva",
-    kv: [["Precio", "฿1,600–2,200 + parque ฿400 por persona"]], note: "Es feriado: reservar cuanto antes." },
-  { s: "krabi", i: "boat", t: "Tour 4 Islands", w: "Jue 10 dic · 12:30 · feriado", st: "reserva",
-    kv: [["Precio", "฿800–1,600 + parque por persona"]], note: "Es feriado: reservar cuanto antes." },
   { s: "pattaya", i: "plane", t: "Krabi → Don Mueang", w: "Vie 11 dic · 13:35 → 15:00", st: "compra",
     kv: [["Vuelo", "Thai AirAsia"], ["Costo", "฿6,278 los dos + ~฿1,000 maleta 30 kg"]], note: "Agregar la maleta antes de pagar: en el mostrador cobran ฿300 por kilo.", url: "https://www.airasia.com" },
   { s: "pattaya", i: "car", t: "Auto Don Mueang → Naklua", w: "Vie 11 dic · ~15:30", st: "reserva",
@@ -787,8 +750,6 @@ const BOOKINGS = [
     kv: [["Vuelo", "Thai AirAsia"], ["Costo", "฿4,902 los dos + ~฿1,000 maleta 30 kg"]], url: "https://www.airasia.com" },
   { s: "cnx", i: "bed", t: "Lanna Thaphae Hotel", sec: true, w: "Lun 14 → vie 18 dic · 4 noches", st: "ok", stl: "Pagado",
     kv: [["Reserva", "6530606112", true], ["Dirección", "6 Kotchasarn Soi 1, Chang Khlan, Chiang Mai 50200", true], ["Teléfono", "+66 53 281 234", true]], note: "Desayuno incluido." },
-  { s: "cnx", i: "leaf", t: "Elephant Nature Park", w: "Mié 16 dic · media jornada", st: "reserva",
-    kv: [["Precio", "฿2,500 por persona"]], note: "En diciembre se agota semanas antes.", url: "https://www.elephantnaturepark.org" },
   { s: "bkk", i: "plane", t: "Chiang Mai → Don Mueang", w: "Vie 18 dic · 13:30 → 14:45", st: "compra",
     kv: [["Vuelo", "Thai Lion Air"], ["Costo", "฿4,590 los dos + ~฿1,000 maleta 30 kg"]], url: "https://www.lionairthai.com" },
   { s: "bkk", i: "bed", t: "Zenniq", sec: true, w: "Vie 18 → sáb 26 dic · 8 noches", st: "pagar", stl: "Pagar allá",
@@ -806,49 +767,116 @@ const STATUS = {
 const bookingOf = t => BOOKINGS.find(b => b.t === t);
 const stLabel = b => b.stl && b.st !== "ok" ? b.stl : STATUS[b.st][1];
 
+// Panoramas por ciudad: la lista de Fran y Romina (Bangkok aún no la tienen: van ideas de la investigación).
+// Cada uno: id fijo (guarda «hecho» y el día elegido en el teléfono), t nombre, s una línea, g grupo, ojo aviso, url, fijo fecha.
 const CITIES = [
   { k: "phuket", g: [],
-    picks: [["Bahía de Phang Nga y James Bond", "฿1,700–1,990 + parque ฿300", "2026-12-03"],
-            ["Wat Chalong y Big Buddha", "Gratis", "2026-12-04"],
-            ["Playas Kata Noi, Kata y Nai Harn", "Grab ~฿500–750", "2026-12-04"],
-            ["Atardecer en Promthep", "Gratis", "2026-12-04"],
-            ["Old Town y mercados Chillva e Indy", "Cena ฿200–400", "2026-12-03"]],
+    libres: "Libres: jue 3 y vie 4, más la noche del 2 y la mañana del 5",
+    p: [
+      { g: "Phuket Town · al lado del hotel", id: "pk-oldtown", t: "Phuket Old Town", s: "Casas chino-portuguesas · Thalang Road y Soi Romanee" },
+      { g: "Phuket Town · al lado del hotel", id: "pk-cafe", t: "Cafés", s: "Old Town está lleno de cafés bonitos" },
+      { g: "Phuket Town · al lado del hotel", id: "pk-capi", t: "Capybara Café", s: "Wirat Hong Yok Road · 10:00–19:00 · dar de comer ~฿300" },
+      { g: "Phuket Town · al lado del hotel", id: "pk-naka", t: "Naka Market", s: "El mercado nocturno más grande de Phuket", ojo: "Solo sáb y dom desde las 16:00, y se van el sáb a mediodía. En su lugar: Chillva o Indy (jue y vie)." },
+      { g: "Phuket Town · al lado del hotel", id: "pk-suvana", t: "Su Va Na", s: "Cena de degustación junto a un acuario gigante · Central Floresta", ojo: "Reservar: piden ฿2,500 de depósito por persona.", url: "https://www.tablecheck.com/en/su-va-na-phuket/reserve/landing", res: true },
+      { g: "Templos", id: "pk-bigbuddha", t: "Big Buddha", s: "Gratis · vista de toda la isla · hombros y rodillas cubiertos" },
+      { g: "Templos", id: "pk-chalong", t: "Wat Chalong y otros templos", s: "El templo más importante de Phuket · 7:00–17:00 · cerca del Big Buddha" },
+      { g: "Patong · todo en una tarde y noche", id: "pk-patong", t: "Patong Beach", s: "La playa más famosa · ~30 min del hotel en Grab" },
+      { g: "Patong · todo en una tarde y noche", id: "pk-kyma", t: "KYMA Beach Bar", s: "Bar en la arena, para el atardecer · a pasos de Bangla Road" },
+      { g: "Patong · todo en una tarde y noche", id: "pk-noche", t: "Vida nocturna en Bangla Road", s: "Su idea para la primera noche (mié 2)" },
+      { g: "Patong · todo en una tarde y noche", id: "pk-lyns", t: "Lyn's Spa & Massage", s: "Junto a Bangla Road · abre hasta las 04:00" },
+      { g: "Beach clubs y lujo", id: "pk-yona", t: "YONA Beach Club", s: "Beach club flotante · bote desde el muelle de Patong · pase de día con reserva" },
+      { g: "Beach clubs y lujo", id: "pk-cdm", t: "Café del Mar", s: "Beach club en Kamala, para el atardecer" },
+      { g: "Beach clubs y lujo", id: "pk-aman", t: "Amanpuri", s: "Resort de lujo en Pansea Beach · almuerzo o trago, con reserva" },
+      { g: "Aventura y naturaleza", id: "pk-zip", t: "Zipline en Hanuman World", s: "En Kathu, ~25 min · suelen incluir la recogida" },
+      { g: "Aventura y naturaleza", id: "pk-ele", t: "Santuario de elefantes", s: "Elegir uno sin monta ni baños", ojo: "Phuket Elephant Sanctuary ya no deja darles de comer: solo se observa." },
+      { g: "Aventura y naturaleza", id: "pk-bamboo", t: "Bamboo rafting y templo de los monos", s: "Tour a Phang Nga, ~1 h 30 · día completo" },
+      { g: "Aventura y naturaleza", id: "pk-mantra", t: "Mantra Forest Spa", s: "Termas, onsen y sauna en el bosque · Phang Nga, ~1 h · 9:00–20:00" },
+      { g: "Aventura y naturaleza", id: "pk-yoga", t: "Freedom Project (yoga)", s: "Yoga y baño de sonido al aire libre, frente al Big Buddha · Karon" }],
     masaje: "Sansabai Massage 2 o Kim's, en Old Town · ฿250–550 la hora",
     comer: "Khao Tom Rim Thang (la noche que llegan) · Raya · One Chun · Tu Kab Khao · dim sum en Boomrat",
     evitar: "Phuket FantaSea: usa elefantes en el show." },
   { k: "krabi", g: [["maya", "Maya Bay, Phi Phi"], ["tigercave", "Cima de Tiger Cave"]],
-    picks: [["Phi Phi en speedboat", "฿1,600–2,200 + parque ฿400", "2026-12-07"],
-            ["4 Islands al atardecer", "฿800–1,600 + parque", "2026-12-10"],
-            ["Islas Hong en longtail", "฿800–1,500 + parque ฿300", "2026-12-09"],
-            ["Tiger Cave Temple", "Gratis", "2026-12-06"],
-            ["Emerald Pool y termales", "฿1,100–1,700", "2026-12-08"]],
+    libres: "Libres: dom 6 → jue 10, más la tarde del sáb 5 y la mañana del 11",
+    ojo: "Lun 7 y jue 10 son feriado: los botes se llenan. Reservar los tours 1–2 días antes, en la playa o en Klook.",
+    p: [
+      { g: "Islas en bote", id: "kb-7islas", t: "7 Islas al atardecer", s: "Sale 14:00, vuelve ~19:30 · nado con plancton que brilla · ฿700–1,200" },
+      { g: "Islas en bote", id: "kb-phiphi", t: "Islas Phi Phi", s: "Día completo en speedboat · ฿1,600–2,200 + parque ฿400" },
+      { g: "Islas en bote", id: "kb-4islas", t: "4 Islands", s: "Medio día · pasa por Koh Poda y Phra Nang · ฿800–1,600 + parque" },
+      { g: "Islas en bote", id: "kb-poda", t: "Koh Poda", s: "Isla con playa · viene en el tour 4 Islands o en longtail" },
+      { g: "Railay y Phra Nang · un mismo día", id: "kb-railay", t: "Railay Beach", s: "Longtail desde Ao Nang Beach, ~15 min · ฿100–200" },
+      { g: "Railay y Phra Nang · un mismo día", id: "kb-phranang", t: "Phra Nang Beach", s: "A 10 min a pie de Railay · la cueva de la princesa" },
+      { g: "Railay y Phra Nang · un mismo día", id: "kb-walk", t: "Railay Walking Street", s: "Bares y comida entre Railay West y East" },
+      { g: "Railay y Phra Nang · un mismo día", id: "kb-grotto", t: "The Grotto", s: "Restaurante dentro de una cueva en Phra Nang (Rayavadee) · caro", ojo: "Reservar y elegir el menú un día antes.", url: "https://www.tablecheck.com/rayavadee-krabi-the-grotto/reserve", res: true },
+      { g: "Railay y Phra Nang · un mismo día", id: "kb-eco", t: "Eco tour en longtail privado", s: "Railay y alrededores a su ritmo · se arregla en la playa de Ao Nang" },
+      { g: "En Ao Nang y alrededores", id: "kb-sunset", t: "Atardecer en Ao Nang Beach y fire show", s: "Gratis · shows de fuego en los bares de la playa" },
+      { g: "En Ao Nang y alrededores", id: "kb-monkey", t: "Monkey Trail", s: "Sendero de ~15 min de Ao Nang a Pai Plong · nada de comida a la vista" },
+      { g: "En Ao Nang y alrededores", id: "kb-tiger", t: "Tiger Cave Temple", s: "1,260 escalones · ir a las 7:00 por el calor · hombros cubiertos" },
+      { g: "En Ao Nang y alrededores", id: "kb-tubkaak", t: "Tubkaak Beach", s: "Playa tranquila, ~25 min en Grab" },
+      { g: "En Ao Nang y alrededores", id: "kb-emerald", t: "Emerald Pool", s: "Piscina natural en la selva, ~1 h · medio día con termales ฿1,100–1,700" },
+      { g: "En Ao Nang y alrededores", id: "kb-zip", t: "Zipline", s: "Hay parques a ~20 min de Ao Nang" },
+      { g: "En Ao Nang y alrededores", id: "kb-mercados", t: "Mercados nocturnos", s: "Landmark, en Ao Nang: todos los días", ojo: "El Walking Street de Krabi Town es solo vie a dom: sáb 5 o dom 6." }],
     masaje: "Massage Corner (calidad) · Dee Dee (precio) · Royal Palm Spa (lujo)",
-    comer: "Krua Thara · Lae Lay Grill · Seafood Street · The Last Fisherman · Walking Street (fin de semana)",
+    comer: "Krua Thara · Lae Lay Grill · Seafood Street · The Last Fisherman",
     evitar: "Dar comida a los monos y cualquier paseo en elefante. Las tasas de parque se pagan en efectivo." },
   { k: "pattaya", g: [],
-    picks: [["Tomorrowland", "Entradas compradas", "2026-12-13"],
-            ["Koh Larn en ferry", "฿40 por tramo", "2026-12-12"],
-            ["Sanctuary of Truth", "฿500", "2026-12-12"],
-            ["Thepprasit Night Market", "Cena ฿150–300", "2026-12-12"],
-            ["Buddha Hill al atardecer", "Gratis", null]],
+    libres: "Libre: sáb 12, más la mañana del lun 14 · el dom 13 es Tomorrowland",
+    nota: "Hay un solo día libre: elijan 2 o 3.",
+    p: [
+      { id: "pt-tml", t: "Tomorrowland", s: "Lo único que no se mueve", fijo: "2026-12-13" },
+      { id: "pt-marina", t: "Central Marina", s: "Mall y outlet en North Pattaya, cerca del hotel" },
+      { id: "pt-paboon", t: "Pa Boon Café", s: "Café con estanque de koi y animales · 9:30–21:30" },
+      { id: "pt-nongnooch", t: "Nong Nooch Garden", s: "Jardín tropical gigante, ~40 min al sur · medio día · saltarse el show de elefantes" },
+      { id: "pt-sina", t: "Sina Beach Club", s: "Beach club flotante · bote desde Bali Hai Pier cada 15 min desde las 13:30" },
+      { id: "pt-sanctuary", t: "Sanctuary of Truth", s: "Templo de madera tallado a mano · al lado del hotel · ฿500" },
+      { id: "pt-alexa", t: "Alexa Beach Club", s: "En Na Jomtien, ~40 min al sur · ~11:00–21:00" }],
     masaje: "Sook Boon Mee Sub en Naklua (masajistas ciegos) o un spa de hotel",
-    comer: "Mariscos en Naklua · mercado Thepprasit",
+    comer: "Mariscos en Naklua · mercado Thepprasit (vie a dom)",
     evitar: "Jet ski (cobran «daños» falsos) y cajeros con comisión de ฿220. Baht bus: ฿10 por persona, sin decir antes el destino." },
   { k: "cnx", g: [["elephant", "Elephant Nature Park"]],
-    picks: [["Elephant Nature Park", "฿2,500", "2026-12-16"],
-            ["Amanecer en Doi Suthep", "฿30", "2026-12-15"],
-            ["Wat Chedi Luang y monk chat", "฿50", "2026-12-15"],
-            ["Clase de cocina", "฿800–1,200", "2026-12-15"],
-            ["Doi Inthanon", "฿1,200–1,800", "2026-12-17"]],
+    libres: "Libres: mar 15 → jue 17, más la noche del 14 y la mañana del 18",
+    nota: "Van bien juntos: Wat Umong con Baan Kang Wat, Mae Kampong con el zipline, y bamboo rafting con Carp Café.",
+    p: [
+      { g: "Templos", id: "cm-doisuthep", t: "Wat Phra That Doi Suthep", s: "En la montaña, ~30 min en Grab · ฿30 · temprano hay menos gente" },
+      { g: "Templos", id: "cm-chediluang", t: "Wat Chedi Luang", s: "Casco antiguo · monk chat de día · ฿50" },
+      { g: "Templos", id: "cm-phrasingh", t: "Wat Phra Singh", s: "Casco antiguo, a 5 min a pie de Chedi Luang" },
+      { g: "Templos", id: "cm-suandok", t: "Wat Suan Dok", s: "Monk chat lun, mié y vie, 17:00–19:00" },
+      { g: "Templos", id: "cm-umong", t: "Wat Umong", s: "Túneles en el bosque · cerca de Baan Kang Wat" },
+      { g: "Templos", id: "cm-srisuphan", t: "Wat Sri Suphan", s: "El templo de plata · lindo de noche (฿50)", ojo: "Romina no puede entrar a la sala de plata: es solo para hombres. El resto sí." },
+      { g: "Además", id: "cm-angels", t: "Land of Angels (Dantewada)", s: "Parque de cascadas y jardines, ~1 h al norte · se combina con Sticky Waterfall" },
+      { g: "Además", id: "cm-carp", t: "Carp Café", s: "Café entre estanques llenos de koi · fuera de la ciudad" },
+      { g: "Además", id: "cm-rice", t: "Arrozales", s: "Se ven en las salidas al campo: Mae Wang o Mae Kampong" },
+      { g: "Además", id: "cm-enp", t: "Elephant Nature Park", s: "Santuario de rescate · medio día ฿2,500 con recogida", ojo: "Se agota semanas antes: reservar ya, con fecha.", url: "https://www.elephantnaturepark.org", res: true },
+      { g: "Además", id: "cm-zenza", t: "Zenza Massage & Spa", s: "Masaje tailandés en el casco antiguo (Ratchadamnoen Road)" },
+      { g: "Además", id: "cm-zip", t: "Zipline", s: "En Mae Kampong o cerca · reservar solo en Klook o en la web oficial" },
+      { g: "Además", id: "cm-baan", t: "Baan Kang Wat", s: "Aldea de artistas · 10:00–18:00, cierra los lunes" },
+      { g: "Además", id: "cm-bamboo", t: "Bamboo rafting", s: "Río Mae Wang, ~1 h · medio día" },
+      { g: "Además", id: "cm-maekampong", t: "Mae Kampong", s: "Aldea en la montaña, con café, ~1 h 15 · medio día" },
+      { g: "Además", id: "cm-sunday", t: "Sunday Night Market", s: "En su lugar: Night Bazaar, todas las noches", ojo: "Es solo los domingos y ustedes están de lunes a viernes." },
+      { g: "Además", id: "cm-mai", t: "MAI The Sky Bar", s: "El rooftop más alto de la ciudad, piso 22 del Meliá · atardecer" }],
     masaje: "Lila, de ex reclusas (฿400) · Let's Relax Thapae (hasta las 24:00) · lujo: Fah Lanna u Oasis",
     comer: "Khao soi (฿50–150) · Anusarn · Chang Phueak · jok en Somphet al desayuno",
     evitar: "Lugares con monta o baños de elefantes. Mañanas frías: llevar polerón." },
   { k: "bkk", g: [["watpho", "Wat Pho"], ["yaowarat", "Yaowarat"]],
-    picks: [["Gran Palacio", "฿500", "2026-12-21"],
-            ["Wat Pho y su masaje", "฿300", "2026-12-21"],
-            ["Wat Arun al atardecer", "฿200", "2026-12-21"],
-            ["Comida callejera en Yaowarat", "฿300–500", "2026-12-18"],
-            ["Mercado Chatuchak", "Gratis", "2026-12-19"]],
+    libres: "Libres: sáb 19 → vie 25, más la tarde del 18 y el sáb 26 hasta las 16:30",
+    nota: "Falta la lista de ustedes. Mientras, ideas de la investigación para elegir.",
+    p: [
+      { g: "Templos", id: "bk-palace", t: "Gran Palacio", s: "฿500 · revisar antes si abre en royalgrandpalace.th", ojo: "Ceremonias reales hasta el sáb 19." },
+      { g: "Templos", id: "bk-watpho", t: "Wat Pho y su masaje", s: "El Buda reclinado · ฿300" },
+      { g: "Templos", id: "bk-watarun", t: "Wat Arun al atardecer", s: "฿200 · ferry desde el muelle de Wat Pho" },
+      { g: "Templos", id: "bk-oldtown", t: "Golden Mount y ciudad vieja", s: "Mirador en la cima · Wat Suthat y Loha Prasat cerca" },
+      { g: "Mercados y comida", id: "bk-yaowarat", t: "Yaowarat (Chinatown)", s: "Comida callejera de noche · ฿300–500" },
+      { g: "Mercados y comida", id: "bk-chatuchak", t: "Mercado Chatuchak", s: "Solo sáb y dom: sáb 19 o dom 20 · Or Tor Kor al lado" },
+      { g: "Mercados y comida", id: "bk-talingchan", t: "Mercado flotante Taling Chan", s: "Sáb y dom, cerca del hotel" },
+      { g: "Mercados y comida", id: "bk-asiatique", t: "Asiatique", s: "Mercado nocturno junto al río · barco gratis desde el muelle Sathorn" },
+      { g: "Mercados y comida", id: "bk-jayfai", t: "Raan Jay Fai", s: "Capricho: la tortilla de cangrejo · fila larga" },
+      { g: "Excursiones", id: "bk-maeklong", t: "Tren del mercado y Amphawa", s: "Día completo · el tren sale de Wongwian Yai, a 6 min del hotel" },
+      { g: "Excursiones", id: "bk-ayutthaya", t: "Ayutthaya", s: "Ruinas de la antigua capital · tren de 1–1 h 30" },
+      { g: "Noche y Navidad", id: "bk-rooftop", t: "Rooftop", s: "Octave o Above Eleven" },
+      { g: "Noche y Navidad", id: "bk-muaythai", t: "Muay Thai en Rajadamnern", s: "Entradas en el estadio" },
+      { g: "Noche y Navidad", id: "bk-luces", t: "Luces de Navidad", s: "ICONSIAM o CentralWorld" },
+      { g: "Noche y Navidad", id: "bk-nochebuena", t: "Cena de Nochebuena", s: "Jue 24 · buffet o crucero por el río", ojo: "Reservar con días de anticipación." },
+      { g: "Más", id: "bk-jim", t: "Jim Thompson House", s: "Casa museo de teca · y Erawan Shrine" },
+      { g: "Más", id: "bk-healthland", t: "Masaje de 2 h en Health Land", s: "Sathorn · idea para el último día, con las maletas en el hotel" }],
     masaje: "Wat Pho · Health Land Sathorn (2 h ~฿700) · Bhu Mai en ICONSIAM",
     comer: "Thip Samai (pad thai) · mariscos en Soi Phadung Dao · Raan Jay Fai (capricho)",
     evitar: "La estafa «hoy está cerrado» con tuk-tuk a joyerías. Los cierres se revisan solo en royalgrandpalace.th." },
@@ -866,6 +894,7 @@ const FUND = [
 // Pendientes que no son reservas: [qué, detalle, cuándo, link, texto del link]
 const TODOS = [
   ["Seguro de viaje", "Para los dos", "Antes del 1 dic"],
+  ["Lista de panoramas de Bangkok", "Como la de las otras ciudades, para cambiar las ideas de la app", "Antes del 18 dic"],
   ["Tarjeta de llegada (TDAC)", "Se llena en línea los 3 días antes de llegar", "29 nov – 2 dic", "https://tdac.immigration.go.th", "tdac.immigration.go.th"],
   ["Instalar la app en los dos iPhone", "Y abrir Docs con la clave una vez", "Antes del 1 dic"],
   ["Entrada de Romina", "Mandármela para sumarla a Docs", "Antes del 1 dic"],
@@ -898,8 +927,46 @@ function refLink(title) {
   return `<button type="button" class="reflink ${cls}" data-gobook="${esc(title)}">${b.st === "ok" ? "Ver reserva" : stLabel(b)}${ic("right", "ic sm")}</button>`;
 }
 
+/* ---------- Panoramas: «hecho» y día elegido, guardados en este teléfono ---------- */
+let PLAN = {};
+try { PLAN = JSON.parse(localStorage.getItem("tl26-plan")) || {}; } catch (e) {}
+const savePlan = () => { try { localStorage.setItem("tl26-plan", JSON.stringify(PLAN)); } catch (e) {} };
+const PAN = CITIES.flatMap(c => c.p.map(x => ({ ...x, k: c.k })));
+const panOf = id => PAN.find(x => x.id === id);
+const isDone = id => !!(PLAN[id] && PLAN[id].ok);
+const dayOf = x => x.fijo || (PLAN[x.id] && PLAN[x.id].d) || "";
+const pinsOf = f => PAN.filter(x => !x.fijo && dayOf(x) === f);
+const tally = k => { const l = PAN.filter(x => x.k === k); return { done: l.filter(x => isDone(x.id)).length, all: l.length }; };
+// Días de cada ciudad: desde la primera noche hasta el día en que se van
+const cityDays = k => {
+  const i = DAYS.findIndex(d => d.c === k), j = DAYS.map(d => d.c).lastIndexOf(k);
+  return DAYS.slice(i, Math.min(j + 2, DAYS.length)).map(d => d.f);
+};
+function panRow(x, full = true) {
+  const done = isDone(x.id), d = dayOf(x);
+  const right = !full ? "" : x.fijo ? `<span class="badge sun">${dayLabel(x.fijo)} · fijo</span>`
+    : `<label class="daypick${d ? " set" : ""}"><span>${d ? dayLabel(d) : `${ic("cal", "ic sm")}Día`}</span><select data-plan="${x.id}" aria-label="Qué día: ${esc(x.t)}"><option value="">Sin día</option>${cityDays(x.k).map(f => `<option value="${f}"${f === d ? " selected" : ""}>${dayLabel(f)}</option>`).join("")}</select></label>`;
+  const extra = full ? `${x.ojo ? `<span class="s ojo">${ic("alert", "ic sm")}<span>${x.ojo}</span></span>` : ""}${x.url ? `<a class="reflink" href="${x.url}" target="_blank" rel="noopener">${x.res ? "Reservar" : "Ver"}${ic("out", "ic sm")}</a>` : ""}` : "";
+  return `<div class="row pan-item${done ? " done" : ""}" data-pid="${x.id}">
+    <button type="button" class="tick" data-tick="${x.id}" aria-pressed="${done}" aria-label="Hecho: ${esc(x.t)}"><i>${ic("check", "ic sm")}</i></button>
+    <span class="grow"><span class="t">${x.t}</span>${x.s ? `<span class="s">${x.s}</span>` : ""}${extra}</span>${right}</div>`;
+}
+const progText = k => { const t = tally(k); return `<b class="num">${t.done}</b> de ${t.all} hechos`; };
+function syncPlan(id) {
+  const x = panOf(id); if (!x) return;
+  document.querySelectorAll(`[data-pid="${id}"]`).forEach(r => {
+    r.classList.toggle("done", isDone(id));
+    const b = r.querySelector(".tick"); if (b) b.setAttribute("aria-pressed", String(isDone(id)));
+  });
+  const t = tally(x.k);
+  document.querySelectorAll(`[data-prog="${x.k}"]`).forEach(e => { e.innerHTML = progText(x.k); });
+  document.querySelectorAll(`[data-bar="${x.k}"]`).forEach(e => { e.style.width = `${t.all ? 100 * t.done / t.all : 0}%`; });
+  document.querySelectorAll(`[data-count="${x.k}"]`).forEach(e => { e.textContent = `${t.done} de ${t.all} hechos`; });
+}
+
 /* ---------- Días ---------- */
 function timeline(d) {
+  if (!d.items.length) return "";
   const items = d.items.map(([h, i, t, det, ref]) =>
     `<li><time>${h}</time><span class="dot">${ic(i)}</span><span class="what"><b>${t}</b>${det ? `<p>${det}</p>` : ""}${ref ? refLink(ref) : ""}</span></li>`).join("");
   return `<ol class="tl" style="--c:${cv(d.c)}">${items}</ol>`;
@@ -911,16 +978,35 @@ function sleepLine(d) {
   return b ? `<button type="button" class="note linkrow" data-gobook="${esc(ref)}">${ic("bed")}<span class="grow"><b>Duermen:</b> ${ref}</span>${ic("right", "ic sm")}</button>`
            : `<div class="note">${ic("bed")}<span><b>Duermen:</b> ${ref}</span></div>`;
 }
+const listCity = d => d.p || (CITY[d.c].hotel && d.c !== "viaje" ? d.c : null);
+function dayTitle(d) {
+  if (d.t) return d.t;
+  const pins = pinsOf(d.f);
+  if (!pins.length) return "Día libre";
+  const n = pins.map(x => x.t);
+  return n.length === 1 ? n[0] : n.length === 2 ? `${n[0]} y ${n[1]}` : `${n[0]}, ${n[1]} y ${n.length - 2} más`;
+}
 function tagsOf(d) {
-  const out = [];
-  if ((d.tags || []).includes("feriado")) out.push(`<span>${ic("flag", "ic sm")}Feriado</span>`);
-  if ((d.tags || []).includes("wanphra")) out.push(`<span>${ic("moon", "ic sm")}Día santo</span>`);
-  if ((d.tags || []).includes("tml")) out.push(`<span>${ic("music", "ic sm")}Festival</span>`);
+  const out = [], tags = d.tags || [];
+  if (tags.includes("feriado")) out.push(`<span>${ic("flag", "ic sm")}Feriado</span>`);
+  if (tags.includes("wanphra")) out.push(`<span>${ic("moon", "ic sm")}Día santo</span>`);
+  if (tags.includes("tml")) out.push(`<span>${ic("music", "ic sm")}Festival</span>`);
+  if (tags.includes("nochebuena")) out.push(`<span>${ic("star", "ic sm")}Nochebuena</span>`);
+  if (tags.includes("navidad")) out.push(`<span>${ic("star", "ic sm")}Navidad</span>`);
   const move = d.items.find(x => ["plane", "car", "bus"].includes(x[1]));
   if (move) out.push(`<span>${ic(move[1], "ic sm")}${move[0]}</span>`);
+  const pins = pinsOf(d.f);
+  if (d.t && pins.length) out.push(`<span>${ic("star", "ic sm")}${pins.length === 1 ? "1 panorama" : `${pins.length} panoramas`}</span>`);
   const pend = d.items.map(x => x[4] && bookingOf(x[4])).filter(b => b && b.st !== "ok" && b.st !== "pagar");
   if (pend.length) out.push(`<span class="alert">${pend.some(b => b.st === "compra") ? "Falta comprar" : "Falta reservar"}</span>`);
   return out.join("");
+}
+function dayPanoramas(d) {
+  const k = listCity(d);
+  const pins = pinsOf(d.f);
+  const list = pins.length ? `<div class="group pan mini">${pins.map(x => panRow(x, false)).join("")}</div>` : "";
+  const link = k ? `<button type="button" class="reflink" data-gocity="${k}">${pins.length || d.t ? "Lista" : "Elegir de la lista"} de ${CITY[k].n} · <span data-count="${k}">${tally(k).done} de ${tally(k).all} hechos</span>${ic("right", "ic sm")}</button>` : "";
+  return list + link;
 }
 function renderDias() {
   const cal = $("#cal");
@@ -929,7 +1015,7 @@ function renderDias() {
   cal.insertAdjacentHTML("beforeend", `<span class="cal-cell empty"></span>`.repeat(lead));
   DAYS.forEach(d => {
     const n = parse(d.f).getDate();
-    cal.insertAdjacentHTML("beforeend", `<button type="button" class="cal-cell${d.f === todayIso ? " today" : ""}" data-goday="${d.f}" style="--c:${cv(d.c)}" aria-label="${n} de diciembre: ${d.t}">${n}</button>`);
+    cal.insertAdjacentHTML("beforeend", `<button type="button" class="cal-cell${d.f === todayIso ? " today" : ""}" data-goday="${d.f}" style="--c:${cv(d.c)}" aria-label="${n} de diciembre: ${dayTitle(d)}">${n}</button>`);
   });
   $("#legend").innerHTML = ["phuket", "krabi", "pattaya", "cnx", "bkk", "viaje"].map(k =>
     `<span style="--c:${cv(k)}"><i></i>${k === "viaje" ? "Vuelos" : CITY[k].n}</span>`).join("");
@@ -950,10 +1036,11 @@ function renderDias() {
       : `<div class="stay-hd plain"><div class="cap"><h2>${title}</h2><p>${sub}</p></div></div>`;
     const rows = s.days.map(d => {
       const dt = parse(d.f);
-      return `<details class="day${d.f === todayIso ? " today" : ""}" id="d-${pad(dt.getDate())}" style="--c:${cv(d.c)}"${d.f === todayIso ? " open" : ""}>
+      const free = !d.t && !pinsOf(d.f).length;
+      return `<details class="day${d.f === todayIso ? " today" : ""}${free ? " free" : ""}" id="d-${pad(dt.getDate())}" style="--c:${cv(d.c)}"${d.f === todayIso ? " open" : ""}>
         <summary class="row"><span class="dnum"><b>${dt.getDate()}</b><small>${DOW[dt.getDay()]}</small></span>
-          <span class="grow"><span class="t">${d.t}</span><span class="tags">${tagsOf(d)}</span></span>${ic("down", "ic chev")}</summary>
-        <div class="day-body">${timeline(d)}${sleepLine(d)}${d.ojo ? `<div class="note warn">${ic("alert")}<span>${d.ojo}</span></div>` : ""}</div></details>`;
+          <span class="grow"><span class="t">${dayTitle(d)}</span><span class="tags">${tagsOf(d)}</span></span>${ic("down", "ic chev")}</summary>
+        <div class="day-body">${timeline(d)}${dayPanoramas(d)}${sleepLine(d)}${d.ojo ? `<div class="note warn">${ic("alert")}<span>${d.ojo}</span></div>` : ""}</div></details>`;
     }).join("");
     return `<section class="stay" style="--c:${cv(s.c)}">${head}<div class="group">${rows}</div></section>`;
   }).join("");
@@ -971,27 +1058,34 @@ function renderHoy() {
 
   if (todayIso < "2026-12-01") {
     const left = Math.round((parse("2026-12-01") - today) / 86400000);
+    const nCities = new Set(PAN.map(x => x.k)).size;
     main.innerHTML = `<div class="count"><span class="big num">${left}</span><span><span class="t">${left === 1 ? "día para salir" : "días para salir"}</span><br><span class="muted">Mar 1 dic · 19:00 · desde Brisbane</span></span></div>
-      <div class="group">${pendRow}<button type="button" class="row" data-goday="2026-12-01" style="width:100%;text-align:left">
-        <span class="icon-dot" style="--c:var(--sea)">${ic("cal")}</span><span class="grow"><span class="t">Ver el plan día a día</span><span class="s">27 días · 5 ciudades</span></span>${ic("right", "ic chev")}</button></div>`;
+      <div class="group">${pendRow}<button type="button" class="row" data-goview="lugares" style="width:100%;text-align:left">
+        <span class="icon-dot" style="--c:var(--saffron-ink)">${ic("star")}</span><span class="grow"><span class="t">Panoramas</span><span class="s">${PAN.length} en ${nCities} ciudades · sin horario</span></span>${ic("right", "ic chev")}</button>
+        <button type="button" class="row" data-goday="2026-12-01" style="width:100%;text-align:left">
+        <span class="icon-dot" style="--c:var(--sea)">${ic("cal")}</span><span class="grow"><span class="t">Días</span><span class="s">Vuelos, traslados y hoteles de cada día</span></span>${ic("right", "ic chev")}</button></div>`;
     todo.innerHTML = `<h2>Antes de salir</h2><div class="group">${TODOS.map(([w, det, when, url, host]) => `<div class="row">
         <span class="grow"><span class="t">${w}</span><span class="s">${det}</span></span>
         <span class="badge warn">${when}</span>
         ${url ? `<a class="copy" href="${url}" target="_blank" rel="noopener" aria-label="Abrir ${host}">${ic("out", "ic sm")}</a>` : ""}</div>`).join("")}</div>`;
   } else if (inTrip) {
     const idx = DAYS.findIndex(d => d.f === todayIso), d = DAYS[idx], dt = parse(d.f);
-    const foto = d.foto || CITY[d.c].lugar;
+    const foto = CITY[d.c].lugar || CITY[listCity(d) || "bkk"].lugar;
     $("#hoy-sub").textContent = `Día ${idx + 1} de ${DAYS.length} · ${d.l || CITY[d.c].n}`;
     const now = new Date(); const hm = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
     const next = d.items.find(x => /^\d\d:\d\d$/.test(x[0]) && x[0] >= hm);
     const tomorrow = DAYS[idx + 1];
     const nextRow = next
       ? `<button type="button" class="row" data-goday="${d.f}" style="width:100%;text-align:left"><span class="icon-dot" style="--c:${cv(d.c)}">${ic(next[1])}</span><span class="grow"><span class="s">Lo próximo · ${next[0]}</span><span class="t">${next[2]}</span></span>${ic("right", "ic chev")}</button>`
-      : tomorrow ? `<button type="button" class="row" data-goday="${tomorrow.f}" style="width:100%;text-align:left"><span class="icon-dot" style="--c:${cv(tomorrow.c)}">${ic("cal")}</span><span class="grow"><span class="s">Mañana</span><span class="t">${tomorrow.t}</span></span>${ic("right", "ic chev")}</button>` : "";
+      : tomorrow && tomorrow.t ? `<button type="button" class="row" data-goday="${tomorrow.f}" style="width:100%;text-align:left"><span class="icon-dot" style="--c:${cv(tomorrow.c)}">${ic("cal")}</span><span class="grow"><span class="s">Mañana</span><span class="t">${tomorrow.t}</span></span>${ic("right", "ic chev")}</button>` : "";
+    const pins = pinsOf(d.f);
+    const k = listCity(d);
+    const listRow = k ? `<button type="button" class="row" data-gocity="${k}" style="width:100%;text-align:left"><span class="icon-dot" style="--c:${cv(k)}">${ic("star")}</span><span class="grow"><span class="t">Panoramas de ${CITY[k].n}</span><span class="s" data-count="${k}">${tally(k).done} de ${tally(k).all} hechos</span></span>${ic("right", "ic chev")}</button>` : "";
     const hotel = d.duerme || CITY[d.c].hotel;
     const hotelRow = hotel && bookingOf(hotel) ? `<button type="button" class="row" data-gobook="${esc(hotel)}" style="width:100%;text-align:left"><span class="icon-dot" style="--c:${cv(d.c)}">${ic("bed")}</span><span class="grow"><span class="s">Esta noche</span><span class="t">${hotel}</span></span>${ic("right", "ic chev")}</button>` : "";
-    main.innerHTML = `<div class="hero">${img(foto, d.t)}<div class="cap"><p>${DOW_L[dt.getDay()]} ${dt.getDate()} dic · ${d.l || CITY[d.c].n}</p><h2>${d.t}</h2></div></div>
-      <div class="group">${nextRow}<button type="button" class="row" data-goday="${d.f}" style="width:100%;text-align:left"><span class="icon-dot" style="--c:${cv(d.c)}">${ic("cal")}</span><span class="grow"><span class="t">Ver el plan de hoy</span><span class="s">${d.items.length} actividades</span></span>${ic("right", "ic chev")}</button>${hotelRow}${pendRow}</div>`;
+    main.innerHTML = `<div class="hero">${img(foto, dayTitle(d))}<div class="cap"><p>${DOW_L[dt.getDay()]} ${dt.getDate()} dic · ${d.l || CITY[d.c].n}</p><h2>${dayTitle(d)}</h2></div></div>
+      ${pins.length ? `<div class="group pan" style="--c:${cv(k || d.c)}">${pins.map(x => panRow(x, false)).join("")}</div>` : ""}
+      <div class="group">${nextRow}${listRow}<button type="button" class="row" data-goday="${d.f}" style="width:100%;text-align:left"><span class="icon-dot" style="--c:${cv(d.c)}">${ic("cal")}</span><span class="grow"><span class="t">Ver el día</span><span class="s">${d.items.length ? "Horarios de vuelos, traslados y hotel" : "Día libre"}</span></span>${ic("right", "ic chev")}</button>${hotelRow}${pendRow}</div>`;
     todo.innerHTML = "";
   } else {
     $("#hoy-sub").textContent = "Viaje terminado";
@@ -1045,28 +1139,46 @@ function goBooking(title) {
   requestAnimationFrame(() => window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - 12));
 }
 
-/* ---------- Lugares ---------- */
+/* ---------- Panoramas ---------- */
+function selectCity(k) {
+  $("#switch").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.city === k)));
+  document.querySelectorAll(".city").forEach(c => c.classList.toggle("on", c.dataset.city === k));
+  try { localStorage.setItem("tl26-city", k); } catch (e) {}
+}
+function goCity(k) {
+  show("lugares");
+  selectCity(k);
+  window.scrollTo(0, 0);
+}
+const groupTitle = g => g.replace(/ · (.+)$/, " <span>· $1</span>");
 function renderLugares() {
-  const current = inTrip ? (DAYS.find(d => d.f === todayIso) || {}).c : null;
-  const start = CITIES.some(c => c.k === current) ? current : "phuket";
+  const now = inTrip && DAYS.find(d => d.f === todayIso);
+  let saved = null; try { saved = localStorage.getItem("tl26-city"); } catch (e) {}
+  const start = now ? listCity(now) || "bkk" : CITIES.some(c => c.k === saved) ? saved : "phuket";
   $("#switch").innerHTML = CITIES.map(c => `<button type="button" data-city="${c.k}" aria-pressed="${c.k === start}" style="--c:${cv(c.k)}"><i></i>${CITY[c.k].n}</button>`).join("");
   $("#cities").innerHTML = CITIES.map(c => {
     const city = CITY[c.k];
     const nights = DAYS.filter(d => d.c === c.k).length;
     const stage = STAGES.find(s => s.k === c.k);
-    const more = [["spa", "Masajes", c.masaje], ["food", "Comer", c.comer], ["alert", "Evitar", c.evitar]].map(([i, t, txt]) =>
-      `<details><summary class="row"><span class="icon-dot">${ic(i)}</span><span class="grow"><span class="t">${t}</span></span>${ic("down", "ic chev")}</summary><div class="more">${txt}</div></details>`).join("");
+    const t = tally(c.k);
+    const groups = [];
+    PAN.filter(x => x.k === c.k).forEach(x => { const last = groups[groups.length - 1]; if (last && last.g === (x.g || "")) last.items.push(x); else groups.push({ g: x.g || "", items: [x] }); });
+    const list = groups.map(gr => `${gr.g ? `<h3 class="pan-h">${groupTitle(gr.g)}</h3>` : ""}<div class="group pan">${gr.items.map(x => panRow(x)).join("")}</div>`).join("");
+    const more = [["spa", "Masajes", c.masaje], ["food", "Comer", c.comer], ["alert", "Evitar", c.evitar]].map(([i, tt, txt]) =>
+      `<details><summary class="row"><span class="icon-dot">${ic(i)}</span><span class="grow"><span class="t">${tt}</span></span>${ic("down", "ic chev")}</summary><div class="more">${txt}</div></details>`).join("");
     return `<div class="city${c.k === start ? " on" : ""}" data-city="${c.k}" style="--c:${cv(c.k)}">
       <div class="hero">${img(city.lugar, city.n)}<div class="cap"><p>${stage.d} · ${nights} noches</p><h2>${city.n} <span class="th" lang="th">${city.th}</span></h2></div></div>
-      <div class="group">${c.picks.map(([t, price, f], i) => `<div class="row pick"><span class="n">${i + 1}</span><span class="grow"><span class="t">${t}</span><span class="s num">${price}</span></span>${f ? `<button type="button" class="badge sea daychip" data-goday="${f}" aria-label="Ver el ${dayLabel(f)} en Días">${dayLabel(f)}${ic("right", "ic sm")}</button>` : `<span class="badge">Libre</span>`}</div>`).join("")}</div>
+      <div class="pan-top"><div class="prog" data-prog="${c.k}">${progText(c.k)}</div>
+        <div class="bar" aria-hidden="true"><span data-bar="${c.k}" style="width:${t.all ? 100 * t.done / t.all : 0}%"></span></div>
+        <p class="muted">${c.libres}</p>
+        ${c.ojo ? `<div class="note warn">${ic("alert")}<span>${c.ojo}</span></div>` : ""}${c.nota ? `<div class="note"><span>${c.nota}</span></div>` : ""}</div>
+      ${list}
       ${c.g.length ? `<div class="strip">${c.g.map(([k, cap]) => FOTOS[k] ? `<figure>${img(k, cap)}<figcaption>${cap}</figcaption></figure>` : "").join("")}</div>` : ""}
       <div class="group">${more}</div>
     </div>`;
   }).join("");
   $("#switch").addEventListener("click", e => {
-    const b = e.target.closest("button[data-city]"); if (!b) return;
-    $("#switch").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-    document.querySelectorAll(".city").forEach(c => c.classList.toggle("on", c.dataset.city === b.dataset.city));
+    const b = e.target.closest("button[data-city]"); if (b) selectCity(b.dataset.city);
   });
   $("#credits").textContent = "Fotos: Wikimedia Commons — " + CREDITOS.map(c => `${c[1]} (${c[2]})`).join(" · ") + ".";
 }
@@ -1076,7 +1188,7 @@ function renderPlata() {
   $("#fund").innerHTML = `<div class="fund-top"><b class="num">AUD 2,000</b><span class="muted">por persona · ~฿${fmt(2000 * TC)}</span></div>
     <div class="stack" role="img" aria-label="Reparto del fondo">${FUND.map(f => `<span style="flex:${f[1]};--c:var(${f[2]})"></span>`).join("")}</div>
     <ul>${FUND.map(f => `<li style="--c:var(${f[2]})"><i></i><span><span class="t">${f[0]}</span><br><span class="s">${f[3]}</span></span><span class="v">${fmt(f[1])}<small>฿${fmt(f[1] * TC)}</small></span></li>`).join("")}</ul>
-    <div class="note warn">${ic("alert")}<span>Los tours de Lugares suman más que AUD 360. Al cerrar el plan elegimos cuáles entran.</span></div>`;
+    <div class="note warn">${ic("alert")}<span>Los panoramas suman más que AUD 360: se van eligiendo allá, según cuánto quede.</span></div>`;
   $("#paid").innerHTML = `<dl class="kv">
     <div><dt>Vuelos largos · pagados</dt><dd>AUD 3,368.92</dd></div>
     <div><dt>Pearl y Lanna · pagados</dt><dd>AUD 463.72</dd></div>
@@ -1193,6 +1305,17 @@ async function shareDoc() {
 $("#vw-close").addEventListener("click", closeDoc);
 $("#vw-share").addEventListener("click", shareDoc);
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#viewer").hidden) closeDoc(); });
+document.addEventListener("change", e => {
+  const sel = e.target.closest("select[data-plan]"); if (!sel) return;
+  const id = sel.dataset.plan, p = { ...(PLAN[id] || {}) };
+  if (sel.value) p.d = sel.value; else delete p.d;
+  if (Object.keys(p).length) PLAN[id] = p; else delete PLAN[id];
+  savePlan();
+  const lab = sel.closest(".daypick");
+  lab.classList.toggle("set", !!sel.value);
+  lab.querySelector("span").innerHTML = sel.value ? dayLabel(sel.value) : `${ic("cal", "ic sm")}Día`;
+  renderDias(); renderHoy();
+});
 
 /* ---------- navegación sin saltos ---------- */
 const VIEWS = ["hoy", "dias", "reservas", "docs", "lugares", "plata"];
@@ -1222,6 +1345,16 @@ document.querySelector(".nav").addEventListener("click", e => {
 document.addEventListener("click", e => {
   const o = e.target.closest("[data-open]");
   if (o) { e.preventDefault(); e.stopPropagation(); openDoc(o.dataset.open); return; }
+  const tk = e.target.closest("[data-tick]");
+  if (tk) {
+    e.preventDefault();
+    const id = tk.dataset.tick, p = { ...(PLAN[id] || {}) };
+    if (isDone(id)) delete p.ok; else p.ok = true;
+    if (Object.keys(p).length) PLAN[id] = p; else delete PLAN[id];
+    savePlan(); syncPlan(id); return;
+  }
+  const gc = e.target.closest("[data-gocity]");
+  if (gc) { e.preventDefault(); goCity(gc.dataset.gocity); return; }
   const g = e.target.closest("[data-goday]");
   if (g) { e.preventDefault(); goDay(g.dataset.goday); return; }
   const bk = e.target.closest("[data-gobook]");
@@ -1286,7 +1419,7 @@ $("#version").textContent = `Versión del ${GEN}.`;
 // Actualización sola: al volver a la app (o al abrirla) se compara la versión publicada con la que está en pantalla.
 // Si cambió, se recarga. Si en ese momento hay un documento abierto o se está escribiendo, solo se avisa.
 (() => {
-  const ESTA = "20261123-090052";
+  const ESTA = "20261123-110627";
   const aviso = document.getElementById("upd");
   document.getElementById("upd-go").addEventListener("click", () => location.reload());
   async function revisar() {
