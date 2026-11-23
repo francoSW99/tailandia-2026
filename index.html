@@ -22,7 +22,14 @@ img { max-width: 100%; }
 .install { background: var(--sea); color: var(--bg); border-radius: 16px; padding: 16px; display: grid; gap: 10px; font-size: 0.95rem; }
 .install button { justify-self: start; font: inherit; font-weight: 700; border: 0; border-radius: 12px; min-height: 44px; padding: 8px 16px; background: var(--bg); color: var(--ink); cursor: pointer; }
 .offline-ok { display: inline-flex; align-items: center; gap: 6px; font-size: 0.88rem; font-weight: 700; color: var(--ok); }
-@media print { .install, .offline-ok { display: none !important; } }
+.upd {
+  position: fixed; left: 50%; transform: translateX(-50%); z-index: 25;
+  bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 12px);
+  display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 16px; border-radius: 999px;
+  background: var(--ink); color: var(--bg); font-weight: 700; font-size: 0.92rem; box-shadow: 0 6px 20px rgb(0 0 0 / 0.2); white-space: nowrap;
+}
+.upd button { font: inherit; border: 0; border-radius: 999px; min-height: 36px; padding: 6px 14px; background: var(--bg); color: var(--ink); cursor: pointer; }
+@media print { .install, .offline-ok, .upd { display: none !important; } }
 </style>
 </head>
 <body>
@@ -1237,6 +1244,35 @@ $("#version").textContent = `Versión del ${GEN}.`;
     const top = document.querySelector("#v-hoy .ph");
     if (top && !document.getElementById("offline-ok")) top.insertAdjacentHTML("beforeend", '<p class="offline-ok" id="offline-ok">✓ Guardada en este teléfono: funciona sin internet</p>');
   }).catch(() => {});
+})();
+</script>
+<div class="upd" id="upd" hidden><span>Hay una versión nueva</span><button type="button" id="upd-go">Actualizar</button></div>
+<script>
+// Actualización sola: al volver a la app (o al abrirla) se compara la versión publicada con la que está en pantalla.
+// Si cambió, se recarga. Si en ese momento hay un documento abierto o se está escribiendo, solo se avisa.
+(() => {
+  const ESTA = "20261123-060413";
+  const aviso = document.getElementById("upd");
+  document.getElementById("upd-go").addEventListener("click", () => location.reload());
+  async function revisar() {
+    if (!navigator.onLine) return;
+    try {
+      const r = await fetch("./version.json?t=" + Date.now(), { cache: "no-store" });
+      if (!r.ok) return;
+      const { v } = await r.json();
+      if (!v || v === ESTA) return;
+      const reg = navigator.serviceWorker && await navigator.serviceWorker.getRegistration();
+      if (reg) await reg.update().catch(() => {});
+      let intentada = null; try { intentada = sessionStorage.getItem("tl26-recarga"); } catch (e) {}
+      const ocupado = !document.getElementById("viewer").hidden || ["INPUT", "TEXTAREA"].includes((document.activeElement || {}).tagName);
+      if (ocupado || intentada === v) { aviso.hidden = false; return; }
+      try { sessionStorage.setItem("tl26-recarga", v); } catch (e) {}
+      location.reload();
+    } catch (e) {}
+  }
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") revisar(); });
+  window.addEventListener("pageshow", e => { if (e.persisted) revisar(); });
+  revisar();
 })();
 </script>
 </body>
