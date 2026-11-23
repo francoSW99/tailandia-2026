@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#17120C" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0A0806" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#2D2A4A" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1C1A38" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Tailandia">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
@@ -51,24 +51,28 @@ img { max-width: 100%; }
 /* Layout: app de bolsillo. Una pantalla por pestaña, barra de pestañas abajo (al alcance del pulgar),
    listas agrupadas al estilo iOS que se abren al tocar, y una línea de tiempo por día. */
 :root {
-  /* Lai rod nam: laca negra con pan de oro, como las puertas de los templos, para encabezados y pestañas.
-     El contenido va sobre papel de arroz. Ciudades: mar de Andamán, esmeralda de Krabi, seda, teca y azul real. */
-  --bg: #F3F1EA;
+  /* Bandera de Tailandia y cultura budista: azul marino de la franja central (encabezados y pestañas),
+     rojo y blanco de la bandera en una franja, azafrán de las túnicas de los monjes para lo activo,
+     y un motivo de flores de loto. Fondo blanco cálido. */
+  --bg: #FAF7F2;
   --surface: #FFFFFF;
-  --surface-2: #ECE7DA;
-  --ink: #1B1610;
-  --muted: #5F5747;
-  --line: #E4DDCC;
-  --lacquer: #17120C;
-  --gold: #D4AC4C;
-  --gold-text: #EBD7A2;
-  --gold-ink: #845A00;
-  --gold-soft: #F6EAC9;
-  --sea: #0D5E47;
-  --sea-soft: #DAEDE4;
-  --sun: #9A5600;
-  --sun-soft: #FCE6C2;
-  --sun-line: #E58A00;
+  --surface-2: #F1ECE4;
+  --ink: #17162B;
+  --muted: #5C5A6E;
+  --line: #E7E1D8;
+  --navy: #2D2A4A;
+  --on-navy: #FFFFFF;
+  --on-navy-2: #D9D6EE;
+  --flag-red: #A51931;
+  --flag-white: #F4F5F8;
+  --saffron: #F2A03D;
+  --saffron-ink: #A8520A;
+  --saffron-soft: #FDEBD3;
+  --sea: #33307A;
+  --sea-soft: #E6E5F4;
+  --sun: #A8520A;
+  --sun-soft: #FDEBD3;
+  --sun-line: #E8891C;
   --ok: #1F7A44;
   --ok-soft: #DDF1E2;
   --warn: #8F5100;
@@ -78,42 +82,42 @@ img { max-width: 100%; }
   --c-viaje: #5E6470;
   --c-phuket: #0B6A96;
   --c-krabi: #0D7A6E;
-  --c-pattaya: #AD1F68;
-  --c-cnx: #8A4E1C;
-  --c-bkk: #4A3E9E;
+  --c-pattaya: #B0306A;
+  --c-cnx: #B3570B;
+  --c-bkk: #5B3FA0;
   --f-display: "Kanit", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --f-body: "Lexend", "Kanit", -apple-system, "Segoe UI", system-ui, sans-serif;
   --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --r: 16px;
   --nav-h: 60px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --patron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg fill='none' stroke='%23D4AC4C' stroke-opacity='.22' stroke-width='1'%3E%3Cpath d='M17 8c2.6 3.4 2.6 6 0 9-2.6-3-2.6-5.6 0-9zM17 26c-2.6-3.4-2.6-6 0-9 2.6 3 2.6 5.6 0 9zM8 17c3.4-2.6 6-2.6 9 0-3 2.6-5.6 2.6-9 0zM26 17c-3.4 2.6-6 2.6-9 0 3-2.6 5.6-2.6 9 0z'/%3E%3Cpath d='M0 0l5 5M34 0l-5 5M0 34l5-5M34 34l-5-5'/%3E%3C/g%3E%3Ccircle cx='17' cy='17' r='1.3' fill='%23D4AC4C' fill-opacity='.4'/%3E%3C/svg%3E");
-  --fleco: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' viewBox='0 0 14 8'%3E%3Cpath d='M0 0h14C11 0 9 2 7 8 5 2 3 0 0 0z' fill='%23D4AC4C'/%3E%3C/svg%3E");
+  --bandera: linear-gradient(to bottom, #A51931 0 16.66%, #F4F5F8 16.66% 33.33%, #2D2A4A 33.33% 66.66%, #F4F5F8 66.66% 83.33%, #A51931 83.33% 100%);
+  --loto: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill='none' stroke='%23FFFFFF' stroke-opacity='.11' stroke-width='1.1' stroke-linejoin='round'%3E%3Cpath d='M20 10c-3.4 3.4-3.4 8.6 0 13 3.4-4.4 3.4-9.6 0-13z'/%3E%3Cpath d='M20 23c-4.6-.6-8-3.8-9-8.6 4.6.2 8 3.4 9 8.6z'/%3E%3Cpath d='M20 23c4.6-.6 8-3.8 9-8.6-4.6.2-8 3.4-9 8.6z'/%3E%3Cpath d='M13 26.5h14'/%3E%3C/g%3E%3Ccircle cx='0' cy='0' r='1.2' fill='%23F2A03D' fill-opacity='.35'/%3E%3Ccircle cx='40' cy='40' r='1.2' fill='%23F2A03D' fill-opacity='.35'/%3E%3C/svg%3E");
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0F0C09; --surface: #1B1712; --surface-2: #261F17; --ink: #F2EBDC; --muted: #B6AA94; --line: #312921;
-    --lacquer: #0A0806; --gold: #D9B04A; --gold-text: #EBD7A2; --gold-ink: #E3BA57; --gold-soft: #3A2D12;
-    --sea: #5CC8A2; --sea-soft: #123329; --sun: #F2B24A; --sun-soft: #3A2A10; --sun-line: #D89A2C;
+    --bg: #0E0D18; --surface: #1A1828; --surface-2: #242135; --ink: #EEEDF6; --muted: #ABA8C0; --line: #2E2B42;
+    --navy: #1C1A38; --on-navy: #FFFFFF; --on-navy-2: #CFCCE6; --saffron: #F2A03D; --saffron-ink: #F5AE55; --saffron-soft: #3A2610;
+    --sea: #B3B0F5; --sea-soft: #26234C; --sun: #F5AE55; --sun-soft: #3A2610; --sun-line: #E8891C;
     --ok: #6CD49A; --ok-soft: #12301F; --warn: #F2B357; --warn-soft: #3A2A10; --bad: #F08A7C; --bad-soft: #3A1A16;
-    --c-viaje: #A3AAB6; --c-phuket: #5BB8E0; --c-krabi: #4FC7B6; --c-pattaya: #F07EB5; --c-cnx: #DDA06A; --c-bkk: #A99BF2;
+    --c-viaje: #A3AAB6; --c-phuket: #5BB8E0; --c-krabi: #4FC7B6; --c-pattaya: #F07EB5; --c-cnx: #F0A055; --c-bkk: #B19BF2;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0F0C09; --surface: #1B1712; --surface-2: #261F17; --ink: #F2EBDC; --muted: #B6AA94; --line: #312921;
-    --lacquer: #0A0806; --gold: #D9B04A; --gold-text: #EBD7A2; --gold-ink: #E3BA57; --gold-soft: #3A2D12;
-    --sea: #5CC8A2; --sea-soft: #123329; --sun: #F2B24A; --sun-soft: #3A2A10; --sun-line: #D89A2C;
+  --bg: #0E0D18; --surface: #1A1828; --surface-2: #242135; --ink: #EEEDF6; --muted: #ABA8C0; --line: #2E2B42;
+    --navy: #1C1A38; --on-navy: #FFFFFF; --on-navy-2: #CFCCE6; --saffron: #F2A03D; --saffron-ink: #F5AE55; --saffron-soft: #3A2610;
+    --sea: #B3B0F5; --sea-soft: #26234C; --sun: #F5AE55; --sun-soft: #3A2610; --sun-line: #E8891C;
     --ok: #6CD49A; --ok-soft: #12301F; --warn: #F2B357; --warn-soft: #3A2A10; --bad: #F08A7C; --bad-soft: #3A1A16;
-    --c-viaje: #A3AAB6; --c-phuket: #5BB8E0; --c-krabi: #4FC7B6; --c-pattaya: #F07EB5; --c-cnx: #DDA06A; --c-bkk: #A99BF2;
+    --c-viaje: #A3AAB6; --c-phuket: #5BB8E0; --c-krabi: #4FC7B6; --c-pattaya: #F07EB5; --c-cnx: #F0A055; --c-bkk: #B19BF2;
     color-scheme: dark;
 }
 
 /* Base y comportamiento de teléfono */
 * { box-sizing: border-box; }
-html { background: var(--bg); -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; overscroll-behavior-x: none; }
+html { background: var(--navy); -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; overscroll-behavior-x: none; }
 body {
-  background: var(--bg); color: var(--ink);
+  background: var(--bg); color: var(--ink); min-height: 100dvh;
   font-family: var(--f-body); font-size: 17px; line-height: 1.45;
   padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 28px);
 }
@@ -142,18 +146,18 @@ button, summary, .nav a { user-select: none; -webkit-user-select: none; -webkit-
 .panel.on { display: flex; }
 .ph {
   position: relative; display: grid; gap: 4px;
-  margin: -18px calc(-1 * max(16px, env(safe-area-inset-right, 0px))) 4px calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
-  padding: 26px max(22px, env(safe-area-inset-right, 0px)) 24px max(22px, env(safe-area-inset-left, 0px));
-  background: var(--lacquer) var(--patron); background-size: 34px 34px;
-  border-radius: 0 0 24px 24px; color: var(--gold-text);
+  margin: -18px calc(-1 * max(16px, env(safe-area-inset-right, 0px))) 0 calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  padding: 24px max(22px, env(safe-area-inset-right, 0px)) 34px max(22px, env(safe-area-inset-left, 0px));
+  background: var(--navy) var(--loto); background-size: 40px 40px; color: var(--on-navy);
+  overflow: hidden;
 }
-.ph::after { content: ""; position: absolute; left: 28px; right: 28px; bottom: -7px; height: 8px; background: var(--fleco) repeat-x; background-size: 14px 8px; }
-.ph h1 { font-size: 2.25rem; font-weight: 700; letter-spacing: -0.01em; color: #FBF3DE; }
-.ph p { color: #D9C48F; }
+.ph::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 12px; background: var(--bandera); }
+.ph h1 { font-size: 2.25rem; font-weight: 700; letter-spacing: -0.01em; color: var(--on-navy); }
+.ph p { color: var(--on-navy-2); }
 .ph .offline-ok { color: #A6DDB9; }
 .th { font-family: var(--f-display); font-weight: 500; }
-.ph .th { color: var(--gold); }
-@media (min-width: 700px) { .ph { margin-top: 0; border-radius: 24px; } }
+.ph .th { color: var(--saffron); }
+@media (min-width: 700px) { .ph { margin-top: 0; border-radius: 20px; } }
 .sec { display: grid; gap: 10px; }
 .sec > h2 { font-size: 1.2rem; font-weight: 700; padding-left: 4px; }
 
@@ -181,7 +185,7 @@ details[open] > summary .chev { transform: rotate(180deg); }
 
 /* Hoy */
 .count { display: flex; align-items: center; gap: 16px; background: var(--surface); border-radius: var(--r); padding: 18px; }
-.count .big { font-family: var(--f-display); font-weight: 700; font-size: 4.6rem; line-height: 0.9; color: var(--gold-ink); letter-spacing: -0.02em; }
+.count .big { font-family: var(--f-display); font-weight: 700; font-size: 4.6rem; line-height: 0.9; color: var(--saffron-ink); letter-spacing: -0.02em; }
 .count .t { font-weight: 700; font-size: 1.15rem; }
 .hero { position: relative; border-radius: var(--r); overflow: hidden; background: var(--surface); }
 .hero img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; max-width: 100%; }
@@ -387,7 +391,7 @@ button.badge { min-height: 32px; }
 /* Barra de pestañas */
 .nav {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
-  background: var(--lacquer); border-top: 1px solid rgb(212 172 76 / 0.35);
+  background: var(--navy); border-top: 1px solid rgb(255 255 255 / 0.12);
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 .nav-in {
@@ -396,11 +400,11 @@ button.badge { min-height: 32px; }
 }
 .nav button {
   height: var(--nav-h); display: grid; justify-items: center; align-content: center; gap: 3px;
-  font-size: 0.72rem; font-weight: 700; color: #B9AE96;
+  font-size: 0.72rem; font-weight: 700; color: #C9C6E0;
 }
 .nav button .ic { width: 24px; height: 24px; transition: transform 120ms var(--ease); }
 .nav button:active .ic { transform: scale(0.88); }
-.nav button[aria-current="page"] { color: var(--gold); }
+.nav button[aria-current="page"] { color: var(--saffron); }
 .nav button[aria-current="page"] .ic { stroke-width: 2.2; }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1282,7 +1286,7 @@ $("#version").textContent = `Versión del ${GEN}.`;
 // Actualización sola: al volver a la app (o al abrirla) se compara la versión publicada con la que está en pantalla.
 // Si cambió, se recarga. Si en ese momento hay un documento abierto o se está escribiendo, solo se avisa.
 (() => {
-  const ESTA = "20261123-071138";
+  const ESTA = "20261123-090052";
   const aviso = document.getElementById("upd");
   document.getElementById("upd-go").addEventListener("click", () => location.reload());
   async function revisar() {
