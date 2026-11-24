@@ -492,6 +492,8 @@ button.badge { min-height: 32px; }
   <symbol id="i-mount" viewBox="0 0 24 24"><path d="m2.5 20 7-12 4 7 2.5-4 5.5 9z"/><path d="m8 10.5 1.5 1.5 1.5-1.5"/></symbol>
   <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21c0-3 1.9-5.4 5.1-6 2.4-.5 4.9-2 5.9-3"/></symbol>
   <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M12 1.5V5M12 19v3.5M1.5 12H5M19 12h3.5"/></symbol>
+  <symbol id="i-dive" viewBox="0 0 24 24"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h13A1.5 1.5 0 0 1 20 8.5v4a2.5 2.5 0 0 1-2.5 2.5h-2.2a2 2 0 0 1-1.6-.8L12 12.5l-1.7 1.7a2 2 0 0 1-1.6.8H6.5A2.5 2.5 0 0 1 4 12.5z"/><path d="M8 19c1.3 1 2.7 1 4 0s2.7-1 4 0"/></symbol>
   <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6-4.5-4.2 6.1-.7z"/></symbol>
   <symbol id="i-glass" viewBox="0 0 24 24"><path d="M6 3h12l-1 6a5 5 0 0 1-10 0zM12 14v7M8 21h8"/></symbol>
   <symbol id="i-bag" viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="13" rx="2"/><path d="M9 7V4.5h6V7M9 11v5M15 11v5"/></symbol>
@@ -755,12 +757,15 @@ const DAYS = [
   { f: "2026-12-15", c: "cnx", items: [] },
   { f: "2026-12-16", c: "cnx", items: [], ojo: "Cremación real en Bangkok: puede haber cierres o alcohol restringido." },
   { f: "2026-12-17", c: "cnx", tags: ["wanphra"], items: [] },
-  { f: "2026-12-18", c: "bkk", t: "Chiang Mai → Bangkok", p: "cnx", items: [
-    ["10:45", "taxi", "Grab al aeropuerto", "5–15 min"],
+  { f: "2026-12-18", c: "bkk", t: "Tiro y Muay Thai", p: "cnx", items: [
+    ["10:45", "taxi", "Grab al aeropuerto de Chiang Mai", "5–15 min"],
     ["13:30", "plane", "Vuelo a Don Mueang", "Llega 14:45", "Chiang Mai → Don Mueang"],
-    ["15:15", "taxi", "Taxi al hotel", "Con taxímetro · ~1 h"],
-    ["16:30", "bed", "Check-in", "", "Zenniq"]],
-    ojo: "Ceremonias reales hasta el sáb 19: evitar el Gran Palacio." },
+    ["15:15", "taxi", "Taxi directo al tiro, con las maletas", "~30–40 min · queda de camino al centro"],
+    ["16:00", "target", "Bangkok Shooting Range", "Con el amigo · el último turno es a las 16:30 · cierra 17:00", "Bangkok Shooting Range"],
+    ["17:00", "taxi", "Taxi al hotel", "~45–60 min hasta Thonburi"],
+    ["18:00", "bed", "Check-in", "", "Zenniq"],
+    ["19:00", "music", "Muay Thai en Rajadamnern", "Las puertas abren 18:00 · 7 peleas a 3 rounds · ~20–25 min del hotel", "Muay Thai en Rajadamnern"]],
+    ojo: "Día apretado. Si el vuelo se atrasa, avisar al tiro: cierra a las 17:00. Hasta el sáb 19 hay ceremonias reales cerca del estadio: salir con tiempo." },
   { f: "2026-12-19", c: "bkk", items: [], ojo: "Hasta las 17:00 hay ceremonias: no ir a Rattanakosin." },
   { f: "2026-12-20", c: "bkk", items: [] },
   { f: "2026-12-21", c: "bkk", items: [] },
@@ -825,6 +830,12 @@ const BOOKINGS = [
   { s: "bkk", i: "bed", t: "Zenniq", sec: true, w: "Vie 18 → sáb 26 dic · 8 noches", st: "pagar", stl: "Pagar allá",
     kv: [["Reserva", "6751.843.775", true], ["Para el taxi", "25/2 สมเด็จพระเจ้าตากสิน ซอย6 บางยี่เรือ ธนบุรี กรุงเทพ", true], ["Dirección", "25/2 Somdet Phrachao Taksin Soi 6, Thonburi, Bangkok 10600", true], ["Teléfono", "+66 2 466 4999", true], ["Costo", "฿10,958 en el hotel"]],
     note: "Desayuno incluido. Cancelación gratis hasta el mié 16 dic." },
+  { s: "bkk", i: "target", t: "Bangkok Shooting Range", w: "Vie 18 dic · 16:00 · para 3", st: "reserva",
+    kv: [["Dirección", "1019/3 Phahonyothin Rd, Phaya Thai, Bangkok 10400", true], ["Teléfono", "+66 2 494 1179", true], ["Horario", "Todos los días 9:00–17:00 · último turno 16:30"], ["Costo", "Paquetes desde ฿1,800 · solo efectivo"]],
+    note: "Reservar en la web con 2 h de anticipación como mínimo. Llevar foto o copia del pasaporte. Edad mínima: 20 años. Preguntar si pueden dejar las maletas mientras disparan.", url: "https://bangkokshootingrange.com/" },
+  { s: "bkk", i: "music", t: "Muay Thai en Rajadamnern", w: "Vie 18 dic · puertas 18:00 · para 3", st: "reserva",
+    kv: [["Pelea", "Wildest Muay Thai Event · 7 peleas"], ["Dónde", "8 Rajadamnern Nok Rd, Bangkok", true], ["Costo", "Según la zona: ~฿1,000–2,500 por persona"]],
+    note: "Entradas en Ticketmelon (QR en el teléfono) o en el estadio.", url: "https://www.ticketmelon.com/raj/knockout-18dec26" },
   { s: "vuelta", i: "plane", t: "Bangkok → Brisbane", sec: true, w: "Sáb 26 dic · 21:25 → 09:35", st: "ok",
     kv: [["Vuelo", "Jetstar JQ66"], ["Maletas", "Fran 30 kg · Romina 35 kg"]], note: "Si compraron con devolución del IVA: antes del check-in, mostrar las compras en la oficina VAT Refund del piso 4." },
   { s: "vuelta", i: "plane", t: "Brisbane → Whitsundays", sec: true, w: "Dom 27 dic · 12:20 → 14:05", st: "ok",
@@ -889,6 +900,10 @@ const CITIES = [
       { g: "En Ao Nang y alrededores", id: "kb-emerald", t: "Emerald Pool", s: "Piscina natural en la selva, ~1 h · medio día con termales ฿1,100–1,700" },
       { g: "En Ao Nang y alrededores", id: "kb-zip", t: "Zipline", s: "Hay parques a ~20 min de Ao Nang" },
       { g: "En Ao Nang y alrededores", id: "kb-mercados", t: "Mercados nocturnos", s: "Landmark, en Ao Nang: todos los días 16:00–23:00, mejor desde las 18:00", ojo: "El Walking Street de Krabi Town es solo vie a dom: sáb 5 o dom 6." },
+      { g: "Buceo", id: "kb-dsd", t: "Bautismo de buceo (Discover Scuba)", s: "Un día, sin curso: 2 inmersiones con instructor, hasta 12 m · ~฿4,000–5,500 + parque ฿600", mas: "En las islas de Ao Nang o en Phi Phi. Ideal para probar antes de hacer el curso." },
+      { g: "Buceo", id: "kb-ow", t: "Curso Open Water (PADI)", s: "3–4 días · quedan certificados para bucear hasta 18 m en cualquier lado · ~฿13,000–15,000", mas: "La teoría se puede hacer online antes de viajar y ahorra un día. Shops con buena fama en Ao Nang: Kon-Tiki y Poseidon. Hay que llenar una ficha médica.", ojo: "No volar en las 24 h después de bucear. El vuelo sale el vie 11 a las 13:35: lo seguro es terminar el mié 9; como mucho, el jue 10 antes del mediodía." },
+      { g: "Buceo", id: "kb-tiburon", t: "Tiburón ballena en Hin Daeng", s: "Desde Phi Phi o Koh Lanta, 1 h 30–2 h en bote · para buzos con certificado", ojo: "En diciembre es posible pero raro: la temporada fuerte es de febrero a abril." },
+      { g: "Buceo", id: "kb-kohtao", t: "Koh Tao (el de los videos)", s: "La isla más barata del mundo para sacar el Open Water (~฿10,000–13,000)", ojo: "No calza: está en el golfo de Tailandia, al otro lado del país (6–10 h desde Ao Nang). Diciembre es su peor mes por el monzón (mar picado, poca visibilidad) y los tiburones ballena se ven sobre todo de marzo a mayo." },
       { g: "Más ideas · del PDF", id: "kb-hong", t: "Hong Island", s: "Laguna escondida entre acantilados · en longtail · la laguna depende de la marea" },
       { g: "Más ideas · del PDF", id: "kb-kuannom", t: "Mirador Kuan Nom Saow", s: "Restaurante con mirador sobre Krabi" },
       { g: "Más ideas · del PDF", id: "kb-reeve", t: "REEVE Beach Club", s: "Beach club en Ao Nang · tiene show de fuego al anochecer" },
@@ -901,7 +916,7 @@ const CITIES = [
     libres: "Libre: sáb 12, más la mañana del lun 14 · el dom 13 es Tomorrowland",
     nota: "Hay un solo día libre: elijan 2 o 3.",
     p: [
-      { id: "pt-tml", t: "Tomorrowland", s: "Lo único que no se mueve", fijo: "2026-12-13" },
+      { id: "pt-tml", t: "Tomorrowland", s: "Lo único que no se mueve", fijo: "2026-12-13", enAgenda: true },
       { id: "pt-marina", t: "Central Marina", s: "Mall y outlet en North Pattaya, cerca del hotel" },
       { id: "pt-paboon", t: "Pa Boon Café", s: "Café con estanque de koi y animales · 9:30–21:30" },
       { id: "pt-nongnooch", t: "Nong Nooch Garden", s: "Jardín tropical gigante, ~40 min al sur · medio día · saltarse el show de elefantes" },
@@ -940,8 +955,11 @@ const CITIES = [
     evitar: "Lugares con monta o baños de elefantes. Mañanas frías: llevar polerón." },
   { k: "bkk", g: [["watpho", "Wat Pho"], ["yaowarat", "Yaowarat"]],
     libres: "Libres: sáb 19 → vie 25, más la tarde del 18 y el sáb 26 hasta las 16:30",
-    nota: "Falta la lista de ustedes: estas son ideas del PDF y de la investigación. Templos en un día, como en el PDF: Gran Palacio a las 8:30 → Wat Pho → ferry a Wat Arun → Wat Paknam → Montaña Dorada al atardecer.",
+    nota: "Sus «sí o sí» van arriba. El resto son ideas del PDF y de la investigación para elegir. Templos en un día, como en el PDF: Gran Palacio a las 8:30 → Wat Pho → ferry a Wat Arun → Wat Paknam → Montaña Dorada al atardecer.",
     p: [
+      { g: "Sí o sí · de ustedes", id: "bk-tichuca", t: "Tichuca Rooftop", s: "El rooftop del árbol de luces · piso 46 · lun a jue hasta 23:30, vie y sáb hasta la 01:00 · ~฿400 el trago", mas: "Ir temprano (hay fila). Mayores de 20 con el pasaporte original; nada de chalas ni ropa deportiva." },
+      { g: "Sí o sí · de ustedes", id: "bk-tiro", t: "Bangkok Shooting Range", s: "Con el amigo · paquetes desde ฿1,800 · el horario está en Días", fijo: "2026-12-18", enAgenda: true },
+      { g: "Sí o sí · de ustedes", id: "bk-muaythai", t: "Muay Thai en Rajadamnern", s: "Con el amigo · Wildest Muay Thai Event, 7 peleas · el horario está en Días", fijo: "2026-12-18", enAgenda: true },
       { g: "Templos", id: "bk-palace", t: "Gran Palacio y Buda Esmeralda", s: "Abre 8:30 · ฿500 · llegar temprano · pantalón o falda larga (un pareo encima no sirve)", ojo: "Ceremonias reales hasta el sáb 19: revisar antes en royalgrandpalace.th." },
       { g: "Templos", id: "bk-watpho", t: "Wat Pho y su masaje", s: "A 10 min a pie del Gran Palacio · el Buda reclinado de 46 m · ฿300" },
       { g: "Templos", id: "bk-watarun", t: "Wat Arun", s: "Ferry de 5 min desde el muelle de Wat Pho (~฿16) · ฿200 · subir a las torres de porcelana" },
@@ -959,9 +977,7 @@ const CITIES = [
       { g: "Mercados y calles", id: "bk-asiatique", t: "Asiatique", s: "Mercado nocturno junto al río · barco gratis desde el muelle Sathorn" },
       { g: "Mercados y calles", id: "bk-talingchan", t: "Mercado flotante Taling Chan", s: "Sáb y dom, cerca del hotel" },
       { g: "Noche", id: "bk-nochebuena", t: "Crucero con cena por el río", s: "Meridian Cruise ~฿650–1,000 · sale de ICONSIAM ~19:45, 2 h · buffet y show en vivo", ojo: "Idea para Nochebuena (jue 24): reservar con días de anticipación." },
-      { g: "Noche", id: "bk-tichuca", t: "Tichuca Rooftop", s: "Piso 46 · desde las 17:00 · ir temprano (hay fila) · ~฿400 el trago", mas: "Mayores de 20 con el pasaporte original · nada de chalas ni ropa deportiva." },
       { g: "Noche", id: "bk-fridge", t: "Don't Open The Fridge", s: "Bar escondido en Sukhumvit Soi 11 · entrada gratis · ~฿500 por persona" },
-      { g: "Noche", id: "bk-muaythai", t: "Muay Thai en Rajadamnern", s: "Hay peleas casi todas las noches · el sábado es el torneo grande (RWS) · desde ~฿1,000–1,500", mas: "Según el PDF vale la pena hasta la más barata: el estadio es un show en sí.", url: "https://www.rajadamnern.com" },
       { g: "Noche", id: "bk-rooftop", t: "Otros rooftops", s: "Octave, Above Eleven, Vertigo · del PDF: Sato San e Iris" },
       { g: "Noche", id: "bk-skywalk", t: "Mahanakhon SkyWalk", s: "Piso de vidrio a 300 m · ~฿1,000–1,200 · cierra con lluvia" },
       { g: "Más", id: "bk-jim", t: "Jim Thompson House", s: "Casa museo de teca · y Erawan Shrine" },
@@ -987,7 +1003,7 @@ const FUND = [
 
 // Pendientes que no son reservas: [qué, detalle, cuándo, link, texto del link]
 const TODOS = [
-  ["Seguro de viaje", "Para los dos", "Antes del 1 dic"],
+  ["Seguro de viaje", "Para los dos · si van a bucear, que cubra buceo recreativo", "Antes del 1 dic"],
   ["Lista de panoramas de Bangkok", "Como la de las otras ciudades, para cambiar las ideas de la app", "Antes del 18 dic"],
   ["Tarjeta de llegada (TDAC)", "Se llena en línea los 3 días antes de llegar", "29 nov – 2 dic", "https://tdac.immigration.go.th", "tdac.immigration.go.th"],
   ["Instalar la app en los dos iPhone", "Y abrir Docs con la clave una vez", "Antes del 1 dic"],
@@ -1029,7 +1045,7 @@ const PAN = CITIES.flatMap(c => c.p.map(x => ({ ...x, k: c.k })));
 const panOf = id => PAN.find(x => x.id === id);
 const isDone = id => !!(PLAN[id] && PLAN[id].ok);
 const dayOf = x => x.fijo || (PLAN[x.id] && PLAN[x.id].d) || "";
-const pinsOf = f => PAN.filter(x => !x.fijo && dayOf(x) === f);
+const pinsOf = f => PAN.filter(x => !x.enAgenda && dayOf(x) === f);
 const tally = k => { const l = PAN.filter(x => x.k === k); return { done: l.filter(x => isDone(x.id)).length, all: l.length }; };
 // Días de cada ciudad: desde la primera noche hasta el día en que se van
 const cityDays = k => {
@@ -1513,7 +1529,7 @@ $("#version").textContent = `Versión del ${GEN}.`;
 // Actualización sola: al volver a la app (o al abrirla) se compara la versión publicada con la que está en pantalla.
 // Si cambió, se recarga. Si en ese momento hay un documento abierto o se está escribiendo, solo se avisa.
 (() => {
-  const ESTA = "20261124-010837";
+  const ESTA = "20261124-021235";
   const aviso = document.getElementById("upd");
   document.getElementById("upd-go").addEventListener("click", () => location.reload());
   async function revisar() {
