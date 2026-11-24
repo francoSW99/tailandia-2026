@@ -874,6 +874,7 @@ const CITIES = [
       { g: "Aventura y naturaleza", id: "pk-bamboo", t: "Bamboo rafting y templo de los monos", s: "Tour a Phang Nga, ~1 h 30 · día completo" },
       { g: "Aventura y naturaleza", id: "pk-mantra", t: "Mantra Forest Spa", s: "Termas, onsen y sauna en el bosque · Phang Nga, ~1 h · 9:00–20:00" },
       { g: "Aventura y naturaleza", id: "pk-yoga", t: "Freedom Project (yoga)", s: "Yoga y baño de sonido al aire libre, frente al Big Buddha · Karon" },
+      { g: "Buceo", id: "pk-dsd", t: "Bautismo en Racha Yai con SSS Phuket", s: "Jue 3 o vie 4 · ฿4,200 todo incluido (equipo, desayuno, almuerzo y traslado) · 2 inmersiones, hasta 12 m", mas: "Los recogen en Phuket Town 6:50–7:00 y vuelven ~16:00. Preguntar cuánto cobran extra por Phuket Town. Cancelación gratis hasta 48 h antes.", url: "https://www.sssphuket.com/discover-scuba-diving-phuket/", res: true },
       { g: "Más ideas · del PDF", id: "pk-patongmkt", t: "Mercado nocturno de Patong", s: "Se suma a la tarde y noche en Patong" },
       { g: "Más ideas · del PDF", id: "pk-nomad", t: "Nomad Beach Club", s: "Otro beach club que recomienda, en la línea de Café del Mar" },
       { g: "Más ideas · del PDF", id: "pk-smigos", t: "Smigos", s: "Bar y restaurante en la playa de Bang Tao · los mismos de KYMA" }],
@@ -900,8 +901,9 @@ const CITIES = [
       { g: "En Ao Nang y alrededores", id: "kb-emerald", t: "Emerald Pool", s: "Piscina natural en la selva, ~1 h · medio día con termales ฿1,100–1,700" },
       { g: "En Ao Nang y alrededores", id: "kb-zip", t: "Zipline", s: "Hay parques a ~20 min de Ao Nang" },
       { g: "En Ao Nang y alrededores", id: "kb-mercados", t: "Mercados nocturnos", s: "Landmark, en Ao Nang: todos los días 16:00–23:00, mejor desde las 18:00", ojo: "El Walking Street de Krabi Town es solo vie a dom: sáb 5 o dom 6." },
-      { g: "Buceo", id: "kb-dsd", t: "Bautismo de buceo (Discover Scuba)", s: "Un día, sin curso: 2 inmersiones con instructor, hasta 12 m · ~฿4,000–5,500 + parque ฿600", mas: "En las islas de Ao Nang o en Phi Phi. Ideal para probar antes de hacer el curso." },
-      { g: "Buceo", id: "kb-ow", t: "Curso Open Water (PADI)", s: "3–4 días · quedan certificados para bucear hasta 18 m en cualquier lado · ~฿13,000–15,000", mas: "La teoría se puede hacer online antes de viajar y ahorra un día. Shops con buena fama en Ao Nang: Kon-Tiki y Poseidon. Hay que llenar una ficha médica.", ojo: "No volar en las 24 h después de bucear. El vuelo sale el vie 11 a las 13:35: lo seguro es terminar el mié 9; como mucho, el jue 10 antes del mediodía." },
+      { g: "Buceo", id: "kb-ow", t: "Curso Open Water con Kon-Tiki", s: "Lun 7 piscina, mar 8 y mié 9 en el mar (4 inmersiones) · ฿15,500 c/u + parque ~฿800 · quedan certificados hasta 18 m", mas: "La teoría es online y va antes del viaje (8–12 h): empezarla esta semana. Confirmar por WhatsApp que el curso arranca el lun 7.", ojo: "No volar en las 24 h después de bucear: el mié 9 es el último día posible (el vuelo sale el vie 11 a las 13:35).", url: "https://kontiki-krabi.com/diving-courses/entry-level-courses/", res: true },
+      { g: "Buceo", id: "kb-dsd", t: "Bautismo en Phi Phi con Kon-Tiki", s: "Mar 8: ese día su barco va a Phi Phi · 2 inmersiones con instructor, hasta 12 m · ฿5,100 + parque ฿600", mas: "Más barato en las islas de Ao Nang: ฿4,100 + parque ฿400, el dom 6, lun 7 o mié 9.", url: "https://kontiki-krabi.com/diving-courses/entry-level-courses/", res: true },
+      { g: "Buceo", id: "kb-scubadiver", t: "Certificado corto (PADI Scuba Diver)", s: "Mar 8 y mié 9 · 2 inmersiones · ฿11,200 · después pueden bucear hasta 12 m con un guía", mas: "El punto medio entre el bautismo y el Open Water." },
       { g: "Buceo", id: "kb-tiburon", t: "Tiburón ballena en Hin Daeng", s: "Desde Phi Phi o Koh Lanta, 1 h 30–2 h en bote · para buzos con certificado", ojo: "En diciembre es posible pero raro: la temporada fuerte es de febrero a abril." },
       { g: "Buceo", id: "kb-kohtao", t: "Koh Tao (el de los videos)", s: "La isla más barata del mundo para sacar el Open Water (~฿10,000–13,000)", ojo: "No calza: está en el golfo de Tailandia, al otro lado del país (6–10 h desde Ao Nang). Diciembre es su peor mes por el monzón (mar picado, poca visibilidad) y los tiburones ballena se ven sobre todo de marzo a mayo." },
       { g: "Más ideas · del PDF", id: "kb-hong", t: "Hong Island", s: "Laguna escondida entre acantilados · en longtail · la laguna depende de la marea" },
@@ -1529,7 +1531,7 @@ $("#version").textContent = `Versión del ${GEN}.`;
 // Actualización sola: al volver a la app (o al abrirla) se compara la versión publicada con la que está en pantalla.
 // Si cambió, se recarga. Si en ese momento hay un documento abierto o se está escribiendo, solo se avisa.
 (() => {
-  const ESTA = "20261124-021235";
+  const ESTA = "20261124-024544";
   const aviso = document.getElementById("upd");
   document.getElementById("upd-go").addEventListener("click", () => location.reload());
   async function revisar() {
